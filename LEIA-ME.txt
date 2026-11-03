@@ -1,0 +1,17 @@
+AULÃO ENEM — como publicar (5 minutos)
+
+1) O config.js já está preenchido com o seu projeto (aulao-enem).
+
+2) Entre em app.netlify.com/drop e arraste a PASTA "aulao" inteira
+   (não o .zip, a pasta descompactada).
+
+3) O Netlify dá um link, por exemplo: https://nome-aleatorio.netlify.app
+   - Alunos:     https://SEU-LINK.netlify.app
+   - Professor:  https://SEU-LINK.netlify.app/?p=prof   (pede só a senha)
+   O QR code aparece no painel, em "Abrir modo telão".
+
+4) Ensaio curto (3 ou 4 celulares, 2 questões). Depois, no painel:
+   "Zerar tudo (nova sessão)".
+
+Para trocar algo depois: edite os arquivos e arraste a pasta de novo
+no mesmo site (Netlify > seu site > Deploys > arraste ali).

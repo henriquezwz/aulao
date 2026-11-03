@@ -1,0 +1,560 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#2D5BFF">
+<title>Aulão ENEM · Responda</title>
+<style>
+:root{
+  --bg:#F3F5FB; --surface:#FFFFFF; --sunk:#E9EDF6; --ink:#141B34; --muted:#5E6784; --line:#DCE1EE;
+  --blue:#2D5BFF; --blue-deep:#1A3FD6; --blue-soft:#E2E9FF;
+  --tang:#FF6A2B; --tang-soft:#FFE7DC; --violet:#7B5CF5; --violet-soft:#ECE6FF;
+  --amber:#F2A007; --amber-soft:#FFF1D2; --mint:#12B07F; --mint-soft:#D8F4E9;
+  --danger:#E0363B; --danger-soft:#FDE3E3; --r:14px; --r-sm:8px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+button{font:inherit;color:inherit}
+.wrap{max-width:760px;margin:0 auto;padding:12px 16px 90px}
+.top{display:flex;align-items:center;gap:10px;padding:10px 16px;background:var(--surface);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5}
+.top b{font-size:15px}
+.top .sp{flex:1}
+.pill{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:600;padding:4px 10px;border-radius:99px;background:var(--sunk);color:var(--muted)}
+.pill.ok{background:var(--mint-soft);color:#0B7A57}
+.pill.warn{background:var(--amber-soft);color:#8A5B00}
+.pill.bad{background:var(--danger-soft);color:var(--danger)}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;margin:12px 0}
+.hero{background:var(--blue);color:#fff;border:0}
+.hero h1{margin:0 0 4px;font-size:22px;line-height:1.2}
+.hero p{margin:0;opacity:.92}
+.qhead{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:4px 0 8px}
+.area{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:4px 9px;border-radius:6px;color:#fff;background:var(--blue)}
+.qhead h2{margin:0;font-size:20px}
+.qhead .h{font-size:13px;color:var(--muted)}
+.slide{display:block;width:100%;border-radius:var(--r-sm);border:1px solid var(--line);background:#fff;margin:6px 0}
+.zoomhint{font-size:13px;color:var(--muted);text-align:center;margin:2px 0 10px}
+.alts{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:10px}
+.alt{height:64px;border-radius:12px;border:2px solid var(--line);background:var(--surface);font-size:26px;font-weight:800;cursor:pointer}
+.alt[aria-pressed="true"]{background:var(--blue);border-color:var(--blue);color:#fff}
+.alt:disabled{cursor:default;opacity:.55}
+.alt.certa{background:var(--mint);border-color:var(--mint);color:#fff;opacity:1}
+.alt.errada{background:var(--danger);border-color:var(--danger);color:#fff;opacity:1}
+.status{text-align:center;font-size:14px;margin-top:10px;color:var(--muted);min-height:20px}
+.big{font-size:20px;font-weight:700;margin:0 0 6px}
+.res{border-radius:var(--r);padding:16px;margin:12px 0}
+.res.ok{background:var(--mint-soft);border:1px solid #9FE3C9}
+.res.no{background:var(--danger-soft);border:1px solid #F5B7B9}
+.res.nada{background:var(--sunk);border:1px solid var(--line)}
+.trap{background:var(--amber-soft);border:1px solid #F5D48A;border-radius:var(--r-sm);padding:10px 12px;margin-top:10px}
+.trap b{color:#8A5B00}
+.fechar{background:var(--violet-soft);border-radius:var(--r-sm);padding:10px 12px;margin-top:10px}
+.bars{margin-top:8px}
+.bar{display:grid;grid-template-columns:26px 1fr 52px;align-items:center;gap:8px;margin:6px 0;font-weight:700}
+.bar .t{height:22px;background:var(--sunk);border-radius:6px;overflow:hidden}
+.bar .f{height:100%;background:#AEB8D6;border-radius:6px;transition:width .4s}
+.bar.g .f{background:var(--mint)}
+.bar .n{font-size:14px;text-align:right;font-variant-numeric:tabular-nums}
+.btn{display:block;width:100%;padding:13px 16px;border-radius:12px;border:1px solid var(--line);background:var(--surface);font-weight:700;cursor:pointer;margin:8px 0;min-height:48px}
+.btn.solid{background:var(--blue);border-color:var(--blue);color:#fff}
+.btn.tang{background:var(--tang);border-color:var(--tang);color:#fff}
+.btn.mint{background:var(--mint);border-color:var(--mint);color:#fff}
+.btn.danger{color:var(--danger);border-color:#F5B7B9}
+.btn:disabled{opacity:.4;cursor:default}
+.row{display:flex;gap:8px}.row>*{flex:1}
+.muted{color:var(--muted)}
+.small{font-size:13.5px}
+.list{margin:0;padding:0;list-style:none}
+.list li{display:flex;gap:10px;align-items:baseline;padding:8px 0;border-bottom:1px solid var(--line)}
+.list li:last-child{border-bottom:0}
+.dot{min-width:22px;flex:none;text-align:center;font-weight:800}
+.dot.ok{color:var(--mint)}.dot.no{color:var(--danger)}.dot.na{color:var(--muted)}
+.stat{display:flex;gap:10px;margin-top:10px}
+.stat div{flex:1;background:rgba(255,255,255,.16);border-radius:10px;padding:10px;text-align:center}
+.stat b{display:block;font-size:26px}
+#viewer{position:fixed;inset:0;background:#0B1020;z-index:50;display:none;flex-direction:column}
+#viewer.on{display:flex}
+#viewer .vbar{display:flex;gap:8px;padding:8px;background:#131A2E}
+#viewer .vbar button{flex:1;min-height:44px;border-radius:10px;border:0;background:#252F4A;color:#fff;font-weight:700;font-size:18px}
+#viewer .vbar button.x{background:var(--tang)}
+#viewer .vscroll{flex:1;overflow:auto;-webkit-overflow-scrolling:touch}
+#viewer img{display:block;max-width:none;background:#fff}
+input{font:inherit;width:100%;padding:12px;border-radius:10px;border:1px solid var(--line);margin:6px 0;background:#fff}
+.toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 16px;border-radius:12px;font-size:14px;z-index:60;max-width:90vw;display:none}
+/* professor */
+.qgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(84px,1fr));gap:6px}
+.qbtn{padding:8px 4px;border-radius:10px;border:1px solid var(--line);background:#fff;font-size:12.5px;font-weight:700;cursor:pointer;line-height:1.2}
+.qbtn small{display:block;font-weight:500;color:var(--muted);font-size:11px}
+.qbtn.cur{background:var(--ink);color:#fff;border-color:var(--ink)}
+.qbtn.cur small{color:#C9D0E4}
+.qbtn.done{background:var(--mint-soft)}
+.fase{font-size:13px;font-weight:800;letter-spacing:.05em;text-transform:uppercase}
+.count{font-size:48px;font-weight:800;line-height:1;font-variant-numeric:tabular-nums}
+/* telão */
+#telao{position:fixed;inset:0;background:var(--bg);z-index:40;display:none;padding:3vh 4vw;overflow:auto}
+#telao.on{display:block}
+#telao .tg{display:grid;grid-template-columns:1.3fr 1fr;gap:4vw;align-items:center;min-height:80vh}
+#telao h1{font-size:5vh;margin:0 0 1vh}
+#telao .count{font-size:14vh}
+#telao .bar{grid-template-columns:5vh 1fr 12vh;font-size:4vh}
+#telao .bar .t{height:5.5vh}
+#telao .bar .n{font-size:3.5vh}
+#telao .qr{background:#fff;padding:2vh;border-radius:16px;text-align:center}
+#telao .qr img{width:100%;max-width:46vh;image-rendering:pixelated}
+#telao .url{font-size:2.6vh;font-weight:700;word-break:break-all;margin-top:1vh}
+#telao .close{position:fixed;top:12px;right:12px;width:auto;margin:0}
+</style>
+</head>
+<body>
+<div id="app"><div class="wrap"><div class="panel"><p class="big">Carregando…</p><p class="muted">Conectando ao aulão.</p></div></div></div>
+<div id="viewer"><div class="vbar"><button id="zm">−</button><button id="zp">+</button><button class="x" id="zx">Fechar ✕</button></div><div class="vscroll" id="vscroll"><img id="vimg" alt=""></div></div>
+<div class="toast" id="toast"></div>
+
+<script src="config.js"></script>
+<script>
+/* ====================== CONFIGURAÇÃO ====================== */
+// A configuração do Firebase fica no arquivo config.js (window.FB_CFG)
+const FB_CFG = window.FB_CFG || {};
+const FB_V = "12.19.0";
+// Login do painel: só a senha é digitada; o e-mail fica fixo aqui.
+const PROF_EMAIL = "professor@aulao.app";
+const VERSAO = "03/11 13:40";
+
+/* ====================== QUESTÕES ====================== */
+// armadilhas: VNR = verdade que não responde · EXT = extrapola · INV = inverte · EXA = exagera · VIZ = conceito vizinho
+const Q = [
+ {area:"Filosofia",cor:"#2D5BFF",num:65,h:"H16 · C4",tema:"Inteligência humana e máquinas",img:["s03.jpg"],gab:"D",
+  exp:"O texto diz que a máquina é “incapaz de distinguir o possível do impossível”. Memorizar não é pensar: o ENEM mede julgamento, não decoreba.",
+  fecha:"Pensar é conjecturar e criticar: poder errar faz parte de estar certo.",
+  arm:{E:["INV","O texto diz que a máquina memoriza sem limite."],C:["EXT","O autor não diz que a máquina nunca erra."],A:["EXT","Traz um dado que não está no texto."]}},
+ {area:"Filosofia",cor:"#2D5BFF",num:60,h:"H4 · C1",tema:"Filosofia da linguagem: Carnap e Austin",img:["s08.jpg"],gab:"A",
+  exp:"Austin aceita que frases descrevem fatos, mas mostra outras que fazem ações. A teoria de Carnap não está errada: é limitada.",
+  fecha:"Enunciados performativos: dizer é fazer. Austin amplia a teoria, não a invalida.",
+  arm:{C:["EXA","“Incoerente” acusa um erro interno que Austin não aponta."],E:["EXA","“Contraditória” acusa um erro interno que Austin não aponta."]}},
+ {area:"Literatura",cor:"#7B5CF5",num:58,h:"H15 · C5",tema:"Canção popular e contexto urbano",img:["s21.jpg"],gab:"D",
+  exp:"O terreno tinha dono, a casa velha vira prédio e os moradores vão “pro meio da rua”: reurbanização guiada pela especulação imobiliária.",
+  fecha:"O progresso urbano tem custo social: a canção registra quem pagou.",
+  arm:{A:["VNR","A saudade existe, mas o comando pede o registro das mudanças."],B:["INV","O terreno tinha dono, e eles saem da maloca; não constroem favela."],C:["INV","O imóvel é demolido, não preservado."],E:["EXT","“Os home cas ferramentas” são operários, não polícia."]}},
+ {area:"Literatura",cor:"#7B5CF5",num:63,h:"H15 · C5",tema:"Quinhentismo: poesia de catequese",img:["s25.jpg"],gab:"D",
+  exp:"A redondilha tem ritmo fácil de cantar e decorar: servia para fixar os cantos da liturgia.",
+  fecha:"A forma do verso era uma tecnologia de memória.",
+  arm:{A:["VNR","A catequese existiu, mas o comando pergunta pela função da forma."]}},
+ {area:"Literatura",cor:"#7B5CF5",num:56,h:"H16 · C5",tema:"Naturalismo: características",img:["s27.jpg"],gab:"D",
+  exp:"A obsessão vira coceira, ferida, insônia: a mente explicada pelo corpo, como na ciência do século XIX.",
+  fecha:"O Naturalismo usava a ciência como lente para o comportamento humano.",
+  arm:{B:["VIZ","Lirismo do narrador é Romantismo."],C:["VIZ","Fluxo da consciência é Modernismo."]}},
+ {area:"Literatura",cor:"#7B5CF5",num:62,h:"H17 · C5",tema:"Questão agrária no poema",img:["s29.jpg"],gab:"B",
+  exp:"“Queremos que a terra possa / ser tão nossa quanto vossa”: camponeses reivindicam terra, fartura e dignidade.",
+  fecha:"O eu lírico é coletivo: “nós”.",
+  arm:{C:["VNR","Eles não pedem para ficar: pedem a posse da terra."],E:["VIZ","Camponeses, não operários."]}},
+ {area:"Artes",cor:"#E9468A",num:72,h:"H13",tema:"Carnaval: uniforme e fantasia",img:["s33.jpg"],gab:"E",
+  exp:"Para DaMatta, o uniforme iguala e mantém a ordem; a fantasia permite trocar posições e ser o que a vida não deixa ser.",
+  fecha:"Carnaval como inversão da ordem cotidiana.",
+  arm:{D:["VNR","Vira personagem, mas o texto fala em trocar posições sociais."],B:["INV","Uniformizar é função do uniforme."]}},
+ {area:"Artes",cor:"#E9468A",num:75,h:"H12",tema:"Portinari e a arte engajada",img:["s35.jpg"],gab:"B",
+  exp:"Portinari diz que a grande arte está ligada ao povo e deve retransmitir guerras, injustiças, desigualdade e fome. É o engajamento político e social do Modernismo como denúncia.",
+  fecha:"Na obra de Portinari, emoção e sentimento estão a serviço da crítica social.",
+  arm:{A:["VNR","O sentimento aparece, mas é meio, não o eixo ideológico."],D:["VNR","A emoção leva à mensagem; não é o “ponto alto”."],E:["VIZ","Cópia fiel da realidade lembra o Realismo, não este discurso."]}},
+ {area:"Artes",cor:"#E9468A",num:78,h:"H22",tema:"Grafite e crítica",img:["s37.jpg"],gab:"C",
+  exp:"Indígena azul + Mula sem Cabeça + “SOLD” na bandeira: a mescla de referências critica a submissão ao capital estrangeiro.",
+  fecha:"O Texto II é a chave de leitura do Texto I.",
+  arm:{B:["VNR","Cita grandes cidades, mas a crítica vai além do urbano."],E:["INV","“SOLD” critica a influência estrangeira."]}},
+ {area:"Artes",cor:"#E9468A",num:80,h:"H14 · C4",tema:"Quem fala pela dor de quem?",img:["s39.jpg"],gab:"C",
+  exp:"Circular imagens de opressão é exercício de poder de quem documenta. O protesto reage à dor real virar obra sob um olhar externo, que apaga subjetividades.",
+  fecha:"Dar visibilidade a uma dor é diferente de transformá-la em espetáculo.",
+  arm:{A:["INV","A violência foi exposta; o problema é o modo como foi mostrada."],B:["INV","Não foi autoexpressão: outro falou pelas vítimas."],D:["EXT","Ninguém desacredita a sensibilidade do ativismo."],E:["EXT","O protesto não pede engajamento midiático."]}},
+ {area:"Sociologia",cor:"#0E9E9B",num:71,h:"H3 · C1",tema:"Trabalho e desigualdade: emprego doméstico",img:["s44.jpg"],gab:"C",
+  exp:"O texto aponta a depreciação do trabalho braçal e o uso da afetividade (“quase da família”) para mascarar a relação de trabalho: continuidade do passado escravista e das desigualdades.",
+  fecha:"O comando pede a origem histórica, não fatores conjunturais.",
+  arm:{A:["VNR","Influencia a contratação hoje, mas não explica a raiz histórica."],B:["VNR","Influencia a contratação hoje, mas não explica a raiz histórica."],E:["VNR","Influencia a contratação hoje, mas não explica a raiz histórica."]}},
+ {area:"Sociologia",cor:"#0E9E9B",num:76,h:"H23 · C5",tema:"Cidade, memória e desigualdade",img:["s46.jpg"],gab:"A",
+  exp:"A letra constrói a memória urbana a partir de quem vive na periferia e é alvo de violência: identidades marcadas por raça e classe.",
+  fecha:"A memória da cidade é disputada: há a versão oficial e a das periferias.",
+  arm:{B:["INV","Fala em experiências “igualitárias”, que a letra nega."]}},
+ {area:"Sociologia",cor:"#0E9E9B",num:88,h:"H2 · C1",tema:"Povos indígenas: transmissão de saberes",img:["s48.jpg"],gab:"C",
+  exp:"Ninguém “ensina” o significado das pinturas, mas todos o conhecem: o saber circula no grupo e entre gerações sem tradução verbal. É a memória coletiva em ação.",
+  fecha:"Há formas de registro e transmissão de memória que não passam pela escrita.",
+  arm:{A:["EXT","O texto não diz que a pintura supera a oralidade."]}},
+ {area:"Sociologia",cor:"#0E9E9B",num:85,h:"H2 · C1",tema:"Cultura e identidade: arte indígena",img:["s50.jpg"],gab:"C",
+  exp:"Para Jaider Esbell, a arte indígena tem sistemas próprios, não copia o modelo europeu e está no dia a dia, na comunidade e no ambiente: integra as tradições do povo.",
+  fecha:"Arte indígena como sistema próprio, coletivo e ligado à vida comunitária.",
+  arm:{B:["INV","O texto enfatiza a coletividade, não o ponto de vista individual."],A:["INV","Contradiz a recusa ao modelo ocidental."]}},
+ {area:"Sociologia",cor:"#0E9E9B",num:90,h:"H21 · C5",tema:"Mídias digitais e opinião pública",img:["s52.jpg"],gab:"B",
+  exp:"Na charge, dois usuários fazem a mesma pesquisa e recebem resultados diferentes, cada um em sua bolha. O Texto II explica: algoritmos adaptáveis e variáveis moldam a construção da realidade.",
+  fecha:"Bolha informacional: o feed de cada um é diferente.",
+  arm:{A:["EXT","Analfabetismo digital não aparece em nenhum dos textos."],C:["INV","Os textos mostram a mídia moldando a opinião, não garantindo confiabilidade."],D:["INV","A informação é filtrada pela bolha; não circula de forma irrestrita."],E:["VIZ","O foco são as plataformas digitais, não as mídias tradicionais."]}},
+ {area:"Filosofia",cor:"#2D5BFF",num:58,h:"H23 · C5",tema:"Existencialismo de Sartre",img:["s57.jpg","s58.jpg"],gab:"D",
+  exp:"Ao escolher por si, o homem escolhe por todos: daí a responsabilidade e a angústia.",
+  fecha:"Ponte com a redação (C5): a proposta precisa valer para a coletividade e respeitar os direitos humanos.",
+  arm:{C:["INV","Para Sartre, a existência precede a essência."]}},
+ {area:"Filosofia",cor:"#2D5BFF",num:63,h:"H1 · C1",tema:"Racionalismo moderno: Descartes",img:["s60.jpg"],gab:"B",
+  exp:"A dúvida é método: tudo que não é claro e distinto fica suspenso, para eliminar ideias falsas.",
+  fecha:"Duvide com método antes de compartilhar uma notícia.",
+  arm:{A:["VNR","O texto fala em “origem”, mas o objetivo é testar a validade."]}},
+ {area:"Filosofia",cor:"#2D5BFF",num:64,h:"H20 · C4",tema:"Ética e tecnologia",img:["s62.jpg"],gab:"A",
+  exp:"Para Nicolelis, uma invenção só entra na vida real se for segura, eficiente e acessível: é preciso avaliar a viabilidade de uso.",
+  fecha:"Novidade não é sinônimo de aplicabilidade.",
+  arm:{B:["VIZ","Os critérios valem para o mecanismo, não para a conduta dos pesquisadores."],E:["INV","O texto critica o “culto”: tecnologia não é milagre."]}},
+ {area:"Filosofia",cor:"#2D5BFF",num:68,h:"H16 · C4",tema:"Benjamin: arte e reprodutibilidade técnica",img:["s64.jpg"],gab:"E",
+  exp:"Com o cinema e a reprodução técnica, a obra deixa de exigir recolhimento e “penetra nas massas”.",
+  fecha:"A técnica muda a obra, o público e quem tem poder sobre a imagem.",
+  arm:{A:["EXT","O texto não fala em ampliar a arte culta."],C:["INV","A experiência massificada é a distração."]}}
+];
+const ARM = {
+  VNR:{nome:"Verdade que não responde",dica:"Antes de marcar, releia o comando. A alternativa pode até ser verdadeira e mesmo assim não responder ao que foi pedido."},
+  EXT:{nome:"Extrapola",dica:"Só vale o que o texto sustenta. Se você precisou completar com algo de fora, desconfie."},
+  INV:{nome:"Inverte",dica:"Marque a pista no texto e confira se a alternativa diz o mesmo ou o contrário."},
+  EXA:{nome:"Exagera",dica:"Desconfie de palavras absolutas e de acusações fortes demais (sempre, nunca, erro total)."},
+  VIZ:{nome:"Conceito vizinho",dica:"Confira autor, época e escola: o conceito pode estar certo, mas pertencer a outro lugar."}
+};
+const LET = ["A","B","C","D","E"];
+
+/* ====================== UTIL ====================== */
+const $ = s => document.querySelector(s);
+const esc = s => String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const LS = {
+  get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}},
+  set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+};
+let toastT;
+function toast(m){const t=$("#toast");t.textContent=m;t.style.display="block";clearTimeout(toastT);toastT=setTimeout(()=>t.style.display="none",3500)}
+function render(html){
+  const y=window.scrollY; $("#app").innerHTML=html; window.scrollTo(0,y);
+}
+function qtitulo(q){return `<div class="qhead"><span class="area" style="background:${q.cor}">${esc(q.area)}</span><h2>Questão ${q.num}</h2><span class="h">${esc(q.h)} · ${esc(q.tema)}</span></div>`}
+function slides(q){return q.img.map(f=>`<img class="slide" src="img/${f}" alt="Questão ${q.num}" data-zoom="img/${f}">`).join("")+`<p class="zoomhint">Toque na imagem para ampliar · pode girar o celular</p>`}
+function barras(cont,gab,total){
+  const t = total || LET.reduce((s,l)=>s+(cont?.[l]||0),0) || 0;
+  return `<div class="bars">`+LET.map(l=>{const n=cont?.[l]||0;const p=t?Math.round(n*100/t):0;
+    return `<div class="bar ${l===gab?"g":""}"><span>${l}</span><div class="t"><div class="f" style="width:${p}%"></div></div><span class="n">${p}%</span></div>`}).join("")+`</div>`;
+}
+
+/* viewer */
+let zoom=2.2;
+function abrirZoom(src){$("#vimg").src=src;$("#viewer").classList.add("on");aplicaZoom()}
+function aplicaZoom(){$("#vimg").style.width=(zoom*100)+"vw"}
+$("#zp").onclick=()=>{zoom=Math.min(5,zoom+0.4);aplicaZoom()};
+$("#zm").onclick=()=>{zoom=Math.max(1,zoom-0.4);aplicaZoom()};
+$("#zx").onclick=()=>$("#viewer").classList.remove("on");
+document.addEventListener("click",e=>{const z=e.target.closest("[data-zoom]");if(z)abrirZoom(z.dataset.zoom)});
+
+/* ====================== BACKEND ====================== */
+const params = new URLSearchParams(location.search);
+const MOCK = params.has("mock");
+const MODO = params.get("p")==="prof" ? "prof" : "aluno";
+
+function comPrazo(p,ms,msg){return Promise.race([p,new Promise((_,r)=>setTimeout(()=>r(new Error(msg||"tempo")),ms))])}
+
+const BE = MOCK ? (()=>{
+  // modo de teste: tudo no navegador (várias abas do mesmo navegador conversam)
+  const ch = new BroadcastChannel("aulao-mock");
+  const subs = {estado:[], resp:[]};
+  const getE = ()=>LS.get("mock_estado",{q:-1,fase:"espera",s:"teste"});
+  const getR = ()=>LS.get("mock_resp",{});
+  ch.onmessage = ev => { if(ev.data==="estado") subs.estado.forEach(f=>f(getE())); if(ev.data==="resp") subs.resp.forEach(f=>f()); };
+  return {
+    async iniciar(){},
+    onEstado(cb){subs.estado.push(cb); setTimeout(()=>cb(getE()),50)},
+    async enviar(id,dados){ if(LS.get("mock_offline",false)) throw new Error("offline"); const r=getR(); r[id]=dados; LS.set("mock_resp",r); ch.postMessage("resp"); subs.resp.forEach(f=>f()); },
+    async login(){return {uid:"prof"}},
+    async usuarioAtual(){return {uid:"prof"}},
+    async setEstado(e){LS.set("mock_estado",e); ch.postMessage("estado"); subs.estado.forEach(f=>f(e))},
+    ouvirRespostas(k,cb){ const f=()=>cb(Object.values(getR()).filter(x=>x.k===k)); subs.resp.push(f); f(); return ()=>{subs.resp=subs.resp.filter(x=>x!==f)} }
+  };
+})() : (()=>{
+  let fs, db, auth, A;
+  const base = `https://www.gstatic.com/firebasejs/${FB_V}/`;
+  return {
+    async iniciar(precisaAuth){
+      const appM = await import(base+"firebase-app.js");
+      fs = await import(base+"firebase-firestore.js");
+      const app = appM.initializeApp(FB_CFG, "aulao");
+      db = fs.initializeFirestore(app, {experimentalAutoDetectLongPolling:true});
+      if(precisaAuth){
+        A = await import(base+"firebase-auth.js");
+        auth = A.initializeAuth(app,{persistence:A.browserLocalPersistence});
+      }
+    },
+    onEstado(cb, erro){
+      return fs.onSnapshot(fs.doc(db,"aulao","estado"), s=>cb(s.exists()?s.data():{q:-1,fase:"espera",s:"inicial"}), e=>erro&&erro(e));
+    },
+    enviar(id,dados){ return fs.setDoc(fs.doc(db,"respostas",id), {...dados, t:fs.serverTimestamp()}); },
+    async login(email,senha){ const c=await A.signInWithEmailAndPassword(auth,email,senha); return c.user },
+    usuarioAtual(){ return new Promise(res=>{const u=A.onAuthStateChanged(auth,x=>{u();res(x)})}) },
+    async sair(){ await A.signOut(auth) },
+    setEstado(e){ return fs.setDoc(fs.doc(db,"aulao","estado"), e) },
+    ouvirRespostas(k,cb){ return fs.onSnapshot(fs.query(fs.collection(db,"respostas"), fs.where("k","==",k)), s=>cb(s.docs.map(d=>d.data()))) }
+  };
+})();
+
+/* ====================== ALUNO ====================== */
+function aluno(){
+  let dev = LS.get("aulao_dev",null);
+  if(!dev){ dev = (crypto.randomUUID?crypto.randomUUID():String(Date.now())+Math.random()).replace(/-/g,"").slice(0,16); LS.set("aulao_dev",dev) }
+  let E = null, minhas = {}, sessao = null, conexao = "…";
+  const chave = s => "aulao_resp_"+s;
+  function salvar(){ LS.set(chave(sessao), minhas) }
+
+  async function enviarPendentes(){
+    if(!sessao) return;
+    for(const [i,m] of Object.entries(minhas)){
+      if(m.enviado || m.tarde) continue;
+      const k = sessao+"_"+i;
+      try{ await comPrazo(BE.enviar(k+"_"+dev,{d:dev,k,r:m.r}),15000); m.enviado=true; salvar(); desenha(); }
+      catch(e){ /* tenta de novo depois */ }
+    }
+  }
+  setInterval(enviarPendentes, 8000);
+  addEventListener("online", enviarPendentes);
+  document.addEventListener("visibilitychange",()=>{ if(!document.hidden) enviarPendentes() });
+
+  function marcar(l){
+    if(!E || E.fase!=="aberta") return;
+    const i = E.q;
+    minhas[i] = {r:l, enviado:false};
+    salvar(); desenha(); enviarPendentes();
+  }
+
+  function resumoHTML(){
+    const feitas = Q.map((q,i)=>({q,i,m:minhas[i]})).filter(x=>x.m && x.m.revelada);
+    if(!feitas.length) return `<p class="muted">Seu desempenho aparece aqui depois do primeiro gabarito.</p>`;
+    const ac = feitas.filter(x=>x.m.r===x.q.gab).length;
+    const resp = feitas.filter(x=>x.m.r).length;
+    const armas = {};
+    feitas.forEach(x=>{ if(x.m.r && x.m.r!==x.q.gab){ const a=x.q.arm[x.m.r]; if(a) armas[a[0]]=(armas[a[0]]||0)+1 } });
+    const top = Object.entries(armas).sort((a,b)=>b[1]-a[1]);
+    const areas = {};
+    feitas.forEach(x=>{ const a=areas[x.q.area]||(areas[x.q.area]={t:0,a:0}); a.t++; if(x.m.r===x.q.gab) a.a++ });
+    const melhorQueTurma = feitas.filter(x=>x.m.r===x.q.gab && x.m.pct!=null && x.m.pct<50).length;
+    let h = `<div class="panel hero"><h1>Seu desempenho</h1><p>${feitas.length} questões com gabarito até agora</p>
+      <div class="stat"><div><b>${ac}</b>acertos</div><div><b>${resp-ac}</b>erros</div><div><b>${feitas.length-resp}</b>sem resposta</div></div></div>`;
+    h += `<div class="panel"><p class="big">Por área</p><ul class="list">`+Object.entries(areas).map(([n,v])=>`<li><span class="dot ${v.a===v.t?"ok":v.a?"na":"no"}">${v.a}/${v.t}</span><span>${esc(n)}</span></li>`).join("")+`</ul></div>`;
+    if(top.length){
+      const [k,n] = top[0];
+      h += `<div class="panel"><p class="big">A armadilha que mais pegou você</p><div class="trap"><b>${esc(ARM[k].nome)}</b> · caiu ${n} ${n>1?"vezes":"vez"}<br>${esc(ARM[k].dica)}</div>`;
+      if(top.length>1) h += `<p class="small muted" style="margin-top:10px">Também: `+top.slice(1).map(([k,n])=>`${ARM[k].nome} (${n})`).join(" · ")+`</p>`;
+      h += `</div>`;
+    } else if(resp){
+      h += `<div class="panel"><p class="big">Nenhuma armadilha te pegou 👏</p><p class="muted">Continue lendo o comando primeiro e conferindo a pista no texto.</p></div>`;
+    }
+    if(melhorQueTurma) h += `<div class="panel"><p class="big">Ponto forte</p><p>Você acertou ${melhorQueTurma} ${melhorQueTurma>1?"questões que a maioria da turma errou":"questão que a maioria da turma errou"}.</p></div>`;
+    const rever = feitas.filter(x=>x.m.r!==x.q.gab);
+    if(rever.length) h += `<div class="panel"><p class="big">Para revisar antes da prova</p><ul class="list">`+rever.map(x=>`<li><span class="dot no">✗</span><span><b>${esc(x.q.area)} · Q${x.q.num}</b> · ${esc(x.q.h)}<br><span class="small muted">${esc(x.q.tema)}</span></span></li>`).join("")+`</ul></div>`;
+    h += `<div class="panel"><p class="big">Questão por questão</p><ul class="list">`+feitas.map(x=>{const ok=x.m.r===x.q.gab;return `<li><span class="dot ${!x.m.r?"na":ok?"ok":"no"}">${!x.m.r?"–":ok?"✓":"✗"}</span><span>${esc(x.q.area)} · Q${x.q.num} · você: <b>${x.m.r||"–"}</b> · gabarito: <b>${x.q.gab}</b>${x.m.pct!=null?` <span class="small muted">· turma acertou ${x.m.pct}%</span>`:""}</span></li>`}).join("")+`</ul></div>`;
+    return h;
+  }
+
+  let verResumo = false;
+  function topo(){
+    const c = conexao==="ok"?`<span class="pill ok">● conectado</span>`:conexao==="off"?`<span class="pill bad">● sem conexão</span>`:`<span class="pill warn">● conectando</span>`;
+    return `<div class="top"><b>Aulão ENEM</b><span class="sp"></span>${c}</div>`;
+  }
+  function desenha(){
+    if(!E){ return }
+    let h = topo()+`<div class="wrap">`;
+    if(verResumo || E.fase==="fim"){
+      if(E.fase==="fim") h += `<div class="panel"><p class="big">Fim do aulão! Boa prova 💪</p><p class="muted">Comando → verbo → pista. Leia como quem sabe o que o ENEM quer.</p></div>`;
+      h += resumoHTML();
+      if(E.fase!=="fim") h += `<button class="btn solid" data-a="voltar">Voltar para a questão</button>`;
+      h += `</div>`; render(h); return;
+    }
+    const q = Q[E.q];
+    if(E.fase==="espera" || !q){
+      h += `<div class="panel hero"><h1>Você está dentro! ✅</h1><p>Deixe esta página aberta. Quando o professor liberar uma questão, ela aparece aqui sozinha.</p></div>
+        <div class="panel"><p class="big">Como funciona</p><ol class="small" style="margin:0;padding-left:20px">
+        <li>O professor lê a questão e trabalha com vocês.</li><li>Quando ele liberar, marque sua alternativa. Dá para trocar até fechar a votação.</li>
+        <li>Depois do gabarito, você vê se acertou e qual armadilha pegou você.</li></ol>
+        <p class="small muted">Não precisa de nome. Se sair da página, é só abrir o link de novo que você volta de onde parou.</p></div>`;
+      if(Object.values(minhas).some(m=>m.revelada)) h += `<button class="btn" data-a="resumo">Ver meu desempenho</button>`;
+      h += `</div>`; render(h); return;
+    }
+    const m = minhas[E.q];
+    h += qtitulo(q) + slides(q);
+    if(E.fase==="aberta"){
+      h += `<div class="panel"><p class="big">Qual é a sua resposta?</p><div class="alts">`+LET.map(l=>`<button class="alt" data-l="${l}" aria-pressed="${m&&m.r===l}">${l}</button>`).join("")+`</div>
+        <p class="status">${!m?"Toque em uma letra.":m.enviado?"✓ Resposta enviada. Pode trocar até o professor fechar.":"Guardada no celular · enviando…"}</p></div>`;
+    } else if(E.fase==="fechada"){
+      h += `<div class="panel"><p class="big">Votação encerrada</p><div class="alts">`+LET.map(l=>`<button class="alt" disabled aria-pressed="${m&&m.r===l}">${l}</button>`).join("")+`</div>
+        <p class="status">${m?`Você marcou <b>${m.r}</b>.`:"Você não respondeu esta."} Aguarde o gabarito.</p></div>`;
+    } else if(E.fase==="gabarito"){
+      const tot = E.total||0; const pct = tot?Math.round((E.cont?.[q.gab]||0)*100/tot):null;
+      if(m && !m.revelada){ m.revelada=true; m.pct=pct; salvar() }
+      if(!m){ minhas[E.q]={r:null,revelada:true,pct,tarde:true}; salvar() }
+      const mm = minhas[E.q];
+      const ok = mm.r===q.gab;
+      h += `<div class="res ${!mm.r?"nada":ok?"ok":"no"}"><p class="big">${!mm.r?"Você não respondeu esta.":ok?"Você acertou! 🎉":"Não foi dessa vez."}</p>
+        <p style="margin:0">Gabarito: <b>${q.gab}</b>${mm.r?` · você marcou <b>${mm.r}</b>`:""}</p>`;
+      if(mm.r && !ok){ const a=q.arm[mm.r]; if(a) h += `<div class="trap"><b>Armadilha: ${esc(ARM[a[0]].nome)}</b><br>${esc(a[1])}<br><span class="small">Dica: ${esc(ARM[a[0]].dica)}</span></div>` }
+      h += `</div><div class="panel"><p class="big">Por que é ${q.gab}</p><p style="margin:0">${esc(q.exp)}</p><div class="fechar"><b>Para levar:</b> ${esc(q.fecha)}</div></div>`;
+      const outras = LET.filter(l=>q.arm[l] && l!==mm.r);
+      if(outras.length) h += `<div class="panel"><p class="big">Por que as outras enganam</p><ul class="list">`+outras.map(l=>`<li><span class="dot">${l}</span><span><b>${esc(ARM[q.arm[l][0]].nome)}</b> · ${esc(q.arm[l][1])}</span></li>`).join("")+`</ul></div>`;
+      if(tot) h += `<div class="panel"><p class="big">Como a turma respondeu</p><p class="small muted" style="margin:0">${tot} respostas · ${pct}% acertaram</p>${barras(E.cont,q.gab,tot)}</div>`;
+      h += `<div class="alts" style="display:none"></div>`;
+      h += `<button class="btn" data-a="resumo">Ver meu desempenho</button>`;
+    }
+    h += `</div>`;
+    render(h);
+  }
+  $("#app").addEventListener("click",e=>{
+    const b = e.target.closest("[data-l]"); if(b && !b.disabled){ marcar(b.dataset.l); return }
+    const a = e.target.closest("[data-a]"); if(!a) return;
+    if(a.dataset.a==="resumo"){ verResumo=true; desenha(); scrollTo(0,0) }
+    if(a.dataset.a==="voltar"){ verResumo=false; desenha() }
+  });
+
+  function recebe(e){
+    conexao="ok"; clearTimeout(prazo);
+    if(!e.s) e.s="inicial";
+    if(sessao!==e.s){ sessao=e.s; minhas = LS.get(chave(sessao),{}); }
+    const mudouQ = !E || E.q!==e.q || E.fase!==e.fase;
+    E = e;
+    if(mudouQ) verResumo=false;
+    desenha();
+    if(mudouQ && E.fase==="aberta") window.scrollTo(0,0);
+    enviarPendentes();
+    // pré-carrega a imagem da próxima questão
+    const prox = Q[E.q>=0?E.q+1:0]; if(prox) prox.img.forEach(f=>{const i=new Image();i.src="img/"+f});
+  }
+  let prazo = setTimeout(()=>{ if(!E){ $("#app").innerHTML=`<div class="wrap"><div class="panel"><p class="big">A conexão está lenta</p><p class="muted">Continuamos tentando sozinhos. Se demorar, confira o Wi-Fi ou os dados móveis e toque abaixo.</p><button class="btn solid" onclick="location.reload()">Tentar de novo</button></div></div>` } }, 12000);
+  addEventListener("offline",()=>{conexao="off";desenha()});
+  addEventListener("online",()=>{conexao="ok";desenha()});
+
+  BE.iniciar(false).then(()=>BE.onEstado(recebe,()=>{conexao="off";desenha()})).catch(()=>{
+    clearTimeout(prazo);
+    $("#app").innerHTML=`<div class="wrap"><div class="panel"><p class="big">Não consegui conectar</p><p class="muted">Confira a internet e tente de novo.</p><button class="btn solid" onclick="location.reload()">Tentar de novo</button></div></div>`;
+  });
+}
+
+/* ====================== PROFESSOR ====================== */
+function professor(){
+  document.title = "Aulão ENEM · Painel do professor";
+  let E = null, resps = [], desliga = null, ouvindoK = null, verParcial = false, telao = false;
+  let hist = LS.get("prof_hist",{});   // sessao -> {i: {cont,total}}
+
+  function loginTela(msg){
+    $("#app").innerHTML = `<div class="wrap"><div class="panel"><p class="big">Painel do professor</p>
+      <input id="pw" type="password" placeholder="Senha do professor" autocomplete="current-password">
+      <button class="btn solid" id="ent">Entrar</button><p class="small" style="color:var(--danger)">${esc(msg||"")}</p></div></div>`;
+    const entrar = async ()=>{
+      $("#ent").disabled=true; $("#ent").textContent="Entrando…";
+      try{ await comPrazo(BE.login(PROF_EMAIL,$("#pw").value),15000); comecar() }
+      catch(e){ loginTela("Senha errada ou sem internet. Tente de novo.") }
+    };
+    $("#ent").onclick = entrar;
+    $("#pw").onkeydown = e=>{ if(e.key==="Enter") entrar() };
+  }
+  function contar(){
+    const cont={A:0,B:0,C:0,D:0,E:0}; resps.forEach(r=>{ if(cont[r.r]!=null) cont[r.r]++ }); return {cont,total:resps.length};
+  }
+  function ouvir(i){
+    const k = E.s+"_"+i;
+    if(ouvindoK===k) return;
+    if(desliga) desliga(); resps=[]; ouvindoK=k;
+    desliga = BE.ouvirRespostas(k, lista=>{ resps=lista; desenha() });
+  }
+  async function muda(novo){
+    const e = {...E, ...novo};
+    try{ await comPrazo(BE.setEstado(e),12000) }catch(err){ toast("Falhou ao enviar. Confira a internet e toque de novo."); return }
+  }
+  async function liberar(i){ await muda({q:i,fase:"aberta",cont:null,total:0}); }
+  async function encerrar(){ const c=contar(); await muda({fase:"fechada",cont:c.cont,total:c.total}); guardaHist(E.q,c) }
+  async function gabarito(){ await muda({fase:"gabarito"}) }
+  function guardaHist(i,c){ (hist[E.s]||(hist[E.s]={}))[i]=c; LS.set("prof_hist",hist) }
+
+  function qrDataURL(txt){
+    try{ const qr=qrcode(0,"M"); qr.addData(txt); qr.make(); return qr.createDataURL(10,2) }catch(e){ return "" }
+  }
+  const urlAluno = location.origin + location.pathname.replace(/index\.html$/,"") + (MOCK?"?mock=1":"");
+
+  function desenha(){
+    if(!E) return;
+    const q = Q[E.q];
+    const c = contar();
+    const fases = {espera:"Aguardando",aberta:"Votação aberta",fechada:"Votação encerrada",gabarito:"Gabarito na tela dos alunos",fim:"Aulão finalizado"};
+    let h = `<div class="top"><b>Painel do professor</b><span class="sp"></span><span class="pill ${E.fase==="aberta"?"ok":"warn"}">${fases[E.fase]||E.fase}</span></div><div class="wrap">`;
+    if(q && E.fase!=="fim"){
+      h += `<div class="panel">${qtitulo(q)}<div class="row" style="align-items:center"><div><div class="count">${E.fase==="aberta"?c.total:(E.total||0)}</div><div class="muted small">${E.fase==="aberta"?"responderam até agora":"respostas contadas"}</div></div>
+        <div style="text-align:right"><span class="pill">Gabarito: ${q.gab}</span></div></div>`;
+      if(E.fase==="aberta") h += `<button class="btn tang" data-a="encerrar">Encerrar votação</button>`;
+      if(E.fase==="fechada") h += `<button class="btn mint" data-a="gab">Mostrar gabarito aos alunos</button>`;
+      if(E.fase==="gabarito" && E.q<Q.length-1) h += `<button class="btn solid" data-a="prox">Liberar a próxima: ${esc(Q[E.q+1].area)} · Q${Q[E.q+1].num} →</button>`;
+      if(E.fase==="gabarito" && E.q===Q.length-1) h += `<button class="btn solid" data-a="fim">Finalizar aulão (mostra o relatório final)</button>`;
+      const mostrar = E.fase==="aberta" ? verParcial : true;
+      if(E.fase==="aberta") h += `<button class="btn" data-a="parcial">${verParcial?"Esconder":"Ver"} parcial (só para você)</button>`;
+      if(mostrar){ const cc = E.fase==="aberta"?c.cont:E.cont; const tt=E.fase==="aberta"?c.total:E.total; h += barras(cc,q.gab,tt) }
+      h += `<button class="btn" data-a="telao">Abrir modo telão</button></div>`;
+    } else if(E.fase==="espera"){
+      h += `<div class="panel hero"><h1>Pronto para começar</h1><p>Alunos entram pelo QR code e ficam aguardando. Escolha a primeira questão abaixo.</p></div>
+        <button class="btn solid" data-a="lib" data-i="0">Liberar a primeira: ${esc(Q[0].area)} · Q${Q[0].num}</button><button class="btn" data-a="telao">Abrir modo telão (QR code)</button>`;
+    } else if(E.fase==="fim"){
+      h += `<div class="panel hero"><h1>Aulão finalizado</h1><p>Os alunos estão vendo o relatório final no celular.</p></div>`;
+    }
+    // resumo
+    const hs = hist[E.s]||{};
+    const feitas = Object.keys(hs);
+    if(feitas.length){
+      h += `<div class="panel"><p class="big">Resumo da turma</p><ul class="list">`+feitas.sort((a,b)=>a-b).map(i=>{const qq=Q[i],v=hs[i];const p=v.total?Math.round((v.cont[qq.gab]||0)*100/v.total):0;
+        const errMais = LET.filter(l=>l!==qq.gab).sort((a,b)=>(v.cont[b]||0)-(v.cont[a]||0))[0];
+        return `<li><span class="dot ${p>=60?"ok":p>=40?"na":"no"}" style="min-width:46px">${p}%</span><span><b>${esc(qq.area)} · Q${qq.num}</b> · ${v.total} resp.<br><span class="small muted">Distrator mais marcado: ${errMais} (${v.total?Math.round((v.cont[errMais]||0)*100/v.total):0}%)${qq.arm[errMais]?" · "+ARM[qq.arm[errMais][0]].nome:""}</span></span></li>`}).join("")+`</ul></div>`;
+    }
+    h += `<div class="panel"><p class="big">Ir para qualquer questão</p><p class="small muted">Tocar libera a questão na hora.</p><div class="qgrid">`+Q.map((qq,i)=>`<button class="qbtn ${i===E.q&&E.fase!=="espera"?"cur":hs[i]?"done":""}" data-a="lib" data-i="${i}">Q${qq.num}<small>${esc(qq.area)}</small></button>`).join("")+`</div></div>`;
+    h += `<div class="panel"><p class="big">Controle geral</p>
+      <button class="btn" data-a="espera">Pôr todos em “aguarde”</button>
+      ${E.fase!=="fim"?`<button class="btn" data-a="fim">Finalizar aulão</button>`:""}
+      <button class="btn danger" data-a="zerar">Zerar tudo (nova sessão, para depois do teste)</button>
+      <p class="small muted">Link dos alunos: <b>${esc(urlAluno)}</b></p></div></div>`;
+    render(h);
+    if(telao) desenhaTelao();
+  }
+  function desenhaTelao(){
+    let t = $("#telao"); if(!t){ t=document.createElement("div"); t.id="telao"; document.body.appendChild(t) }
+    t.classList.add("on");
+    const q = Q[E.q]; const c = contar();
+    const qr = qrDataURL(urlAluno);
+    let esq = "";
+    if(!q || E.fase==="espera"){ esq = `<h1>Aulão ENEM</h1><p style="font-size:3.5vh">Aponte a câmera para o QR code e deixe a página aberta.</p>` }
+    else if(E.fase==="aberta"){ esq = `<h1>${esc(q.area)} · Questão ${q.num}</h1><p style="font-size:3vh" class="muted">Votação aberta</p><div class="count">${c.total}</div><p style="font-size:3.5vh;margin:0">responderam</p>` }
+    else if(E.fase==="fechada"){ esq = `<h1>${esc(q.area)} · Questão ${q.num}</h1><p style="font-size:3vh" class="muted">Votação encerrada · ${E.total} respostas</p>${barras(E.cont,null,E.total)}` }
+    else if(E.fase==="gabarito"){ esq = `<h1>${esc(q.area)} · Questão ${q.num} · Gabarito ${q.gab}</h1><p style="font-size:3vh" class="muted">${E.total} respostas</p>${barras(E.cont,q.gab,E.total)}` }
+    else { esq = `<h1>Fim do aulão</h1><p style="font-size:4vh">Confiram o relatório no celular. Boa prova!</p>` }
+    t.innerHTML = `<button class="btn close" data-t="sair">Sair do telão ✕</button><div class="tg"><div>${esq}</div><div class="qr">${qr?`<img src="${qr}" alt="QR code">`:""}<div class="url">${esc(urlAluno.replace(/^https?:\/\//,""))}</div></div></div>`;
+  }
+  document.addEventListener("click",e=>{ if(e.target.closest('[data-t="sair"]')){ telao=false; $("#telao").classList.remove("on") } });
+
+  $("#app").addEventListener("click", async e=>{
+    const b = e.target.closest("[data-a]"); if(!b) return;
+    const a = b.dataset.a;
+    if(a==="lib"){ const i=+b.dataset.i; if(E.fase==="aberta" && i!==E.q && !confirm("A votação atual ainda está aberta. Liberar outra questão mesmo assim?")) return; await liberar(i) }
+    if(a==="encerrar") await encerrar();
+    if(a==="gab") await gabarito();
+    if(a==="prox") await liberar(E.q+1);
+    if(a==="fim"){ if(confirm("Finalizar o aulão? Os alunos verão o relatório final.")) await muda({fase:"fim"}) }
+    if(a==="espera") await muda({fase:"espera"});
+    if(a==="parcial"){ verParcial=!verParcial; desenha() }
+    if(a==="telao"){ telao=true; desenhaTelao() }
+    if(a==="zerar"){ if(confirm("Zerar tudo? Começa uma sessão nova: os celulares dos alunos também começam do zero.")){ await muda({s:"s"+Date.now().toString(36),q:-1,fase:"espera",cont:null,total:0}) } }
+  });
+
+  async function comecar(){
+    $("#app").innerHTML = `<div class="wrap"><div class="panel"><p class="big">Conectando…</p></div></div>`;
+    BE.onEstado(e=>{
+      if(!e.s) e.s="inicial";
+      E = e;
+      if(E.q>=0 && E.fase!=="espera" && E.fase!=="fim") ouvir(E.q);
+      desenha();
+    }, ()=>toast("Sem conexão com o servidor. Tentando de novo…"));
+  }
+
+  const qrS = document.createElement("script"); qrS.src="qr.js"; document.head.appendChild(qrS);
+  BE.iniciar(true).then(async ()=>{
+    const u = await comPrazo(BE.usuarioAtual(),10000).catch(()=>null);
+    if(u) comecar(); else loginTela();
+  }).catch(()=>{ $("#app").innerHTML=`<div class="wrap"><div class="panel"><p class="big">Não consegui conectar</p><button class="btn solid" onclick="location.reload()">Tentar de novo</button></div></div>` });
+}
+
+if(!MOCK && (!FB_CFG.apiKey || /COLE/.test(FB_CFG.apiKey))){
+  $("#app").innerHTML=`<div class="wrap"><div class="panel"><p class="big">Falta configurar</p><p class="muted">Abra o arquivo config.js, cole o firebaseConfig do seu projeto e publique de novo.</p></div></div>`;
+} else if(MODO==="prof") professor(); else aluno();
+</script>
+</body>
+</html>
