@@ -330,6 +330,7 @@ const BE = MOCK ? (()=>{
   return {
     async iniciar(){},
     onEstado(cb){subs.estado.push(cb); setTimeout(()=>cb(getE()),50)},
+    async buscar(){ return getE() },
     async enviar(id,dados){ if(LS.get("mock_offline",false)) throw new Error("offline"); const r=getR(); r[id]=dados; LS.set("mock_resp",r); ch.postMessage("resp"); subs.resp.forEach(f=>f()); },
     async login(){return {uid:"prof"}},
     async usuarioAtual(){return {uid:"prof"}},
@@ -344,12 +345,13 @@ const BE = MOCK ? (()=>{
       const appM = await import(base+"firebase-app.js");
       fs = await import(base+"firebase-firestore.js");
       const app = appM.initializeApp(FB_CFG, "aulao");
-      db = fs.initializeFirestore(app, {experimentalAutoDetectLongPolling:true});
+      db = fs.initializeFirestore(app, {});
       if(precisaAuth){
         A = await import(base+"firebase-auth.js");
         auth = A.initializeAuth(app,{persistence:A.browserLocalPersistence});
       }
     },
+    async buscar(){ const d=await fs.getDocFromServer(fs.doc(db,"aulao","estado")); return d.exists()?d.data():null },
     onEstado(cb, erro){
       return fs.onSnapshot(fs.doc(db,"aulao","estado"), s=>cb(s.exists()?s.data():{q:-1,fase:"espera",s:"inicial"}), e=>erro&&erro(e));
     },
@@ -478,6 +480,7 @@ function aluno(){
   });
 
   function recebe(e){
+    if(E && e.v && E.v && e.v < E.v) return;   // ignora estado mais velho
     conexao="ok"; clearTimeout(prazo);
     if(!e.s) e.s="inicial";
     if(sessao!==e.s){ sessao=e.s; minhas = LS.get(chave(sessao),{}); }
@@ -494,6 +497,10 @@ function aluno(){
   addEventListener("offline",()=>{conexao="off";desenha()});
   addEventListener("online",()=>{conexao="ok";desenha()});
 
+  // ao voltar para a tela (celular desbloqueado, aba de volta), busca o estado na hora
+  let buscando=false;
+  async function acordar(){ if(buscando||document.hidden) return; buscando=true; try{ const e=await comPrazo(BE.buscar(),8000); if(e) recebe(e) }catch(x){} buscando=false }
+  document.addEventListener("visibilitychange",acordar); addEventListener("focus",acordar); addEventListener("pageshow",acordar); addEventListener("online",acordar);
   BE.iniciar(false).then(()=>BE.onEstado(recebe,()=>{conexao="off";desenha()})).catch(()=>{
     clearTimeout(prazo);
     $("#app").innerHTML=`<div class="wrap"><div class="panel"><p class="big">Não consegui conectar</p><p class="muted">Confira a internet e tente de novo.</p><button class="btn solid" onclick="location.reload()">Tentar de novo</button></div></div>`;
@@ -528,7 +535,7 @@ function professor(){
     desliga = BE.ouvirRespostas(k, lista=>{ resps=lista; desenha() });
   }
   async function muda(novo){
-    const e = {...E, ...novo};
+    const e = {...E, ...novo, v: Date.now()};
     try{ await comPrazo(BE.setEstado(e),12000) }catch(err){ toast("Falhou ao enviar. Confira a internet e toque de novo."); return }
   }
   async function liberar(i){ await muda({q:i,fase:"aberta",cont:null,total:0}); }
