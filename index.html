@@ -3,48 +3,51 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#2D5BFF">
+<meta name="theme-color" content="#0F5132">
 <title>Aulão ENEM · Responda</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Schibsted+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script>try{const t=localStorage.getItem("tema")||"auto";const e=t==="escuro"||(t==="auto"&&matchMedia("(prefers-color-scheme: dark)").matches);if(e)document.documentElement.dataset.tema="escuro"}catch(e){}</script>
 <style>
 :root{
-  --bg:#F3F5FB; --surface:#FFFFFF; --sunk:#E9EDF6; --ink:#141B34; --muted:#5E6784; --line:#DCE1EE;
-  --blue:#2D5BFF; --blue-deep:#1A3FD6; --blue-soft:#E2E9FF;
-  --tang:#FF6A2B; --tang-soft:#FFE7DC; --violet:#7B5CF5; --violet-soft:#ECE6FF;
-  --amber:#F2A007; --amber-soft:#FFF1D2; --mint:#12B07F; --mint-soft:#D8F4E9;
-  --danger:#E0363B; --danger-soft:#FDE3E3; --r:14px; --r-sm:8px;
-  --sky:#119FE3; --pink:#E9468A; --teal:#0E9E9B;
-  --f-ui:"Schibsted Grotesk", system-ui, sans-serif; --f-num:"JetBrains Mono", ui-monospace, monospace;
-  --trap-ink:#8A5B00; --ok-ink:#0B7A57;
+  /* Identidade Genoma Prevê (cores tiradas do deck do aulão) */
+  --g-dark:#0F5132; --g-deep:#08321E; --g-logo:#4C975C; --o-logo:#DB802D;
+  --bg:#EEF3EF; --surface:#FFFFFF; --sunk:#E3EBE5; --ink:#2B2B2B; --muted:#6B6B6B; --line:#D6E0D9;
+  --blue:#3C8C4D; --blue-deep:#0F5132; --blue-soft:#E1F0E4;
+  --tang:#E7632D; --tang-soft:#FBEFE3; --violet:#7E5CBA; --violet-soft:#EEE8F7;
+  --amber:#BF7129; --amber-soft:#FBEFE3; --mint:#2E8B57; --mint-soft:#DDF0E3;
+  --danger:#D2373C; --danger-soft:#FBE3E3; --r:14px; --r-sm:8px;
+  --sky:#2E7D9A; --pink:#BF7129; --teal:#2E7D9A;
+  --f-ui:Arial, "Helvetica Neue", Helvetica, sans-serif; --f-num:Arial, "Helvetica Neue", Helvetica, sans-serif;
+  --trap-ink:#8A4F14; --ok-ink:#1F6B3C;
 }
 :root[data-tema="escuro"]{
-  --bg:#0B1020; --surface:#131A2E; --sunk:#1B2339; --ink:#E8ECF7; --muted:#97A0BC; --line:#252F4A;
-  --blue:#5C82FF; --blue-soft:#1C2A55; --tang:#FF7E45; --tang-soft:#3A2218;
-  --violet:#9A82FF; --violet-soft:#2A2350; --amber:#FFB534; --amber-soft:#3A2D10;
-  --mint:#2FCB97; --mint-soft:#103629; --danger:#FF5A5E; --danger-soft:#3D1A1D; color-scheme:dark;
-  --trap-ink:#FFB534; --ok-ink:#2FCB97;
+  --bg:#06140C; --surface:#0E2017; --sunk:#16301F; --ink:#E7EFE9; --muted:#9FB3A5; --line:#1F3B2A;
+  --blue:#56B06A; --blue-soft:#163A22; --tang:#F07A45; --tang-soft:#3A2015;
+  --violet:#A98BE0; --violet-soft:#2A2240; --amber:#E0954A; --amber-soft:#3A2914;
+  --mint:#4CC27F; --mint-soft:#103A24; --danger:#FF6A6E; --danger-soft:#3D1A1D; color-scheme:dark;
+  --trap-ink:#F0B070; --ok-ink:#6FD69A;
 }
 *{box-sizing:border-box}
 html,body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 var(--f-ui)}
-.num,.count,.bar .n,.stat b,.dot{font-family:var(--f-num)}
+.num,.count,.bar .n,.stat b,.dot{font-variant-numeric:tabular-nums}
 button{font:inherit;color:inherit}
 .wrap{max-width:760px;margin:0 auto;padding:12px 16px 90px}
-.top{display:flex;align-items:center;gap:10px;padding:10px 16px;background:var(--surface);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5}
-.top b{font-size:15px}
+.top{display:flex;align-items:center;gap:10px;padding:8px 16px;background:linear-gradient(120deg,var(--g-dark),var(--g-deep));color:#fff;position:sticky;top:0;z-index:5;box-shadow:0 2px 10px rgba(8,50,30,.25)}
+.top b{font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;opacity:.9}
+.top .marca{height:34px;width:auto;display:block}
+.top .tema{background:transparent;border-color:rgba(255,255,255,.35);color:#fff}
+.logo-g{display:block;height:56px;width:auto;margin:18px auto 4px;border-radius:10px}
 .top .sp{flex:1}
 .pill{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:600;padding:4px 10px;border-radius:99px;background:var(--sunk);color:var(--muted)}
 .pill.ok{background:var(--mint-soft);color:var(--ok-ink)}
 .pill.warn{background:var(--amber-soft);color:var(--trap-ink)}
 .pill.bad{background:var(--danger-soft);color:var(--danger)}
 .panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;margin:12px 0}
-.hero{background:var(--blue);color:#fff;border:0}
+.hero{background:radial-gradient(120% 140% at 85% 0%,#1C6B43 0%,var(--g-dark) 45%,var(--g-deep) 100%);color:#fff;border:0}
 .hero h1{margin:0 0 4px;font-size:22px;line-height:1.2}
 .hero p{margin:0;opacity:.92}
 .qhead{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:4px 0 8px}
-.area{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:4px 9px;border-radius:6px;color:#fff;background:var(--blue)}
-.qhead h2{margin:0;font-size:20px}
+.area{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:6px 12px;border-radius:8px;color:#fff;background:var(--blue)}
+.qhead h2{margin:0;font-size:22px;font-weight:800;text-transform:uppercase;letter-spacing:.01em}
 .qhead .h{font-size:13px;color:var(--muted)}
 .slide{display:block;width:100%;border-radius:var(--r-sm);border:1px solid var(--line);background:#fff;margin:6px 0}
 .zoomhint{font-size:13px;color:var(--muted);text-align:center;margin:2px 0 10px}
@@ -115,8 +118,24 @@ input{font:inherit;width:100%;padding:12px;border-radius:10px;border:1px solid v
 .qbtn.done{background:var(--mint-soft)}
 .fase{font-size:13px;font-weight:800;letter-spacing:.05em;text-transform:uppercase}
 .count{font-size:48px;font-weight:800;line-height:1;font-variant-numeric:tabular-nums}
+.pwrap{max-width:1100px}
+.sec{font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:22px 2px 6px}
+.agora{border-top:4px solid var(--hc)}
+.agora-g{display:grid;grid-template-columns:1.25fr 1fr;gap:18px;align-items:start}
+@media (max-width:760px){.agora-g{grid-template-columns:1fr}}
+.pill.gab{background:var(--g-dark);color:#fff;font-size:14px;padding:6px 12px}
+.bloco{border-left:5px solid var(--hc)}
+.bloco-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}
+.qcard{display:flex;flex-direction:column;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--surface)}
+.qcard.cur{border:2px solid var(--hc);box-shadow:0 0 0 3px color-mix(in srgb,var(--hc) 20%,transparent)}
+.qcard.done{background:var(--sunk)}
+.qcard .thumb{height:118px;overflow:hidden;background:#fff;cursor:zoom-in;border-bottom:1px solid var(--line)}
+.qcard .thumb img{width:100%;display:block}
+.qcard .qinfo{padding:10px 12px 0;flex:1;line-height:1.35}
+.btn.mini{margin:10px 12px 12px;width:auto;min-height:40px;padding:8px 12px}
 /* telão */
-#telao{position:fixed;inset:0;background:var(--bg);z-index:40;display:none;padding:3vh 4vw;overflow:auto}
+#telao{position:fixed;inset:0;background:radial-gradient(120% 140% at 85% 0%,#1C6B43 0%,var(--g-dark) 45%,var(--g-deep) 100%);color:#fff;z-index:40;display:none;padding:3vh 4vw;overflow:auto}
 #telao.on{display:block}
 #telao .tg{display:grid;grid-template-columns:1.3fr 1fr;gap:4vw;align-items:center;min-height:80vh}
 #telao h1{font-size:5vh;margin:0 0 1vh}
@@ -126,7 +145,13 @@ input{font:inherit;width:100%;padding:12px;border-radius:10px;border:1px solid v
 #telao .bar .n{font-size:3.5vh}
 #telao .qr{background:#fff;padding:2vh;border-radius:16px;text-align:center}
 #telao .qr img{width:100%;max-width:46vh;image-rendering:pixelated}
-#telao .url{font-size:2.6vh;font-weight:700;word-break:break-all;margin-top:1vh}
+#telao .muted{color:rgba(255,255,255,.75)}
+#telao .bar .t{background:rgba(255,255,255,.14)}
+#telao .bar .f{background:rgba(255,255,255,.55)}
+#telao .bar.g .f{background:var(--o-logo)}
+#telao .marca{height:7vh;display:block;margin-bottom:3vh}
+#telao .close{background:rgba(255,255,255,.12);color:#fff;border-color:rgba(255,255,255,.35)}
+#telao .url{color:var(--g-dark);font-size:2.6vh;font-weight:700;word-break:break-all;margin-top:1vh}
 #telao .close{position:fixed;top:12px;right:12px;width:auto;margin:0}
 </style>
 </head>
@@ -149,95 +174,95 @@ const VERSAO = "03/11 13:35";
 /* ====================== QUESTÕES ====================== */
 // armadilhas: VNR = verdade que não responde · EXT = extrapola · INV = inverte · EXA = exagera · VIZ = conceito vizinho
 const Q = [
- {area:"Filosofia",cor:"#2D5BFF",num:65,h:"H16 · C4",tema:"Inteligência humana e máquinas",img:["s03.jpg"],gab:"D",
+ {area:"Filosofia",cor:"#7E5CBA",num:65,h:"H16 · C4",tema:"Inteligência humana e máquinas",img:["s03.jpg"],gab:"D",
   exp:"O texto diz que a máquina é “incapaz de distinguir o possível do impossível”. Memorizar não é pensar: o ENEM mede julgamento, não decoreba.",
   fecha:"Pensar é conjecturar e criticar: poder errar faz parte de estar certo.",
   arm:{E:["INV","O texto diz que a máquina memoriza sem limite."],C:["EXT","O autor não diz que a máquina nunca erra."],A:["EXT","Traz um dado que não está no texto."]}},
- {area:"Filosofia",cor:"#2D5BFF",num:60,h:"H4 · C1",tema:"Filosofia da linguagem: Carnap e Austin",img:["s08.jpg"],gab:"A",
+ {area:"Filosofia",cor:"#7E5CBA",num:60,h:"H4 · C1",tema:"Filosofia da linguagem: Carnap e Austin",img:["s08.jpg"],gab:"A",
   exp:"Austin aceita que frases descrevem fatos, mas mostra outras que fazem ações. A teoria de Carnap não está errada: é limitada.",
   fecha:"Enunciados performativos: dizer é fazer. Austin amplia a teoria, não a invalida.",
   arm:{C:["EXA","“Incoerente” acusa um erro interno que Austin não aponta."],E:["EXA","“Contraditória” acusa um erro interno que Austin não aponta."]}},
- {area:"Língua Portuguesa",cor:"#FF6A2B",num:14,h:"H25 · C8",tema:"Variação linguística no cordel",img:["lp14.jpg"],gab:"E",
+ {area:"Língua Portuguesa",cor:"#3C8C4D",num:14,h:"H25 · C8",tema:"Variação linguística no cordel",img:["lp14.jpg"],gab:"E",
   exp:"Em “precisá”, o apagamento do “r” final do infinitivo reproduz na escrita a pronúncia popular. Os outros versos seguem a grafia padrão, mesmo quando falam do sertão ou da falta de estudo.",
   fecha:"Marcas de variação estão na forma linguística, não no tema. Outros casos no poema: “cantô”, “favô”.",
   arm:{}},
- {area:"Língua Portuguesa",cor:"#FF6A2B",num:15,h:"H24 · C7",tema:"Estratégias argumentativas na crônica",img:["lp15.jpg"],gab:"D",
+ {area:"Língua Portuguesa",cor:"#3C8C4D",num:15,h:"H24 · C7",tema:"Estratégias argumentativas na crônica",img:["lp15.jpg"],gab:"D",
   exp:"O cronista explica que as cores do pavão são efeito de luz em bolhas d'água, relaciona isso ao artista que obtém muito com pouco e aplica a mesma lógica ao amor. O convencimento vem da comparação.",
   fecha:"A informação científica só vira argumento quando é comparada ao amor: comparação e analogia como estratégias.",
   arm:{A:["VNR","Cita a explicação física, que sozinha não é argumento sobre o amor."],B:["VNR","Cita a explicação física, que sozinha não é argumento sobre o amor."],E:["VNR","Cita a explicação física, que sozinha não é argumento sobre o amor."]}},
- {area:"Língua Portuguesa",cor:"#FF6A2B",num:20,h:"H23 · C7",tema:"Argumentação em reportagem",img:["lp20.jpg"],gab:"E",
+ {area:"Língua Portuguesa",cor:"#3C8C4D",num:20,h:"H23 · C7",tema:"Argumentação em reportagem",img:["lp20.jpg"],gab:"E",
   exp:"O texto mostra que a carga tributária caiu para os mais ricos e que a Oxfam pede mais responsabilidade à elite global, cujo papel é central para reverter a desigualdade.",
   fecha:"Separe no texto problema, causa, consequência e proposta. A ruptura do contrato social é uma ameaça, não a saída.",
   arm:{A:["EXT","O texto não propõe aumento igual de impostos para todos."],C:["INV","A ruptura do contrato social é um risco, não a solução."]}},
- {area:"Língua Portuguesa",cor:"#FF6A2B",num:51,h:"H1 · C1",tema:"Gêneros textuais: identificação do gênero",img:["lp51.jpg"],gab:"E",
+ {area:"Língua Portuguesa",cor:"#3C8C4D",num:51,h:"H1 · C1",tema:"Gêneros textuais: identificação do gênero",img:["lp51.jpg"],gab:"E",
   exp:"O texto, publicado em revista para o público amplo, apresenta resultados de pesquisas sobre o público de museus em linguagem acessível ao leitor não especialista.",
   fecha:"Gênero se define por finalidade, suporte e público, não só pela presença de dados.",
   arm:{C:["VIZ","Relatório de pesquisa se dirige a um público especializado."],D:["VIZ","O texto não tem a linguagem técnica de um ensaio acadêmico."],A:["VIZ","Não relata um fato pontual, como faria a notícia."]}},
- {area:"Literatura",cor:"#7B5CF5",num:58,h:"H15 · C5",tema:"Canção popular e contexto urbano",img:["s21.jpg"],gab:"D",
+ {area:"Literatura",cor:"#7862AD",num:58,h:"H15 · C5",tema:"Canção popular e contexto urbano",img:["s21.jpg"],gab:"D",
   exp:"O terreno tinha dono, a casa velha vira prédio e os moradores vão “pro meio da rua”: reurbanização guiada pela especulação imobiliária.",
   fecha:"O progresso urbano tem custo social: a canção registra quem pagou.",
   arm:{A:["VNR","A saudade existe, mas o comando pede o registro das mudanças."],B:["INV","O terreno tinha dono, e eles saem da maloca; não constroem favela."],C:["INV","O imóvel é demolido, não preservado."],E:["EXT","“Os home cas ferramentas” são operários, não polícia."]}},
- {area:"Literatura",cor:"#7B5CF5",num:63,h:"H15 · C5",tema:"Quinhentismo: poesia de catequese",img:["s25.jpg"],gab:"D",
+ {area:"Literatura",cor:"#7862AD",num:63,h:"H15 · C5",tema:"Quinhentismo: poesia de catequese",img:["s25.jpg"],gab:"D",
   exp:"A redondilha tem ritmo fácil de cantar e decorar: servia para fixar os cantos da liturgia.",
   fecha:"A forma do verso era uma tecnologia de memória.",
   arm:{A:["VNR","A catequese existiu, mas o comando pergunta pela função da forma."]}},
- {area:"Literatura",cor:"#7B5CF5",num:56,h:"H16 · C5",tema:"Naturalismo: características",img:["s27.jpg"],gab:"D",
+ {area:"Literatura",cor:"#7862AD",num:56,h:"H16 · C5",tema:"Naturalismo: características",img:["s27.jpg"],gab:"D",
   exp:"A obsessão vira coceira, ferida, insônia: a mente explicada pelo corpo, como na ciência do século XIX.",
   fecha:"O Naturalismo usava a ciência como lente para o comportamento humano.",
   arm:{B:["VIZ","Lirismo do narrador é Romantismo."],C:["VIZ","Fluxo da consciência é Modernismo."]}},
- {area:"Literatura",cor:"#7B5CF5",num:62,h:"H17 · C5",tema:"Questão agrária no poema",img:["s29.jpg"],gab:"B",
+ {area:"Literatura",cor:"#7862AD",num:62,h:"H17 · C5",tema:"Questão agrária no poema",img:["s29.jpg"],gab:"B",
   exp:"“Queremos que a terra possa / ser tão nossa quanto vossa”: camponeses reivindicam terra, fartura e dignidade.",
   fecha:"O eu lírico é coletivo: “nós”.",
   arm:{C:["VNR","Eles não pedem para ficar: pedem a posse da terra."],E:["VIZ","Camponeses, não operários."]}},
- {area:"Artes",cor:"#E9468A",num:72,h:"H13",tema:"Carnaval: uniforme e fantasia",img:["s33.jpg"],gab:"E",
+ {area:"Artes",cor:"#BF7129",num:72,h:"H13",tema:"Carnaval: uniforme e fantasia",img:["s33.jpg"],gab:"E",
   exp:"Para DaMatta, o uniforme iguala e mantém a ordem; a fantasia permite trocar posições e ser o que a vida não deixa ser.",
   fecha:"Carnaval como inversão da ordem cotidiana.",
   arm:{D:["VNR","Vira personagem, mas o texto fala em trocar posições sociais."],B:["INV","Uniformizar é função do uniforme."]}},
- {area:"Artes",cor:"#E9468A",num:75,h:"H12",tema:"Portinari e a arte engajada",img:["s35.jpg"],gab:"B",
+ {area:"Artes",cor:"#BF7129",num:75,h:"H12",tema:"Portinari e a arte engajada",img:["s35.jpg"],gab:"B",
   exp:"Portinari diz que a grande arte está ligada ao povo e deve retransmitir guerras, injustiças, desigualdade e fome. É o engajamento político e social do Modernismo como denúncia.",
   fecha:"Na obra de Portinari, emoção e sentimento estão a serviço da crítica social.",
   arm:{A:["VNR","O sentimento aparece, mas é meio, não o eixo ideológico."],D:["VNR","A emoção leva à mensagem; não é o “ponto alto”."],E:["VIZ","Cópia fiel da realidade lembra o Realismo, não este discurso."]}},
- {area:"Artes",cor:"#E9468A",num:78,h:"H22",tema:"Grafite e crítica",img:["s37.jpg"],gab:"C",
+ {area:"Artes",cor:"#BF7129",num:78,h:"H22",tema:"Grafite e crítica",img:["s37.jpg"],gab:"C",
   exp:"Indígena azul + Mula sem Cabeça + “SOLD” na bandeira: a mescla de referências critica a submissão ao capital estrangeiro.",
   fecha:"O Texto II é a chave de leitura do Texto I.",
   arm:{B:["VNR","Cita grandes cidades, mas a crítica vai além do urbano."],E:["INV","“SOLD” critica a influência estrangeira."]}},
- {area:"Artes",cor:"#E9468A",num:80,h:"H14 · C4",tema:"Quem fala pela dor de quem?",img:["s39.jpg"],gab:"C",
+ {area:"Artes",cor:"#BF7129",num:80,h:"H14 · C4",tema:"Quem fala pela dor de quem?",img:["s39.jpg"],gab:"C",
   exp:"Circular imagens de opressão é exercício de poder de quem documenta. O protesto reage à dor real virar obra sob um olhar externo, que apaga subjetividades.",
   fecha:"Dar visibilidade a uma dor é diferente de transformá-la em espetáculo.",
   arm:{A:["INV","A violência foi exposta; o problema é o modo como foi mostrada."],B:["INV","Não foi autoexpressão: outro falou pelas vítimas."],D:["EXT","Ninguém desacredita a sensibilidade do ativismo."],E:["EXT","O protesto não pede engajamento midiático."]}},
- {area:"Sociologia",cor:"#0E9E9B",num:71,h:"H3 · C1",tema:"Trabalho e desigualdade: emprego doméstico",img:["s44.jpg"],gab:"C",
+ {area:"Sociologia",cor:"#2E7D9A",num:71,h:"H3 · C1",tema:"Trabalho e desigualdade: emprego doméstico",img:["s44.jpg"],gab:"C",
   exp:"O texto aponta a depreciação do trabalho braçal e o uso da afetividade (“quase da família”) para mascarar a relação de trabalho: continuidade do passado escravista e das desigualdades.",
   fecha:"O comando pede a origem histórica, não fatores conjunturais.",
   arm:{A:["VNR","Influencia a contratação hoje, mas não explica a raiz histórica."],B:["VNR","Influencia a contratação hoje, mas não explica a raiz histórica."],E:["VNR","Influencia a contratação hoje, mas não explica a raiz histórica."]}},
- {area:"Sociologia",cor:"#0E9E9B",num:76,h:"H23 · C5",tema:"Cidade, memória e desigualdade",img:["s46.jpg"],gab:"A",
+ {area:"Sociologia",cor:"#2E7D9A",num:76,h:"H23 · C5",tema:"Cidade, memória e desigualdade",img:["s46.jpg"],gab:"A",
   exp:"A letra constrói a memória urbana a partir de quem vive na periferia e é alvo de violência: identidades marcadas por raça e classe.",
   fecha:"A memória da cidade é disputada: há a versão oficial e a das periferias.",
   arm:{B:["INV","Fala em experiências “igualitárias”, que a letra nega."]}},
- {area:"Sociologia",cor:"#0E9E9B",num:88,h:"H2 · C1",tema:"Povos indígenas: transmissão de saberes",img:["s48.jpg"],gab:"C",
+ {area:"Sociologia",cor:"#2E7D9A",num:88,h:"H2 · C1",tema:"Povos indígenas: transmissão de saberes",img:["s48.jpg"],gab:"C",
   exp:"Ninguém “ensina” o significado das pinturas, mas todos o conhecem: o saber circula no grupo e entre gerações sem tradução verbal. É a memória coletiva em ação.",
   fecha:"Há formas de registro e transmissão de memória que não passam pela escrita.",
   arm:{A:["EXT","O texto não diz que a pintura supera a oralidade."]}},
- {area:"Sociologia",cor:"#0E9E9B",num:85,h:"H2 · C1",tema:"Cultura e identidade: arte indígena",img:["s50.jpg"],gab:"C",
+ {area:"Sociologia",cor:"#2E7D9A",num:85,h:"H2 · C1",tema:"Cultura e identidade: arte indígena",img:["s50.jpg"],gab:"C",
   exp:"Para Jaider Esbell, a arte indígena tem sistemas próprios, não copia o modelo europeu e está no dia a dia, na comunidade e no ambiente: integra as tradições do povo.",
   fecha:"Arte indígena como sistema próprio, coletivo e ligado à vida comunitária.",
   arm:{B:["INV","O texto enfatiza a coletividade, não o ponto de vista individual."],A:["INV","Contradiz a recusa ao modelo ocidental."]}},
- {area:"Sociologia",cor:"#0E9E9B",num:90,h:"H21 · C5",tema:"Mídias digitais e opinião pública",img:["s52.jpg"],gab:"B",
+ {area:"Sociologia",cor:"#2E7D9A",num:90,h:"H21 · C5",tema:"Mídias digitais e opinião pública",img:["s52.jpg"],gab:"B",
   exp:"Na charge, dois usuários fazem a mesma pesquisa e recebem resultados diferentes, cada um em sua bolha. O Texto II explica: algoritmos adaptáveis e variáveis moldam a construção da realidade.",
   fecha:"Bolha informacional: o feed de cada um é diferente.",
   arm:{A:["EXT","Analfabetismo digital não aparece em nenhum dos textos."],C:["INV","Os textos mostram a mídia moldando a opinião, não garantindo confiabilidade."],D:["INV","A informação é filtrada pela bolha; não circula de forma irrestrita."],E:["VIZ","O foco são as plataformas digitais, não as mídias tradicionais."]}},
- {area:"Filosofia",cor:"#2D5BFF",num:58,h:"H23 · C5",tema:"Existencialismo de Sartre",img:["s57.jpg","s58.jpg"],gab:"D",
+ {area:"Filosofia",cor:"#7E5CBA",num:58,h:"H23 · C5",tema:"Existencialismo de Sartre",img:["s57.jpg","s58.jpg"],gab:"D",
   exp:"Ao escolher por si, o homem escolhe por todos: daí a responsabilidade e a angústia.",
   fecha:"Ponte com a redação (C5): a proposta precisa valer para a coletividade e respeitar os direitos humanos.",
   arm:{C:["INV","Para Sartre, a existência precede a essência."]}},
- {area:"Filosofia",cor:"#2D5BFF",num:63,h:"H1 · C1",tema:"Racionalismo moderno: Descartes",img:["s60.jpg"],gab:"B",
+ {area:"Filosofia",cor:"#7E5CBA",num:63,h:"H1 · C1",tema:"Racionalismo moderno: Descartes",img:["s60.jpg"],gab:"B",
   exp:"A dúvida é método: tudo que não é claro e distinto fica suspenso, para eliminar ideias falsas.",
   fecha:"Duvide com método antes de compartilhar uma notícia.",
   arm:{A:["VNR","O texto fala em “origem”, mas o objetivo é testar a validade."]}},
- {area:"Filosofia",cor:"#2D5BFF",num:64,h:"H20 · C4",tema:"Ética e tecnologia",img:["s62.jpg"],gab:"A",
+ {area:"Filosofia",cor:"#7E5CBA",num:64,h:"H20 · C4",tema:"Ética e tecnologia",img:["s62.jpg"],gab:"A",
   exp:"Para Nicolelis, uma invenção só entra na vida real se for segura, eficiente e acessível: é preciso avaliar a viabilidade de uso.",
   fecha:"Novidade não é sinônimo de aplicabilidade.",
   arm:{B:["VIZ","Os critérios valem para o mecanismo, não para a conduta dos pesquisadores."],E:["INV","O texto critica o “culto”: tecnologia não é milagre."]}},
- {area:"Filosofia",cor:"#2D5BFF",num:68,h:"H16 · C4",tema:"Benjamin: arte e reprodutibilidade técnica",img:["s64.jpg"],gab:"E",
+ {area:"Filosofia",cor:"#7E5CBA",num:68,h:"H16 · C4",tema:"Benjamin: arte e reprodutibilidade técnica",img:["s64.jpg"],gab:"E",
   exp:"Com o cinema e a reprodução técnica, a obra deixa de exigir recolhimento e “penetra nas massas”.",
   fecha:"A técnica muda a obra, o público e quem tem poder sobre a imagem.",
   arm:{A:["EXT","O texto não fala em ampliar a arte culta."],C:["INV","A experiência massificada é a distração."]}}
@@ -397,7 +422,7 @@ function aluno(){
   let verResumo = false;
   function topo(){
     const c = conexao==="ok"?`<span class="pill ok">● conectado</span>`:conexao==="off"?`<span class="pill bad">● sem conexão</span>`:`<span class="pill warn">● conectando</span>`;
-    return `<div class="top"><b>Aulão ENEM</b><span class="sp"></span>${c}${botaoTema()}</div>`;
+    return `<div class="top"><img class="marca" src="marca.jpg" alt="Genoma Prevê"><b>Aulão ENEM</b><span class="sp"></span>${c}${botaoTema()}</div>`;
   }
   function desenha(){
     if(!E){ return }
@@ -414,7 +439,7 @@ function aluno(){
         <div class="panel"><p class="big">Como funciona</p><ol class="small" style="margin:0;padding-left:20px">
         <li>O professor lê a questão e trabalha com vocês.</li><li>Quando ele liberar, marque sua alternativa. Dá para trocar até fechar a votação.</li>
         <li>Depois do gabarito, você vê se acertou e qual armadilha pegou você.</li></ol>
-        <p class="small muted">Não precisa de nome. Se sair da página, é só abrir o link de novo que você volta de onde parou.</p></div>`;
+        <p class="small muted">Não precisa de nome. Se sair da página, é só abrir o link de novo que você volta de onde parou.</p></div><img class="logo-g" src="logo.jpg" alt="Genoma Sistema de Ensino">`;
       if(Object.values(minhas).some(m=>m.revelada)) h += `<button class="btn" data-a="resumo">Ver meu desempenho</button>`;
       h += `</div>`; render(h); return;
     }
@@ -516,43 +541,66 @@ function professor(){
   }
   const urlAluno = location.origin + location.pathname.replace(/index\.html$/,"") + (MOCK?"?mock=1":"");
 
+  function blocos(){
+    const out=[]; Q.forEach((q,i)=>{ const u=out[out.length-1]; if(u && u.area===q.area) u.itens.push(i); else out.push({area:q.area,cor:q.cor,itens:[i]}) });
+    return out;
+  }
   function desenha(){
     if(!E) return;
     const q = Q[E.q];
     const c = contar();
-    const fases = {espera:"Aguardando",aberta:"Votação aberta",fechada:"Votação encerrada",gabarito:"Gabarito na tela dos alunos",fim:"Aulão finalizado"};
-    let h = `<div class="top"><b>Painel do professor</b><span class="sp"></span><span class="pill ${E.fase==="aberta"?"ok":"warn"}">${fases[E.fase]||E.fase}</span>${botaoTema()}</div><div class="wrap">`;
-    if(q && E.fase!=="fim"){
-      h += `<div class="panel">${qtitulo(q)}<div class="row" style="align-items:center"><div><div class="count">${E.fase==="aberta"?c.total:(E.total||0)}</div><div class="muted small">${E.fase==="aberta"?"responderam até agora":"respostas contadas"}</div></div>
-        <div style="text-align:right"><span class="pill">Gabarito: ${q.gab}</span></div></div>`;
-      if(E.fase==="aberta") h += `<button class="btn tang" data-a="encerrar">Encerrar votação</button>`;
-      if(E.fase==="fechada") h += `<button class="btn mint" data-a="gab">Mostrar gabarito aos alunos</button>`;
-      if(E.fase==="gabarito" && E.q<Q.length-1) h += `<button class="btn solid" data-a="prox">Liberar a próxima: ${esc(Q[E.q+1].area)} · Q${Q[E.q+1].num} →</button>`;
-      if(E.fase==="gabarito" && E.q===Q.length-1) h += `<button class="btn solid" data-a="fim">Finalizar aulão (mostra o relatório final)</button>`;
+    const hs = hist[E.s]||{};
+    const fases = {espera:"Aguardando",aberta:"Votação aberta",fechada:"Votação encerrada",gabarito:"Gabarito liberado",fim:"Aulão finalizado"};
+    let h = `<div class="top"><img class="marca" src="marca.jpg" alt="Genoma Prevê"><b>Painel do professor</b><span class="sp"></span><span class="pill ${E.fase==="aberta"?"ok":"warn"}">${fases[E.fase]||E.fase}</span>${botaoTema()}</div><div class="wrap pwrap">`;
+    // ---- AGORA ----
+    if(q && E.fase!=="espera" && E.fase!=="fim"){
       const mostrar = E.fase==="aberta" ? verParcial : true;
+      const cc = E.fase==="aberta"?c.cont:E.cont; const tt=E.fase==="aberta"?c.total:E.total;
+      h += `<div class="panel agora" style="--hc:${q.cor}"><p class="big">Agora · ${esc(q.area)}</p>
+        <div class="agora-g"><div><img class="slide" src="./${q.img[q.img.length-1]}" data-zoom="./${q.img[q.img.length-1]}" alt="Prévia da questão"><p class="zoomhint">Toque para ampliar</p></div>
+        <div>${qtitulo(q)}
+          <div class="row" style="align-items:flex-end;margin:6px 0 4px"><div><div class="count">${E.fase==="aberta"?c.total:(E.total||0)}</div><div class="muted small">${E.fase==="aberta"?"responderam até agora":"respostas contadas"}</div></div>
+          <div style="text-align:right"><span class="pill gab">Gabarito ${q.gab}</span></div></div>`;
+      if(E.fase==="aberta") h += `<button class="btn tang" data-a="encerrar">Encerrar votação</button>`;
+      if(E.fase==="fechada") h += `<button class="btn solid" data-a="gab">Mostrar gabarito aos alunos</button>`;
+      if(E.fase==="gabarito" && E.q<Q.length-1) h += `<button class="btn solid" data-a="prox">Liberar a próxima: ${esc(Q[E.q+1].area)} · Q${Q[E.q+1].num} →</button>`;
+      if(E.fase==="gabarito" && E.q===Q.length-1) h += `<button class="btn solid" data-a="fim">Finalizar aulão (relatório final)</button>`;
       if(E.fase==="aberta") h += `<button class="btn" data-a="parcial">${verParcial?"Esconder":"Ver"} parcial (só para você)</button>`;
-      if(mostrar){ const cc = E.fase==="aberta"?c.cont:E.cont; const tt=E.fase==="aberta"?c.total:E.total; h += barras(cc,q.gab,tt) }
-      h += `<button class="btn" data-a="telao">Abrir modo telão</button></div>`;
+      if(mostrar) h += barras(cc,q.gab,tt);
+      h += `<button class="btn" data-a="telao">Abrir modo telão</button></div></div></div>`;
     } else if(E.fase==="espera"){
-      h += `<div class="panel hero"><h1>Pronto para começar</h1><p>Alunos entram pelo QR code e ficam aguardando. Escolha a primeira questão abaixo.</p></div>
-        <button class="btn solid" data-a="lib" data-i="0">Liberar a primeira: ${esc(Q[0].area)} · Q${Q[0].num}</button><button class="btn" data-a="telao">Abrir modo telão (QR code)</button>`;
+      h += `<div class="panel hero"><h1>Pronto para começar</h1><p>Os alunos entram pelo QR code e ficam aguardando. Escolha a questão no roteiro abaixo.</p>
+        <div class="row" style="margin-top:12px"><button class="btn tang" data-a="lib" data-i="0">Liberar a primeira: ${esc(Q[0].area)} · Q${Q[0].num}</button><button class="btn" data-a="telao" style="background:rgba(255,255,255,.12);color:#fff;border-color:rgba(255,255,255,.35)">Modo telão (QR code)</button></div></div>`;
     } else if(E.fase==="fim"){
       h += `<div class="panel hero"><h1>Aulão finalizado</h1><p>Os alunos estão vendo o relatório final no celular.</p></div>`;
     }
-    // resumo
-    const hs = hist[E.s]||{};
+    // ---- ROTEIRO POR MATÉRIA ----
+    h += `<h2 class="sec">Roteiro do aulão</h2>`;
+    blocos().forEach(bl=>{
+      const feitas = bl.itens.filter(i=>hs[i]).length;
+      h += `<div class="panel bloco" style="--hc:${bl.cor}"><div class="bloco-h"><span class="area" style="background:${bl.cor}">${esc(bl.area)}</span><span class="muted small">${feitas}/${bl.itens.length} feitas</span></div><div class="cards">`;
+      bl.itens.forEach(i=>{
+        const qq=Q[i], v=hs[i], cur=(i===E.q && E.fase!=="espera" && E.fase!=="fim");
+        const p = v&&v.total?Math.round((v.cont[qq.gab]||0)*100/v.total):null;
+        const st = cur?`<span class="pill ok">● Agora</span>`:v?`<span class="pill">${p}% acertaram</span>`:`<span class="pill">Não liberada</span>`;
+        h += `<div class="qcard ${cur?"cur":""} ${v&&!cur?"done":""}">
+          <div class="thumb" data-zoom="./${qq.img[qq.img.length-1]}"><img loading="lazy" src="./${qq.img[qq.img.length-1]}" alt="Prévia Q${qq.num}"></div>
+          <div class="qinfo"><b>Questão ${qq.num}</b> <span class="small muted">· ${esc(qq.h)} · gab. ${qq.gab}</span><div class="small">${esc(qq.tema)}</div><div style="margin-top:6px">${st}</div></div>
+          <button class="btn ${cur?"":"solid"} mini" data-a="lib" data-i="${i}" ${cur?"disabled":""}>${cur?"Em andamento":v?"Liberar de novo":"Liberar"}</button></div>`;
+      });
+      h += `</div></div>`;
+    });
+    // ---- RESUMO ----
     const feitas = Object.keys(hs);
     if(feitas.length){
-      h += `<div class="panel"><p class="big">Resumo da turma</p><ul class="list">`+feitas.sort((a,b)=>a-b).map(i=>{const qq=Q[i],v=hs[i];const p=v.total?Math.round((v.cont[qq.gab]||0)*100/v.total):0;
+      h += `<div class="panel" style="--hc:var(--tang)"><p class="big">Resumo da turma</p><ul class="list">`+feitas.sort((a,b)=>a-b).map(i=>{const qq=Q[i],v=hs[i];const p=v.total?Math.round((v.cont[qq.gab]||0)*100/v.total):0;
         const errMais = LET.filter(l=>l!==qq.gab).sort((a,b)=>(v.cont[b]||0)-(v.cont[a]||0))[0];
         return `<li><span class="dot ${p>=60?"ok":p>=40?"na":"no"}" style="min-width:46px">${p}%</span><span><b>${esc(qq.area)} · Q${qq.num}</b> · ${v.total} resp.<br><span class="small muted">Distrator mais marcado: ${errMais} (${v.total?Math.round((v.cont[errMais]||0)*100/v.total):0}%)${qq.arm[errMais]?" · "+ARM[qq.arm[errMais][0]].nome:""}</span></span></li>`}).join("")+`</ul></div>`;
     }
-    h += `<div class="panel"><p class="big">Ir para qualquer questão</p><p class="small muted">Tocar libera a questão na hora.</p><div class="qgrid">`+Q.map((qq,i)=>`<button class="qbtn ${i===E.q&&E.fase!=="espera"?"cur":hs[i]?"done":""}" data-a="lib" data-i="${i}">Q${qq.num}<small>${esc(qq.area)}</small></button>`).join("")+`</div></div>`;
-    h += `<div class="panel"><p class="big">Controle geral</p>
-      <button class="btn" data-a="espera">Pôr todos em “aguarde”</button>
-      ${E.fase!=="fim"?`<button class="btn" data-a="fim">Finalizar aulão</button>`:""}
+    h += `<div class="panel" style="--hc:var(--muted)"><p class="big">Controle geral</p>
+      <div class="row"><button class="btn" data-a="espera">Pôr todos em “aguarde”</button>${E.fase!=="fim"?`<button class="btn" data-a="fim">Finalizar aulão</button>`:""}</div>
       <button class="btn danger" data-a="zerar">Zerar tudo (nova sessão, para depois do teste)</button>
-      <p class="small muted">Link dos alunos: <b>${esc(urlAluno)}</b></p></div></div>`;
+      <p class="small muted">Link dos alunos: <b>${esc(urlAluno)}</b></p></div><img class="logo-g" src="logo.jpg" alt="Genoma Sistema de Ensino"></div>`;
     render(h);
     if(telao) desenhaTelao();
   }
@@ -567,7 +615,7 @@ function professor(){
     else if(E.fase==="fechada"){ esq = `<h1>${esc(q.area)} · Questão ${q.num}</h1><p style="font-size:3vh" class="muted">Votação encerrada · ${E.total} respostas</p>${barras(E.cont,null,E.total)}` }
     else if(E.fase==="gabarito"){ esq = `<h1>${esc(q.area)} · Questão ${q.num} · Gabarito ${q.gab}</h1><p style="font-size:3vh" class="muted">${E.total} respostas</p>${barras(E.cont,q.gab,E.total)}` }
     else { esq = `<h1>Fim do aulão</h1><p style="font-size:4vh">Confiram o relatório no celular. Boa prova!</p>` }
-    t.innerHTML = `<button class="btn close" data-t="sair">Sair do telão ✕</button><div class="tg"><div>${esq}</div><div class="qr">${qr?`<img src="${qr}" alt="QR code">`:""}<div class="url">${esc(urlAluno.replace(/^https?:\/\//,""))}</div></div></div>`;
+    t.innerHTML = `<button class="btn close" data-t="sair">Sair do telão ✕</button><div class="tg"><div><img class="marca" src="marca.jpg" alt="Genoma Prevê">${esq}</div><div class="qr">${qr?`<img src="${qr}" alt="QR code">`:""}<div class="url">${esc(urlAluno.replace(/^https?:\/\//,""))}</div></div></div>`;
   }
   document.addEventListener("click",e=>{ if(e.target.closest('[data-t="sair"]')){ telao=false; $("#telao").classList.remove("on") } });
 
