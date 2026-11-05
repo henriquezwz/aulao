@@ -15,3 +15,12 @@ AULÃO ENEM — como publicar (5 minutos)
 
 Para trocar algo depois: edite os arquivos e arraste a pasta de novo
 no mesmo site (Netlify > seu site > Deploys > arraste ali).
+
+SESSÕES (novo)
+No painel do professor, em "Sessões", escolha o roteiro:
+   - Aulão de hoje: as 22 questões mistas originais.
+   - Literatura por habilidade: as 17 de Literatura (55 a 71),
+     agrupadas por H15, H16, H17, H20, H18, H19 e H24.
+   - Minha seleção: toque na ☆ de qualquer cartão para montar o seu
+     roteiro. O botão "Liberar a próxima" segue a sessão escolhida.
+Para criar outra sessão, edite a lista SESSOES no index.html.

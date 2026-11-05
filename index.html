@@ -133,6 +133,17 @@ input{font:inherit;width:100%;padding:12px;border-radius:10px;border:1px solid v
 .qcard .thumb{height:118px;overflow:hidden;background:#fff;cursor:zoom-in;border-bottom:1px solid var(--line)}
 .qcard .thumb img{width:100%;display:block}
 .qcard .qinfo{padding:10px 12px 0;flex:1;line-height:1.35}
+.tabs{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 6px;scrollbar-width:none}
+.tab{flex:none;display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:10px 14px;border-radius:12px;border:1px solid var(--line);background:var(--surface);cursor:pointer;font-weight:700;min-height:48px;text-align:left}
+.tab small{font-weight:500;color:var(--muted);font-size:12px}
+.tab[aria-pressed="true"]{background:var(--g-dark);border-color:var(--g-dark);color:#fff}
+.tab[aria-pressed="true"] small{color:rgba(255,255,255,.8)}
+.sdesc{margin:4px 2px 0;font-size:13.5px;color:var(--muted)}
+.star{position:absolute;top:8px;right:8px;width:36px;height:36px;border-radius:10px;border:1px solid var(--line);background:var(--surface);font-size:18px;cursor:pointer;line-height:1;color:var(--muted)}
+.star[aria-pressed="true"]{background:var(--o-logo);border-color:var(--o-logo);color:#fff}
+.qcard{position:relative}
+.dif{font-size:11px;font-weight:700;padding:2px 7px;border-radius:6px;color:#fff;margin-left:4px;vertical-align:1px}
+.dif.m{background:#BF7129}.dif.d{background:#7E5CBA}.dif.f{background:#2E8B57}
 .btn.mini{margin:10px 12px 12px;width:auto;min-height:40px;padding:8px 12px}
 /* telão */
 #telao{position:fixed;inset:0;background:radial-gradient(120% 140% at 85% 0%,#1C6B43 0%,var(--g-dark) 45%,var(--g-deep) 100%);color:#fff;z-index:40;display:none;padding:3vh 4vw;overflow:auto}
@@ -169,7 +180,7 @@ const FB_CFG = window.FB_CFG || {};
 const FB_V = "12.19.0";
 // Login do painel: só a senha é digitada; o e-mail fica fixo aqui.
 const PROF_EMAIL = "professor@aulao.app";
-const VERSAO = "03/11 13:35";
+const VERSAO = "05/11 · sessões";
 
 /* ====================== QUESTÕES ====================== */
 // armadilhas: VNR = verdade que não responde · EXT = extrapola · INV = inverte · EXA = exagera · VIZ = conceito vizinho
@@ -198,19 +209,19 @@ const Q = [
   exp:"O texto, publicado em revista para o público amplo, apresenta resultados de pesquisas sobre o público de museus em linguagem acessível ao leitor não especialista.",
   fecha:"Gênero se define por finalidade, suporte e público, não só pela presença de dados.",
   arm:{C:["VIZ","Relatório de pesquisa se dirige a um público especializado."],D:["VIZ","O texto não tem a linguagem técnica de um ensaio acadêmico."],A:["VIZ","Não relata um fato pontual, como faria a notícia."]}},
- {area:"Literatura",cor:"#7862AD",num:58,h:"H15 · C5",tema:"Canção popular e contexto urbano",img:["s21.jpg"],gab:"D",
+ {area:"Literatura",cor:"#7862AD",num:58,dif:"Difícil",h:"H15 · C5",tema:"Canção popular e contexto urbano",img:["s21.jpg"],gab:"D",
   exp:"O terreno tinha dono, a casa velha vira prédio e os moradores vão “pro meio da rua”: reurbanização guiada pela especulação imobiliária.",
   fecha:"O progresso urbano tem custo social: a canção registra quem pagou.",
   arm:{A:["VNR","A saudade existe, mas o comando pede o registro das mudanças."],B:["INV","O terreno tinha dono, e eles saem da maloca; não constroem favela."],C:["INV","O imóvel é demolido, não preservado."],E:["EXT","“Os home cas ferramentas” são operários, não polícia."]}},
- {area:"Literatura",cor:"#7862AD",num:63,h:"H15 · C5",tema:"Quinhentismo: poesia de catequese",img:["s25.jpg"],gab:"D",
+ {area:"Literatura",cor:"#7862AD",num:63,dif:"Média",h:"H15 · C5",tema:"Quinhentismo: poesia de catequese",img:["s25.jpg"],gab:"D",
   exp:"A redondilha tem ritmo fácil de cantar e decorar: servia para fixar os cantos da liturgia.",
   fecha:"A forma do verso era uma tecnologia de memória.",
   arm:{A:["VNR","A catequese existiu, mas o comando pergunta pela função da forma."]}},
- {area:"Literatura",cor:"#7862AD",num:56,h:"H16 · C5",tema:"Naturalismo: características",img:["s27.jpg"],gab:"D",
+ {area:"Literatura",cor:"#7862AD",num:56,dif:"Difícil",h:"H16 · C5",tema:"Naturalismo: características",img:["s27.jpg"],gab:"D",
   exp:"A obsessão vira coceira, ferida, insônia: a mente explicada pelo corpo, como na ciência do século XIX.",
   fecha:"O Naturalismo usava a ciência como lente para o comportamento humano.",
   arm:{B:["VIZ","Lirismo do narrador é Romantismo."],C:["VIZ","Fluxo da consciência é Modernismo."]}},
- {area:"Literatura",cor:"#7862AD",num:62,h:"H17 · C5",tema:"Questão agrária no poema",img:["s29.jpg"],gab:"B",
+ {area:"Literatura",cor:"#7862AD",num:62,dif:"Média",h:"H17 · C5",tema:"Questão agrária no poema",img:["s29.jpg"],gab:"B",
   exp:"“Queremos que a terra possa / ser tão nossa quanto vossa”: camponeses reivindicam terra, fartura e dignidade.",
   fecha:"O eu lírico é coletivo: “nós”.",
   arm:{C:["VNR","Eles não pedem para ficar: pedem a posse da terra."],E:["VIZ","Camponeses, não operários."]}},
@@ -265,8 +276,83 @@ const Q = [
  {area:"Filosofia",cor:"#7E5CBA",num:68,h:"H16 · C4",tema:"Benjamin: arte e reprodutibilidade técnica",img:["s64.jpg"],gab:"E",
   exp:"Com o cinema e a reprodução técnica, a obra deixa de exigir recolhimento e “penetra nas massas”.",
   fecha:"A técnica muda a obra, o público e quem tem poder sobre a imagem.",
-  arm:{A:["EXT","O texto não fala em ampliar a arte culta."],C:["INV","A experiência massificada é a distração."]}}
+  arm:{A:["EXT","O texto não fala em ampliar a arte culta."],C:["INV","A experiência massificada é a distração."]}},
+
+ // ---- Literatura completa (Genoma Prevê, questões 55 a 71) ----
+ {area:"Literatura",cor:"#7862AD",num:55,dif:"Média",h:"H15 · C5",tema:"Literaturas africanas de língua portuguesa",img:["lit55.jpg"],gab:"B",
+  exp:"Agostinho Neto escreve sob a colonização portuguesa. O refrão “havemos de voltar” e o verso final “À Angola libertada” exaltam as tradições e projetam um futuro livre: o poema estimula o desejo de independência.",
+  fecha:"Poesia e luta anticolonial: a repetição reforça a promessa de retorno.",
+  arm:{A:["INV","O eu lírico exalta as tradições; não acusa o povo de abandoná-las."],C:["INV","Não há harmonia com o colonizador: a libertação é contra ele."],D:["EXT","Modernização e tecnologia não aparecem no poema."],E:["INV","O tom é otimista: “havemos de voltar”."]}},
+ {area:"Literatura",cor:"#7862AD",num:57,dif:"Média",h:"H17 · C5",tema:"Canção e crítica social",img:["lit57.jpg"],gab:"A",
+  exp:"O catador pede só um café, está “a sós” e sem farda, fartura, papel ou assinatura: sem trabalho formal, documentos e comida. É o retrato de uma pessoa em vulnerabilidade social.",
+  fecha:"Repare no jogo de palavras (farda/fartura, papel/papelão): a reciclagem é sobrevivência, não tema ambiental.",
+  arm:{B:["EXT","A reciclagem aparece como trabalho e sobrevivência, não como tema ambiental."],C:["EXT","Arte e cultura não aparecem na canção."],D:["EXT","O texto não fala em consumo."],E:["EXT","Ninguém impede o personagem de circular."]}},
+ {area:"Literatura",cor:"#7862AD",num:59,dif:"Média",h:"H20 · C6",tema:"Canção popular e identidade nacional",img:["lit59.jpg"],gab:"C",
+  exp:"“Pecado rasgado, suado, a todo vapor” e a lista de comidas típicas (sarapatel, tacacá) exploram erotismo e gula: a canção associa a identidade brasileira à entrega aos prazeres carnais.",
+  fecha:"O estereótipo do Brasil sensual vem dos relatos coloniais; a canção o retoma de modo irônico e festivo.",
+  arm:{D:["VNR","A alegria aparece, mas não explica a ideia de “pecado”."],E:["INV","A canção celebra; não deprecia o brasileiro."],B:["EXA","“Pecado” aqui é prazer do corpo, não falta de ética."],A:["EXA","Não há acusação de displicência ao povo."]}},
+ {area:"Literatura",cor:"#7862AD",num:60,dif:"Difícil",h:"H18 · C6",tema:"Recursos narrativos em Machado de Assis",img:["lit60.jpg"],gab:"C",
+  exp:"A enumeração traz ações em sequência (veio, tomou, entravam, apertavam, descem, vão), do preparo do corpo ao cortejo. Por isso ela narra o velório.",
+  fecha:"Enumeração nem sempre descreve: se os itens trazem ações em progressão temporal, ela narra.",
+  arm:{E:["INV","Há ações em sequência: nada de estático."],D:["INV","O quadro é realista, sem idealização."],B:["VIZ","Não há tese defendida: não é dissertação."],A:["EXT","O narrador lista fatos, não expõe emoções; chama o capítulo de “vulgar”."]}},
+ {area:"Literatura",cor:"#7862AD",num:61,dif:"Média",h:"H20 · C6",tema:"Literatura indígena e patrimônio cultural",img:["lit61.jpg"],gab:"E",
+  exp:"O resenhista afirma que o livro insere o patrimônio intelectual indígena na “literatura brasileira” e elogia a qualidade estética dos contos: defende que essas narrativas fazem parte da literatura nacional.",
+  fecha:"Narrativas indígenas como literatura brasileira, e não só como folclore ou etnografia. A tese está na primeira frase.",
+  arm:{A:["VNR","O fantástico aparece nos contos, mas não é o ponto defendido."],B:["VIZ","A resenha avalia literatura, não debate costumes."],C:["INV","Não se trata de levar o erudito ao popular."],D:["EXT","O texto não fala em apropriar culturas para melhorar padrões."]}},
+ {area:"Literatura",cor:"#7862AD",num:64,dif:"Média",h:"H16 · C5",tema:"Literatura indígena: narrativa e visão de mundo",img:["lit64.jpg"],gab:"B",
+  exp:"Perna Solta age conforme o que aprendeu com o avô e seu povo: respeitar a natureza e o lugar dos seres do dia e da noite. O sujeito aparece ligado a uma memória coletiva.",
+  fecha:"Na literatura indígena, o indivíduo costuma expressar o saber transmitido pela coletividade.",
+  arm:{D:["INV","Ninguém escolhe ser do dia ou da noite: cada um respeita o seu lugar."],A:["INV","O protagonista respeita a natureza; não contesta a crença."],C:["INV","O sujeito está ligado ao coletivo, não individualizado."],E:["EXT","Nenhuma característica física define o destino no trecho."]}},
+ {area:"Literatura",cor:"#7862AD",num:65,dif:"Difícil",h:"H15 · C5",tema:"Simbolismo: poesia e contexto de produção",img:["lit65.jpg"],gab:"C",
+  exp:"O corvo, a mágoa, o desespero e a dor sem abrigo expressam um pessimismo que o Simbolismo associa ao desencanto com o mundo materialista da era industrial.",
+  fecha:"O Simbolismo responde ao cientificismo buscando o mundo interior e espiritual.",
+  arm:{D:["VIZ","O amor final é transcendência interior, não socialização."],E:["INV","O Simbolismo reage ao cientificismo; não o exalta."],A:["EXT","Imperialismo não aparece no poema."],B:["EXT","O poema não trata a fé como utopia social."]}},
+ {area:"Literatura",cor:"#7862AD",num:66,dif:"Difícil",h:"H17 · C5",tema:"Prosa contemporânea: reflexão sobre a escrita",img:["lit66.jpg"],gab:"E",
+  exp:"O sofrimento é ideia de Sinval, mas o narrador conclui que a ingenuidade é “onde tudo começa” e talvez seja necessária “até o fim da vida para quem escreve”: base para iniciar e manter a escrita.",
+  fecha:"Em textos reflexivos, a conclusão costuma revelar a tese: aqui ela vai do sofrimento para a ingenuidade.",
+  arm:{D:["VNR","O sofrimento aparece, mas não é o foco da conclusão."],A:["EXT","O texto não idealiza o escritor."],B:["EXT","Dilemas éticos não estão em discussão."],C:["EXT","Não há crítica a escritores inexperientes."]}},
+ {area:"Literatura",cor:"#7862AD",num:67,dif:"Difícil",h:"H15 · C5",tema:"Crônica: cotidiano e contexto social",img:["lit67.jpg"],gab:"A",
+  exp:"O cronista enumera o noticiário (falta d'água, crime, conflitos, desastres) e não consegue sair da redação por causa das obrigações: um contexto de problemas sociais e vida agitada, do qual a flor surge como pausa.",
+  fecha:"A crônica lírica parte do banal para revelar o contexto: a flor ganha valor por contraste com as más notícias.",
+  arm:{D:["EXA","Há desejo de contemplação, não crítica ao trabalho formal."],C:["INV","A flor contrasta com as más notícias; não as atenua."],B:["INV","O cronista quer ir ao Jardim; não menospreza a natureza."],E:["EXT","Os jornais publicam as notícias ruins; não fogem delas."]}},
+ {area:"Literatura",cor:"#7862AD",num:68,dif:"Média",h:"H16 · C5",tema:"Conto: metáfora e construção de sentido",img:["lit68.jpg"],gab:"C",
+  exp:"Ao romper a polpa e chegar à semente, o narrador diz: “assim queria escrever, indo ao âmago do âmago”. A metáfora expressa o desejo de uma escrita profunda e verdadeira.",
+  fecha:"A metáfora se confirma pelo termo que o próprio texto compara: a uva leva à escrita.",
+  arm:{B:["VNR","A solidão aparece na cena, mas não é o objeto da metáfora."],D:["VNR","A relação entre irmãos está na cena, mas a metáfora fala da escrita."],E:["VNR","Saborear a uva é o veículo; o alvo é a escrita."],A:["EXT","Autoconhecimento não é o que a comparação diz."]}},
+ {area:"Literatura",cor:"#7862AD",num:69,dif:"Difícil",h:"H19 · C6",tema:"Poesia africana de língua portuguesa",img:["lit69.jpg"],gab:"A",
+  exp:"O eu lírico se apresenta por uma estatueta maconde e se identifica com toda a África. Ao assumir imagens estigmatizadas para dizer “essa sou eu”, expõe e critica a visão que reduz a pluralidade africana a uma só narrativa.",
+  fecha:"A função poética recria sentidos: o poema se apropria de estereótipos sobre a África para questioná-los.",
+  arm:{E:["VIZ","Autorreflexão centrada no emissor é função emotiva."],B:["EXT","Não há retomada analítica da história."],C:["EXT","O misticismo não vira devoção religiosa."],D:["EXT","O tom não é contemplativo: é de afirmação."]}},
+ {area:"Literatura",cor:"#7862AD",num:70,dif:"Média",h:"H17 · C5",tema:"Poesia contemporânea: memória e ancestralidade",img:["lit70.jpg"],gab:"D",
+  exp:"O poema liga os mortos de hoje, atingidos por balas que “não erram o alvo”, à história iniciada nos navios negreiros: a “certidão de óbito” já vinha lavrada desde então. A memória serve para condenar um racismo que persiste.",
+  fecha:"Passado escravista e violência presente: o verso final é a síntese da tese.",
+  arm:{A:["VNR","Reduz a violência a um problema urbano, sem o recorte racial e histórico."],B:["EXT","“Negras estrelas tingidas de sangue” é dor, não beleza dos astros."],C:["INV","O poema denuncia; não agradece."],E:["INV","A morte é violência, não redenção."]}},
+ {area:"Literatura",cor:"#7862AD",num:71,dif:"Média",h:"H24 · C7",tema:"Crônica: construção de atmosfera",img:["lit71.jpg"],gab:"C",
+  exp:"O trecho C descreve o lugar com imagens visuais (“árvores antigas”, “muros imensos”) e impressões subjetivas (“mistério”, “beleza e sossego”): é ele que cria a atmosfera da crônica.",
+  fecha:"Descrição sensorial exige imagens do ambiente percebidas pelos sentidos. Subjetividade sozinha não basta.",
+  arm:{D:["VNR","É subjetivo, mas é reflexão do cronista, não descrição do espaço."],E:["VNR","É subjetivo, mas é desejo do cronista, não descrição do espaço."],A:["VIZ","Narra deslocamentos de forma objetiva."],B:["VIZ","Comenta a cidade de forma objetiva."]}}
 ];
+
+/* ====================== SESSÕES ====================== */
+// Cada sessão é um roteiro. Para criar outra, copie um bloco e troque o nome e as questões.
+// Em "grupos", n = números das questões de Literatura, na ordem em que serão trabalhadas.
+const SESSOES = [
+ {id:"hoje", nome:"Aulão de hoje", desc:"Roteiro misto: Filosofia, Português, Literatura, Artes e Sociologia.", porArea:true,
+  itens:Array.from({length:22},(_,i)=>i)},
+ {id:"lit", nome:"Literatura por habilidade", desc:"As 17 questões de Literatura (55 a 71) agrupadas por habilidade, da média para a difícil.",
+  grupos:[
+   {t:"H15 · Texto e momento de produção",n:[55,63,58,65,67]},
+   {t:"H16 · Construção do texto literário",n:[64,68,56]},
+   {t:"H17 · Valores no patrimônio literário",n:[57,62,70,66]},
+   {t:"H20 · Patrimônio linguístico e identidade",n:[59,61]},
+   {t:"H18 · Organização do texto",n:[60]},
+   {t:"H19 · Função da linguagem",n:[69]},
+   {t:"H24 · Estratégias argumentativas",n:[71]}
+  ]},
+ {id:"minha", nome:"Minha seleção", desc:"Monte o seu roteiro: toque em ☆ nos cartões das outras sessões.", minha:true}
+];
+const litIdx = n => Q.findIndex(q=>q.area==="Literatura" && q.num===n);
+SESSOES.forEach(S=>{ if(S.grupos) S.grupos.forEach(g=>g.itens=g.n.map(litIdx).filter(i=>i>=0)) });
 const ARM = {
   VNR:{nome:"Verdade que não responde",dica:"Antes de marcar, releia o comando. A alternativa pode até ser verdadeira e mesmo assim não responder ao que foi pedido."},
   EXT:{nome:"Extrapola",dica:"Só vale o que o texto sustenta. Se você precisou completar com algo de fora, desconfie."},
@@ -405,7 +491,10 @@ function aluno(){
     const melhorQueTurma = feitas.filter(x=>x.m.r===x.q.gab && x.m.pct!=null && x.m.pct<50).length;
     let h = `<div class="panel hero"><h1>Seu desempenho</h1><p>${feitas.length} questões com gabarito até agora</p>
       <div class="stat"><div><b>${ac}</b>acertos</div><div><b>${resp-ac}</b>erros</div><div><b>${feitas.length-resp}</b>sem resposta</div></div></div>`;
+    const habs = {};
+    feitas.forEach(x=>{ const k=x.q.h.split(" · ")[0]; const a=habs[k]||(habs[k]={t:0,a:0}); a.t++; if(x.m.r===x.q.gab) a.a++ });
     h += `<div class="panel"><p class="big">Por área</p><ul class="list">`+Object.entries(areas).map(([n,v])=>`<li><span class="dot ${v.a===v.t?"ok":v.a?"na":"no"}">${v.a}/${v.t}</span><span>${esc(n)}</span></li>`).join("")+`</ul></div>`;
+    if(Object.keys(habs).length>1) h += `<div class="panel"><p class="big">Por habilidade</p><ul class="list">`+Object.entries(habs).sort((a,b)=>parseInt(a[0].slice(1))-parseInt(b[0].slice(1))).map(([n,v])=>`<li><span class="dot ${v.a===v.t?"ok":v.a?"na":"no"}">${v.a}/${v.t}</span><span>${esc(n)}</span></li>`).join("")+`</ul></div>`;
     if(top.length){
       const [k,n] = top[0];
       h += `<div class="panel" style="--hc:var(--amber)"><p class="big">A armadilha que mais pegou você</p><div class="trap"><b>${esc(ARM[k].nome)}</b> · caiu ${n} ${n>1?"vezes":"vez"}<br>${esc(ARM[k].dica)}</div>`;
@@ -512,6 +601,11 @@ function professor(){
   document.title = "Aulão ENEM · Painel do professor";
   let E = null, resps = [], desliga = null, ouvindoK = null, verParcial = false, telao = false;
   let hist = LS.get("prof_hist",{});   // sessao -> {i: {cont,total}}
+  let sessAtual = LS.get("prof_sess","hoje"); if(!SESSOES.some(x=>x.id===sessAtual)) sessAtual="hoje";
+  let minha = LS.get("prof_minha",[]).filter(i=>Q[i]);
+  const S = () => SESSOES.find(x=>x.id===sessAtual);
+  function ordem(ss){ ss=ss||S(); if(ss.minha) return minha.slice(); if(ss.grupos) return ss.grupos.flatMap(g=>g.itens); return ss.itens.slice() }
+  function proxima(){ const o=ordem(); const p=o.indexOf(E.q); return p<0 ? o[0] : o[p+1] }
 
   function loginTela(msg){
     $("#app").innerHTML = `<div class="wrap"><div class="panel"><p class="big">Painel do professor</p>
@@ -549,9 +643,12 @@ function professor(){
   const urlAluno = location.origin + location.pathname.replace(/index\.html$/,"") + (MOCK?"?mock=1":"");
 
   function blocos(){
-    const out=[]; Q.forEach((q,i)=>{ const u=out[out.length-1]; if(u && u.area===q.area) u.itens.push(i); else out.push({area:q.area,cor:q.cor,itens:[i]}) });
+    const ss=S();
+    if(ss.grupos) return ss.grupos.map(g=>({area:g.t,cor:"#7862AD",itens:g.itens}));
+    const out=[]; ordem(ss).forEach(i=>{ const q=Q[i]; const u=out[out.length-1]; if(u && u.area===q.area) u.itens.push(i); else out.push({area:q.area,cor:q.cor,itens:[i]}) });
     return out;
   }
+  const difTag = q => q.dif ? `<span class="dif ${q.dif==="Difícil"?"d":q.dif==="Fácil"?"f":"m"}">${esc(q.dif)}</span>` : "";
   function desenha(){
     if(!E) return;
     const q = Q[E.q];
@@ -570,19 +667,24 @@ function professor(){
           <div style="text-align:right"><span class="pill gab">Gabarito ${q.gab}</span></div></div>`;
       if(E.fase==="aberta") h += `<button class="btn tang" data-a="encerrar">Encerrar votação</button>`;
       if(E.fase==="fechada") h += `<button class="btn solid" data-a="gab">Mostrar gabarito aos alunos</button>`;
-      if(E.fase==="gabarito" && E.q<Q.length-1) h += `<button class="btn solid" data-a="prox">Liberar a próxima: ${esc(Q[E.q+1].area)} · Q${Q[E.q+1].num} →</button>`;
-      if(E.fase==="gabarito" && E.q===Q.length-1) h += `<button class="btn solid" data-a="fim">Finalizar aulão (relatório final)</button>`;
+      const px = proxima();
+      if(E.fase==="gabarito" && px!=null) h += `<button class="btn solid" data-a="prox">Liberar a próxima: ${esc(Q[px].area)} · Q${Q[px].num} →</button>`;
+      if(E.fase==="gabarito" && px==null) h += `<button class="btn solid" data-a="fim">Fim da sessão “${esc(S().nome)}” · Finalizar aulão</button>`;
       if(E.fase==="aberta") h += `<button class="btn" data-a="parcial">${verParcial?"Esconder":"Ver"} parcial (só para você)</button>`;
       if(mostrar) h += barras(cc,q.gab,tt);
       h += `<button class="btn" data-a="telao">Abrir modo telão</button></div></div></div>`;
     } else if(E.fase==="espera"){
-      h += `<div class="panel hero"><h1>Pronto para começar</h1><p>Os alunos entram pelo QR code e ficam aguardando. Escolha a questão no roteiro abaixo.</p>
-        <div class="row" style="margin-top:12px"><button class="btn tang" data-a="lib" data-i="0">Liberar a primeira: ${esc(Q[0].area)} · Q${Q[0].num}</button><button class="btn" data-a="telao" style="background:rgba(255,255,255,.12);color:#fff;border-color:rgba(255,255,255,.35)">Modo telão (QR code)</button></div></div>`;
+      h += `<div class="panel hero"><h1>Pronto para começar</h1><p>Os alunos entram pelo QR code e ficam aguardando. Sessão escolhida: <b>${esc(S().nome)}</b>.</p>
+        <div class="row" style="margin-top:12px">${ordem().length?`<button class="btn tang" data-a="lib" data-i="${ordem()[0]}">Liberar a primeira: ${esc(Q[ordem()[0]].area)} · Q${Q[ordem()[0]].num}</button>`:`<button class="btn" disabled style="color:#fff">Escolha questões em “Minha seleção”</button>`}<button class="btn" data-a="telao" style="background:rgba(255,255,255,.12);color:#fff;border-color:rgba(255,255,255,.35)">Modo telão (QR code)</button></div></div>`;
     } else if(E.fase==="fim"){
       h += `<div class="panel hero"><h1>Aulão finalizado</h1><p>Os alunos estão vendo o relatório final no celular.</p></div>`;
     }
     // ---- ROTEIRO POR MATÉRIA ----
-    h += `<h2 class="sec">Roteiro do aulão</h2>`;
+    h += `<h2 class="sec">Sessões</h2><div class="tabs">`+SESSOES.map(ss=>{const o=ordem(ss);const f=o.filter(i=>hs[i]).length;
+      return `<button class="tab" data-a="sess" data-s="${ss.id}" aria-pressed="${ss.id===sessAtual}">${esc(ss.nome)}<small>${o.length} questões${f?` · ${f} feitas`:""}</small></button>`}).join("")+`</div>
+      <p class="sdesc">${esc(S().desc)}</p>`;
+    if(S().minha && !minha.length) h += `<div class="panel"><p class="big">Sua seleção está vazia</p><p class="muted" style="margin:0">Abra “Aulão de hoje” ou “Literatura por habilidade” e toque na ☆ das questões que quer trabalhar. Elas aparecem aqui, na ordem em que você marcar.</p></div>`;
+    if(S().minha && minha.length) h += `<button class="btn" data-a="limpa" style="width:auto;display:inline-block;padding:8px 14px;min-height:40px">Limpar seleção</button>`;
     blocos().forEach(bl=>{
       const feitas = bl.itens.filter(i=>hs[i]).length;
       h += `<div class="panel bloco" style="--hc:${bl.cor}"><div class="bloco-h"><span class="area" style="background:${bl.cor}">${esc(bl.area)}</span><span class="muted small">${feitas}/${bl.itens.length} feitas</span></div><div class="cards">`;
@@ -590,9 +692,10 @@ function professor(){
         const qq=Q[i], v=hs[i], cur=(i===E.q && E.fase!=="espera" && E.fase!=="fim");
         const p = v&&v.total?Math.round((v.cont[qq.gab]||0)*100/v.total):null;
         const st = cur?`<span class="pill ok">● Agora</span>`:v?`<span class="pill">${p}% acertaram</span>`:`<span class="pill">Não liberada</span>`;
-        h += `<div class="qcard ${cur?"cur":""} ${v&&!cur?"done":""}">
+        const on=minha.includes(i);
+        h += `<div class="qcard ${cur?"cur":""} ${v&&!cur?"done":""}"><button class="star" data-a="star" data-i="${i}" aria-pressed="${on}" aria-label="${on?"Tirar da":"Pôr na"} minha seleção">${on?"★":"☆"}</button>
           <div class="thumb" data-zoom="./${qq.img[qq.img.length-1]}"><img loading="lazy" src="./${qq.img[qq.img.length-1]}" alt="Prévia Q${qq.num}"></div>
-          <div class="qinfo"><b>Questão ${qq.num}</b> <span class="small muted">· ${esc(qq.h)} · gab. ${qq.gab}</span><div class="small">${esc(qq.tema)}</div><div style="margin-top:6px">${st}</div></div>
+          <div class="qinfo"><b>${S().minha?esc(qq.area)+" · ":""}Questão ${qq.num}</b>${difTag(qq)} <span class="small muted">· ${esc(qq.h)} · gab. ${qq.gab}</span><div class="small">${esc(qq.tema)}</div><div style="margin-top:6px">${st}</div></div>
           <button class="btn ${cur?"":"solid"} mini" data-a="lib" data-i="${i}" ${cur?"disabled":""}>${cur?"Em andamento":v?"Liberar de novo":"Liberar"}</button></div>`;
       });
       h += `</div></div>`;
@@ -632,7 +735,10 @@ function professor(){
     if(a==="lib"){ const i=+b.dataset.i; if(E.fase==="aberta" && i!==E.q && !confirm("A votação atual ainda está aberta. Liberar outra questão mesmo assim?")) return; await liberar(i) }
     if(a==="encerrar") await encerrar();
     if(a==="gab") await gabarito();
-    if(a==="prox") await liberar(E.q+1);
+    if(a==="prox"){ const px=proxima(); if(px!=null) await liberar(px) }
+    if(a==="sess"){ sessAtual=b.dataset.s; LS.set("prof_sess",sessAtual); desenha(); return }
+    if(a==="star"){ const i=+b.dataset.i; minha = minha.includes(i)?minha.filter(x=>x!==i):[...minha,i]; LS.set("prof_minha",minha); toast(minha.includes(i)?`Q${Q[i].num} na sua seleção (${minha.length})`:`Q${Q[i].num} saiu da seleção`); desenha(); return }
+    if(a==="limpa"){ if(confirm("Limpar a sua seleção?")){ minha=[]; LS.set("prof_minha",minha); desenha() } return }
     if(a==="fim"){ if(confirm("Finalizar o aulão? Os alunos verão o relatório final.")) await muda({fase:"fim"}) }
     if(a==="espera") await muda({fase:"espera"});
     if(a==="parcial"){ verParcial=!verParcial; desenha() }
