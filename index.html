@@ -182,7 +182,7 @@ const FB_CFG = window.FB_CFG || {};
 const FB_V = "12.19.0";
 // Login do painel: só a senha é digitada; o e-mail fica fixo aqui.
 const PROF_EMAIL = "professor@aulao.app";
-const VERSAO = "05/11 · presença e cartão";
+const VERSAO = "05/11 · 09:30";
 
 /* ====================== QUESTÕES ====================== */
 // armadilhas: VNR = verdade que não responde · EXT = extrapola · INV = inverte · EXA = exagera · VIZ = conceito vizinho
@@ -458,7 +458,7 @@ function aluno(){
   if(!dev){ dev = (crypto.randomUUID?crypto.randomUUID():String(Date.now())+Math.random()).replace(/-/g,"").slice(0,16); LS.set("aulao_dev",dev) }
   let E = null, minhas = {}, sessao = null, conexao = "…";
   const chave = s => "aulao_resp_"+s;
-  function salvar(){ LS.set(chave(sessao), minhas) }
+  function salvar(){ if(sessao) LS.set(chave(sessao), minhas) }
 
   async function enviarPendentes(){
     if(!sessao) return;
@@ -646,7 +646,7 @@ function aluno(){
       if(outras.length) h += `<div class="panel" style="--hc:var(--tang)"><p class="big">Por que as outras enganam</p><ul class="list">`+outras.map(l=>`<li><span class="dot">${l}</span><span><b>${esc(ARM[q.arm[l][0]].nome)}</b> · ${esc(q.arm[l][1])}</span></li>`).join("")+`</ul></div>`;
       if(tot) h += `<div class="panel" style="--hc:var(--violet)"><p class="big">Como a turma respondeu</p><p class="small muted" style="margin:0">${tot} respostas · ${pct}% acertaram</p>${barras(E.cont,q.gab,tot)}</div>`;
       h += `<div class="alts" style="display:none"></div>`;
-      h += `<button class="btn" data-a="resumo">Ver meu desempenho</button>`;
+      h += `<div class="row"><button class="btn" data-a="resumo">Ver meu desempenho</button><button class="btn tang" data-a="share">Compartilhar meu resultado</button></div>`;
     }
     h += `</div>`;
     render(h);
@@ -654,15 +654,21 @@ function aluno(){
   $("#app").addEventListener("click",e=>{
     const b = e.target.closest("[data-l]"); if(b && !b.disabled){ marcar(b.dataset.l); return }
     const a = e.target.closest("[data-a]"); if(!a) return;
-    if(a.dataset.a==="resumo"){ abrirFolha("Meu desempenho", resumoHTML()) }
+    if(a.dataset.a==="resumo"){ abrirFolha("Meu desempenho", resumoHTML()+cartaoHTML()); geraCartao() }
     if(a.dataset.a==="voltar"){ verResumo=false; desenha() }
     if(a.dataset.a==="share"){ compartilhar() }
   });
+  $("#layer").addEventListener("click",e=>{ if(e.target.closest('[data-a="share"]')) compartilhar() });
 
   function recebe(e){
+    if(!E && e && e.rl) LS.set("aulao_rl",e.rl);   // página acabou de abrir: já é a versão nova
     if(E && e.v && E.v && e.v < E.v) return;   // ignora estado mais velho
     conexao="ok"; clearTimeout(prazo);
     if(!e.s) e.s="inicial";
+    // professor pediu para atualizar o app: recarrega uma vez (respostas e histórico ficam guardados no celular)
+    if(e.rl && E){ const visto=LS.get("aulao_rl",0);
+      if(e.rl>visto){ LS.set("aulao_rl",e.rl); salvar(); setTimeout(()=>{ const u=new URL(location.href); u.searchParams.set("r",e.rl); location.replace(u.toString()) }, 300+Math.random()*4000); }
+    }
     if(sessao!==e.s){ sessao=e.s; minhas = LS.get(chave(sessao),{}); setTimeout(batida,300) }
     const mudouQ = !E || E.q!==e.q || E.fase!==e.fase;
     E = e;
@@ -694,9 +700,11 @@ function professor(){
   let hist = LS.get("prof_hist",{});   // sessao -> {i: {cont,total}}
   let pres = [], presK = null, presDesliga = null;
   const msT = t => !t ? Date.now() : typeof t==="number" ? t : t.toMillis ? t.toMillis() : Date.now();
-  function online(){ const lim=Date.now()-70000; return pres.filter(p=>msT(p.t)>=lim).length }
+  function vivos(){ const lim=Date.now()-90000, v=new Set(pres.filter(p=>msT(p.t)>=lim).map(p=>p.d));
+    if(E && E.fase!=="espera" && E.fase!=="fim") resps.forEach(r=>v.add(r.d)); return v }
+  function online(){ return vivos().size }
   function ouvirPres(){ const k=E.s+"_on"; if(presK===k) return; if(presDesliga) presDesliga(); pres=[]; presK=k; presDesliga=BE.ouvirRespostas(k,l=>{pres=l; atualizaOnline()}) }
-  function atualizaOnline(){ const n=online(), t=pres.length;
+  function atualizaOnline(){ const n=online(), t=new Set([...pres.map(p=>p.d),...vivos()]).size;
     document.querySelectorAll("[data-online]").forEach(el=>el.textContent = el.dataset.online==="curto" ? `👥 ${n}` : `${n} conectado${n===1?"":"s"} agora${t>n?` · ${t} entraram`:""}`) }
   setInterval(atualizaOnline, 10000);
   let sessAtual = LS.get("prof_sess","hoje"); if(!SESSOES.some(x=>x.id===sessAtual)) sessAtual="hoje";
@@ -807,6 +815,7 @@ function professor(){
     }
     h += `<div class="panel" style="--hc:var(--muted)"><p class="big">Controle geral</p>
       <div class="row"><button class="btn" data-a="espera">Pôr todos em “aguarde”</button>${E.fase!=="fim"?`<button class="btn" data-a="fim">Finalizar aulão</button>`:""}</div>
+      <button class="btn" data-a="atualiza">Atualizar o app nos celulares (não perde respostas)</button>
       <button class="btn danger" data-a="zerar">Zerar tudo (nova sessão, para depois do teste)</button>
       <p class="small muted">Link dos alunos: <b>${esc(urlAluno)}</b></p></div><img class="logo-g" src="logo.jpg" alt="Genoma Sistema de Ensino"></div>`;
     render(h); atualizaOnline();
@@ -840,6 +849,7 @@ function professor(){
     if(a==="limpa"){ if(confirm("Limpar a sua seleção?")){ minha=[]; LS.set("prof_minha",minha); desenha() } return }
     if(a==="fim"){ if(confirm("Finalizar o aulão? Os alunos verão o relatório final.")) await muda({fase:"fim"}) }
     if(a==="espera") await muda({fase:"espera"});
+    if(a==="atualiza"){ if(confirm("Recarregar a página nos celulares? Cada aluno volta para onde está agora, com as respostas e o desempenho guardados.")){ await muda({rl:Date.now()}); toast("Pedido enviado. Os celulares recarregam nos próximos segundos.") } }
     if(a==="parcial"){ verParcial=!verParcial; desenha() }
     if(a==="telao"){ telao=true; desenhaTelao() }
     if(a==="zerar"){ if(confirm("Zerar tudo? Começa uma sessão nova: os celulares dos alunos também começam do zero.")){ await muda({s:"s"+Date.now().toString(36),q:-1,fase:"espera",cont:null,total:0}) } }
