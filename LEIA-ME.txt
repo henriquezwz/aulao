@@ -13,8 +13,10 @@ AULÃO ENEM — como publicar (5 minutos)
 4) Ensaio curto (3 ou 4 celulares, 2 questões). Depois, no painel:
    "Zerar tudo (nova sessão)".
 
-Para trocar algo depois: edite os arquivos e arraste a pasta de novo
-no mesmo site (Netlify > seu site > Deploys > arraste ali).
+Publicação atual: GitHub Pages (repositório henriquezwz/aulao, branch main).
+   - Alunos:     https://henriquezwz.github.io/aulao/
+   - Professor:  https://henriquezwz.github.io/aulao/?p=prof
+Cada alteração enviada para a main é publicada sozinha em 1 a 2 minutos.
 
 SESSÕES (novo)
 No painel do professor, em "Sessões", escolha o roteiro:
