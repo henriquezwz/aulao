@@ -616,7 +616,7 @@ function aluno(){
     if(!E){ return }
     let h = topo()+`<div class="wrap">`;
     if(E.fase==="mensagem"){
-      render(topo()+`<div class="surpresa"><span class="ttl">Para vocês, turma</span><img class="poema" src="poema.jpg" alt="Poema “Tu tens um medo”, de Cecília Meireles"><p class="ass">Com amor,<b>Paulo</b></p></div>`);
+      render(topo()+`<div class="surpresa"><span class="ttl">Para vocês, turma</span><img class="poema" src="poema-memoria.jpg" alt="Poema “Memória”, de Carlos Drummond de Andrade"><p class="ass">Com amor,<b>Paulo</b></p></div>`);
       window.scrollTo(0,0); return;
     }
     if(E.fase==="fim"){
@@ -689,7 +689,7 @@ function aluno(){
     enviarPendentes();
     // pré-carrega a imagem da próxima questão
     const prox = Q[E.q>=0?E.q+1:0]; if(prox) prox.img.forEach(f=>{const i=new Image();i.src="./"+f});
-    if(!window._poema){ window._poema=new Image(); window._poema.src="poema.jpg" }
+    if(!window._poema){ window._poema=new Image(); window._poema.src="poema-memoria.jpg" }
   }
   let prazo = setTimeout(()=>{ if(!E){ $("#app").innerHTML=`<div class="wrap"><div class="panel"><p class="big">A conexão está lenta</p><p class="muted">Continuamos tentando sozinhos. Se demorar, confira o Wi-Fi ou os dados móveis e toque abaixo.</p><button class="btn solid" onclick="location.reload()">Tentar de novo</button></div></div>` } }, 12000);
   addEventListener("offline",()=>{conexao="off";desenha()});
@@ -828,7 +828,7 @@ function professor(){
         const errMais = LET.filter(l=>l!==qq.gab).sort((a,b)=>(v.cont[b]||0)-(v.cont[a]||0))[0];
         return `<li><span class="dot ${p>=60?"ok":p>=40?"na":"no"}" style="min-width:46px">${p}%</span><span><b>${esc(qq.area)} · Q${qq.num}</b> · ${v.total} resp.<br><span class="small muted">Distrator mais marcado: ${errMais} (${v.total?Math.round((v.cont[errMais]||0)*100/v.total):0}%)${qq.arm[errMais]?" · "+ARM[qq.arm[errMais][0]].nome:""}</span></span></li>`}).join("")+`</ul></div>`;
     }
-    if(E.fase!=="mensagem") h += `<div class="panel" style="--hc:var(--tang)"><p class="big">Surpresa da despedida</p><div class="row" style="align-items:center"><img src="poema.jpg" alt="" style="width:84px;border-radius:8px;border:1px solid var(--line)"><p class="small muted" style="margin:0;flex:1">“Tu tens um medo”, de Cecília Meireles, com “Com amor, Paulo”. Aparece em tela cheia no celular dos alunos, sem alternativas. Ninguém vê antes de você tocar.</p></div><button class="btn tang" data-a="msg">Mostrar o poema nos celulares</button></div>`;
+    if(E.fase!=="mensagem") h += `<div class="panel" style="--hc:var(--tang)"><p class="big">Surpresa da despedida</p><div class="row" style="align-items:center"><img src="poema-memoria.jpg" alt="" style="width:84px;border-radius:8px;border:1px solid var(--line)"><p class="small muted" style="margin:0;flex:1">“Memória”, de Carlos Drummond de Andrade, com “Com amor, Paulo”. Aparece em tela cheia no celular dos alunos, sem alternativas. Ninguém vê antes de você tocar.</p></div><button class="btn tang" data-a="msg">Mostrar o poema nos celulares</button></div>`;
     h += `<div class="panel" style="--hc:var(--muted)"><p class="big">Controle geral</p>
       <div class="row"><button class="btn" data-a="espera">Pôr todos em “aguarde”</button>${E.fase!=="fim"?`<button class="btn" data-a="fim">Finalizar aulão</button>`:""}</div>
       <button class="btn" data-a="atualiza">Atualizar o app nos celulares (não perde respostas)</button>
@@ -847,7 +847,7 @@ function professor(){
     else if(E.fase==="aberta"){ esq = `<h1>${esc(q.area)} · Questão ${q.num}</h1><p style="font-size:3vh" class="muted">Votação aberta</p><div class="count">${c.total}</div><p style="font-size:3.5vh;margin:0">responderam · <span data-online></span></p>` }
     else if(E.fase==="fechada"){ esq = `<h1>${esc(q.area)} · Questão ${q.num}</h1><p style="font-size:3vh" class="muted">Votação encerrada · ${E.total} respostas</p>${barras(E.cont,null,E.total)}` }
     else if(E.fase==="gabarito"){ esq = `<h1>${esc(q.area)} · Questão ${q.num} · Gabarito ${q.gab}</h1><p style="font-size:3vh" class="muted">${E.total} respostas</p>${barras(E.cont,q.gab,E.total)}` }
-    else if(E.fase==="mensagem"){ esq = `<h1>Para vocês, turma 💚</h1><p style="font-size:4vh;font-style:italic">Com amor, Paulo</p>`; t.innerHTML=`<button class="btn close" data-t="sair">Sair do telão ✕</button><div class="tg"><div><img class="marca" src="marca.jpg" alt="Genoma Prevê">${esq}</div><div><img class="poema" src="poema.jpg" alt="Poema"></div></div>`; return }
+    else if(E.fase==="mensagem"){ esq = `<h1>Para vocês, turma 💚</h1><p style="font-size:4vh;font-style:italic">Com amor, Paulo</p>`; t.innerHTML=`<button class="btn close" data-t="sair">Sair do telão ✕</button><div class="tg"><div><img class="marca" src="marca.jpg" alt="Genoma Prevê">${esq}</div><div><img class="poema" src="poema-memoria.jpg" alt="Poema"></div></div>`; return }
     else { esq = `<h1>Fim do aulão</h1><p style="font-size:4vh">Confiram o relatório no celular. Boa prova!</p>` }
     setTimeout(atualizaOnline,0);
     t.innerHTML = `<button class="btn close" data-t="sair">Sair do telão ✕</button><div class="tg"><div><img class="marca" src="marca.jpg" alt="Genoma Prevê">${esq}</div><div class="qr">${qr?`<img src="${qr}" alt="QR code">`:""}<div class="url">${esc(urlAluno.replace(/^https?:\/\//,""))}</div></div></div>`;
