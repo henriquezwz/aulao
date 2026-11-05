@@ -153,6 +153,8 @@ input{font:inherit;width:100%;padding:12px;border-radius:10px;border:1px solid v
 .surpresa .ass b{display:block;font-style:normal;font-family:var(--f-ui);font-size:30px;margin-top:2px}
 @keyframes surge{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
 #telao .poema{max-height:72vh;max-width:44vw;border-radius:16px;background:#fff}
+.fimtela{gap:12px;padding-top:16px}
+.cardfull{display:block;height:calc(100svh - 250px);min-height:360px;max-width:100%;aspect-ratio:9/16;object-fit:contain;border-radius:18px;box-shadow:0 14px 40px rgba(0,0,0,.4);background:#08321E;animation:surge 1s ease-out}
 .btn.mini{margin:10px 12px 12px;width:auto;min-height:40px;padding:8px 12px}
 /* telão */
 #telao{position:fixed;inset:0;background:radial-gradient(120% 140% at 85% 0%,#1C6B43 0%,var(--g-dark) 45%,var(--g-deep) 100%);color:#fff;z-index:40;display:none;padding:3vh 4vw;overflow:auto}
@@ -575,7 +577,7 @@ function aluno(){
     x.fillStyle="#fff"; let fz=200; do{ x.font=`800 ${fz}px ${FF}`; fz-=8 }while(x.measureText(D.pct+"%").width>2*R-150 && fz>90); x.fillText(D.pct+"%",cx,cy-10);
     x.font=`500 46px ${FF}`; x.fillStyle="rgba(255,255,255,.82)"; x.fillText("de acertos",cx,cy+120);
     // números
-    x.fillStyle="#fff"; x.font=`800 76px ${FF}`; x.fillText(`${D.ac} de ${D.tot} questões`,cx,1225);
+    x.fillStyle="#fff"; x.font=`800 76px ${FF}`; x.fillText(`${D.ac} de ${D.tot} ${D.tot===1?"questão":"questões"}`,cx,1225);
     if(D.destaque){ x.font=`500 42px ${FF}`; x.fillStyle="#F2C08A"; x.fillText(D.destaque,cx,1305) }
     // frase
     x.font=`800 64px ${FF}`; const ls=quebra(x,"“"+D.frase+"”",880); let y=1470-((ls.length-1)*80)/2;
@@ -620,10 +622,13 @@ function aluno(){
       window.scrollTo(0,0); return;
     }
     if(E.fase==="fim"){
-      if(E.fase==="fim") h += `<div class="panel"><p class="big">Fim do aulão! Boa prova 💪</p><p class="muted">Comando → verbo → pista. Leia como quem sabe o que o ENEM quer.</p></div>`;
-      h += cartaoHTML() + resumoHTML();
-      if(E.fase!=="fim") h += `<button class="btn solid" data-a="voltar">Voltar para a questão</button>`;
-      h += `</div>`; render(h); geraCartao(); return;
+      const D=dadosCartao();
+      if(!D.tot){ render(topo()+`<div class="surpresa"><span class="ttl">Fim do aulão</span><p style="font-size:30px;font-weight:800;margin:0">Boa prova! 💪</p><p class="ass">Genoma:<b>feito para liderar.</b></p></div>`); return }
+      render(topo()+`<div class="surpresa fimtela"><span class="ttl">Fim do aulão · seu resultado</span>
+        <img id="cartao" class="cardfull" alt="Cartão: ${D.pct}% de acertos, ${D.ac} de ${D.tot} questões. ${esc(D.frase)}" ${cartaoURL?`src="${cartaoURL}"`:""}>
+        <button class="btn tang" data-a="share" style="max-width:440px">Compartilhar nos stories</button>
+        <button class="btn" data-a="resumo" style="max-width:440px;background:rgba(255,255,255,.12);color:#fff;border-color:rgba(255,255,255,.35)">Ver meu desempenho completo</button></div>`);
+      geraCartao(); window.scrollTo(0,0); return;
     }
     const q = Q[E.q];
     if(E.fase==="espera" || !q){
@@ -665,7 +670,7 @@ function aluno(){
   $("#app").addEventListener("click",e=>{
     const b = e.target.closest("[data-l]"); if(b && !b.disabled){ marcar(b.dataset.l); return }
     const a = e.target.closest("[data-a]"); if(!a) return;
-    if(a.dataset.a==="resumo"){ abrirFolha("Meu desempenho", resumoHTML()+cartaoHTML()); geraCartao() }
+    if(a.dataset.a==="resumo"){ abrirFolha("Meu desempenho", E.fase==="fim"?resumoHTML():resumoHTML()+cartaoHTML()); geraCartao() }
     if(a.dataset.a==="voltar"){ verResumo=false; desenha() }
     if(a.dataset.a==="share"){ compartilhar() }
   });
