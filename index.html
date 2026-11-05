@@ -144,6 +144,8 @@ input{font:inherit;width:100%;padding:12px;border-radius:10px;border:1px solid v
 .qcard{position:relative}
 .dif{font-size:11px;font-weight:700;padding:2px 7px;border-radius:6px;color:#fff;margin-left:4px;vertical-align:1px}
 .dif.m{background:#BF7129}.dif.d{background:#7E5CBA}.dif.f{background:#2E8B57}
+.cardshare{display:block;width:100%;max-width:360px;margin:0 auto 12px;border-radius:18px;box-shadow:0 10px 30px rgba(8,50,30,.35);aspect-ratio:9/16;background:var(--g-deep)}
+.pill.on{background:#E3F4E8;color:#0F5132}
 .btn.mini{margin:10px 12px 12px;width:auto;min-height:40px;padding:8px 12px}
 /* telão */
 #telao{position:fixed;inset:0;background:radial-gradient(120% 140% at 85% 0%,#1C6B43 0%,var(--g-dark) 45%,var(--g-deep) 100%);color:#fff;z-index:40;display:none;padding:3vh 4vw;overflow:auto}
@@ -180,7 +182,7 @@ const FB_CFG = window.FB_CFG || {};
 const FB_V = "12.19.0";
 // Login do painel: só a senha é digitada; o e-mail fica fixo aqui.
 const PROF_EMAIL = "professor@aulao.app";
-const VERSAO = "05/11 · sessões";
+const VERSAO = "05/11 · presença e cartão";
 
 /* ====================== QUESTÕES ====================== */
 // armadilhas: VNR = verdade que não responde · EXT = extrapola · INV = inverte · EXA = exagera · VIZ = conceito vizinho
@@ -417,7 +419,7 @@ const BE = MOCK ? (()=>{
     async iniciar(){},
     onEstado(cb){subs.estado.push(cb); setTimeout(()=>cb(getE()),50)},
     async buscar(){ return getE() },
-    async enviar(id,dados){ if(LS.get("mock_offline",false)) throw new Error("offline"); const r=getR(); r[id]=dados; LS.set("mock_resp",r); ch.postMessage("resp"); subs.resp.forEach(f=>f()); },
+    async enviar(id,dados){ if(LS.get("mock_offline",false)) throw new Error("offline"); const r=getR(); r[id]={...dados,t:Date.now()}; LS.set("mock_resp",r); ch.postMessage("resp"); subs.resp.forEach(f=>f()); },
     async login(){return {uid:"prof"}},
     async usuarioAtual(){return {uid:"prof"}},
     async setEstado(e){LS.set("mock_estado",e); ch.postMessage("estado"); subs.estado.forEach(f=>f(e))},
@@ -468,6 +470,13 @@ function aluno(){
     }
   }
   setInterval(enviarPendentes, 8000);
+  // presença: um "sinal de vida" a cada 25 s enquanto a página estiver aberta na tela
+  async function batida(){
+    if(!sessao || document.hidden) return;
+    try{ await comPrazo(BE.enviar(sessao+"_on_"+dev,{d:dev,k:sessao+"_on",r:"A"}),10000) }catch(e){}
+  }
+  setInterval(batida, 25000);
+  document.addEventListener("visibilitychange",()=>{ if(!document.hidden) batida() });
   addEventListener("online", enviarPendentes);
   document.addEventListener("visibilitychange",()=>{ if(!document.hidden) enviarPendentes() });
 
@@ -510,6 +519,87 @@ function aluno(){
     return h;
   }
 
+  const FRASES = [
+    [100,["Gabaritou o aulão. Agora é repetir no ENEM.","Nota máxima. Feito para liderar."]],
+    [80,["Feito para liderar.","Leitura afiada, resposta certa.","O ENEM que se prepare."]],
+    [60,["No caminho certo: cada acerto é um passo rumo ao ENEM.","Comando, verbo, pista. Está funcionando."]],
+    [40,["Revisar é transformar esforço em confiança.","Cada erro de hoje é um acerto no ENEM."]],
+    [0,["Todo líder começa revisando.","Errar aqui é acertar lá. Bora revisar!"]]
+  ];
+  function dadosCartao(){
+    const feitas = Q.map((q,i)=>({q,i,m:minhas[i]})).filter(x=>x.m && x.m.revelada);
+    const tot=feitas.length, ac=feitas.filter(x=>x.m.r===x.q.gab).length;
+    const pct = tot?Math.round(ac*100/tot):0;
+    const g={}; feitas.forEach(x=>{const k=x.q.area;const a=g[k]||(g[k]={t:0,a:0});a.t++;if(x.m.r===x.q.gab)a.a++});
+    let destaque=null; const ks=Object.keys(g);
+    if(ks.length>1){ const [n,v]=Object.entries(g).sort((a,b)=>(b[1].a/b[1].t)-(a[1].a/a[1].t)||b[1].a-a[1].a)[0]; if(v.a) destaque=`Destaque: ${n} · ${v.a}/${v.t}` }
+    else { const hb={}; feitas.forEach(x=>{const k=x.q.h.split(" · ")[0];const a=hb[k]||(hb[k]={t:0,a:0});a.t++;if(x.m.r===x.q.gab)a.a++});
+      const e=Object.entries(hb).filter(([,v])=>v.t>1).sort((a,b)=>(b[1].a/b[1].t)-(a[1].a/a[1].t))[0]; if(e&&e[1].a) destaque=`Destaque: ${ks[0]||""} ${e[0]} · ${e[1].a}/${e[1].t}` }
+    const lista = FRASES.find(([m])=>pct>=m)[1];
+    let hsh=0; for(const ch of dev+sessao) hsh=(hsh*31+ch.charCodeAt(0))>>>0;
+    return {tot,ac,pct,destaque,frase:lista[hsh%lista.length]};
+  }
+  let cartaoURL=null, cartaoBlob=null, cartaoChave="";
+  function quebra(ctx,txt,larg){ const p=txt.split(" "),l=[];let at=""; p.forEach(w=>{const t=at?at+" "+w:w; if(ctx.measureText(t).width>larg&&at){l.push(at);at=w}else at=t}); if(at)l.push(at); return l }
+  async function geraCartao(){
+    const D=dadosCartao(); const ch=JSON.stringify(D); if(ch===cartaoChave && cartaoURL) return;
+    cartaoChave=ch;
+    const W=1080,H=1920,c=document.createElement("canvas"); c.width=W;c.height=H; const x=c.getContext("2d");
+    const FF=getComputedStyle(document.body).fontFamily||"Arial, sans-serif";
+    // fundo
+    let g=x.createRadialGradient(W*.85,0,50,W*.6,H*.35,H*1.05); g.addColorStop(0,"#1C6B43"); g.addColorStop(.45,"#0F5132"); g.addColorStop(1,"#08321E");
+    x.fillStyle=g; x.fillRect(0,0,W,H);
+    // linhas de "globo" ao fundo
+    x.strokeStyle="rgba(255,255,255,.06)"; x.lineWidth=2;
+    for(let r=380;r<1500;r+=170){ x.beginPath(); x.arc(W*.9,H*.18,r,0,Math.PI*2); x.stroke() }
+    x.strokeStyle="rgba(219,128,45,.18)"; x.lineWidth=3; x.beginPath(); x.ellipse(W*.5,H*.42,620,180,-.25,0,Math.PI*2); x.stroke();
+    // marca
+    await new Promise(ok=>{const im=new Image(); im.onload=()=>{x.save(); x.globalCompositeOperation="lighten"; const w=330,h=w*im.height/im.width; x.drawImage(im,(W-w)/2,120,w,h); x.restore(); ok()}; im.onerror=ok; im.src="marca.jpg"});
+    // selo
+    x.font=`700 34px ${FF}`; x.textAlign="center"; x.textBaseline="middle";
+    const sel="RESULTADO DO AULÃO ENEM", sw=x.measureText(sel).width+70;
+    x.fillStyle="#E7632D"; x.beginPath(); x.roundRect((W-sw)/2,320,sw,72,14); x.fill();
+    x.fillStyle="#fff"; x.fillText(sel,W/2,357);
+    // anel
+    const cx=W/2, cy=800, R=290;
+    x.lineCap="round"; x.lineWidth=46; x.strokeStyle="rgba(255,255,255,.12)"; x.beginPath(); x.arc(cx,cy,R,0,Math.PI*2); x.stroke();
+    if(D.pct>0){ const ga=x.createLinearGradient(cx-R,cy-R,cx+R,cy+R); ga.addColorStop(0,"#F2A33A"); ga.addColorStop(1,"#E7632D");
+      x.strokeStyle=ga; x.beginPath(); x.arc(cx,cy,R,-Math.PI/2,-Math.PI/2+Math.PI*2*D.pct/100); x.stroke() }
+    x.fillStyle="#fff"; let fz=200; do{ x.font=`800 ${fz}px ${FF}`; fz-=8 }while(x.measureText(D.pct+"%").width>2*R-150 && fz>90); x.fillText(D.pct+"%",cx,cy-10);
+    x.font=`500 46px ${FF}`; x.fillStyle="rgba(255,255,255,.82)"; x.fillText("de acertos",cx,cy+120);
+    // números
+    x.fillStyle="#fff"; x.font=`800 76px ${FF}`; x.fillText(`${D.ac} de ${D.tot} questões`,cx,1225);
+    if(D.destaque){ x.font=`500 42px ${FF}`; x.fillStyle="#F2C08A"; x.fillText(D.destaque,cx,1305) }
+    // frase
+    x.font=`800 64px ${FF}`; const ls=quebra(x,"“"+D.frase+"”",880); let y=1470-((ls.length-1)*80)/2;
+    x.fillStyle="#fff"; ls.forEach(l=>{x.fillText(l,cx,y); y+=80});
+    // rodapé
+    x.font=`700 40px ${FF}`; const rp="Genoma: feito para liderar.", rw=x.measureText(rp).width+80;
+    x.strokeStyle="rgba(255,255,255,.85)"; x.lineWidth=3; x.beginPath(); x.roundRect((W-rw)/2,1665,rw,84,42); x.stroke();
+    x.fillStyle="#fff"; x.fillText(rp,cx,1708);
+    x.font=`600 28px ${FF}`; x.fillStyle="rgba(255,255,255,.6)"; x.fillText("GENOMA SISTEMA DE ENSINO  ·  #GenomaPrevê",cx,1820);
+    cartaoBlob = await new Promise(ok=>c.toBlob(ok,"image/png"));
+    if(cartaoURL) URL.revokeObjectURL(cartaoURL);
+    cartaoURL = URL.createObjectURL(cartaoBlob);
+    const im=$("#cartao"); if(im) im.src=cartaoURL;
+  }
+  async function compartilhar(){
+    if(!cartaoBlob) await geraCartao();
+    const f=new File([cartaoBlob],"meu-aulao-genoma.png",{type:"image/png"});
+    const D=dadosCartao();
+    try{
+      if(navigator.canShare && navigator.canShare({files:[f]})){ await navigator.share({files:[f],text:`Acertei ${D.pct}% no Aulão Genoma Prevê! ${D.frase}`}); return }
+    }catch(e){ if(e && e.name==="AbortError") return }
+    const a=document.createElement("a"); a.href=cartaoURL; a.download="meu-aulao-genoma.png"; document.body.appendChild(a); a.click(); a.remove();
+    toast("Imagem salva. Poste nos stories e marque o Genoma!");
+  }
+  function cartaoHTML(){
+    const D=dadosCartao(); if(!D.tot) return "";
+    return `<div class="panel" style="text-align:center"><p class="big">Seu cartão para compartilhar</p>
+      <img id="cartao" class="cardshare" alt="Cartão: ${D.pct}% de acertos, ${D.ac} de ${D.tot} questões. ${esc(D.frase)}" ${cartaoURL?`src="${cartaoURL}"`:""}>
+      <button class="btn tang" data-a="share">Compartilhar nos stories</button>
+      <p class="small muted" style="margin:8px 0 0">Se o celular não abrir o compartilhamento, a imagem é salva para você postar.</p></div>`;
+  }
   let verResumo = false;
   function topo(){
     const c = conexao==="ok"?`<span class="pill ok">● conectado</span>`:conexao==="off"?`<span class="pill bad">● sem conexão</span>`:`<span class="pill warn">● conectando</span>`;
@@ -520,9 +610,9 @@ function aluno(){
     let h = topo()+`<div class="wrap">`;
     if(E.fase==="fim"){
       if(E.fase==="fim") h += `<div class="panel"><p class="big">Fim do aulão! Boa prova 💪</p><p class="muted">Comando → verbo → pista. Leia como quem sabe o que o ENEM quer.</p></div>`;
-      h += resumoHTML();
+      h += cartaoHTML() + resumoHTML();
       if(E.fase!=="fim") h += `<button class="btn solid" data-a="voltar">Voltar para a questão</button>`;
-      h += `</div>`; render(h); return;
+      h += `</div>`; render(h); geraCartao(); return;
     }
     const q = Q[E.q];
     if(E.fase==="espera" || !q){
@@ -566,13 +656,14 @@ function aluno(){
     const a = e.target.closest("[data-a]"); if(!a) return;
     if(a.dataset.a==="resumo"){ abrirFolha("Meu desempenho", resumoHTML()) }
     if(a.dataset.a==="voltar"){ verResumo=false; desenha() }
+    if(a.dataset.a==="share"){ compartilhar() }
   });
 
   function recebe(e){
     if(E && e.v && E.v && e.v < E.v) return;   // ignora estado mais velho
     conexao="ok"; clearTimeout(prazo);
     if(!e.s) e.s="inicial";
-    if(sessao!==e.s){ sessao=e.s; minhas = LS.get(chave(sessao),{}); }
+    if(sessao!==e.s){ sessao=e.s; minhas = LS.get(chave(sessao),{}); setTimeout(batida,300) }
     const mudouQ = !E || E.q!==e.q || E.fase!==e.fase;
     E = e;
     if(mudouQ){ verResumo=false; fecharFolha() }
@@ -601,6 +692,13 @@ function professor(){
   document.title = "Aulão ENEM · Painel do professor";
   let E = null, resps = [], desliga = null, ouvindoK = null, verParcial = false, telao = false;
   let hist = LS.get("prof_hist",{});   // sessao -> {i: {cont,total}}
+  let pres = [], presK = null, presDesliga = null;
+  const msT = t => !t ? Date.now() : typeof t==="number" ? t : t.toMillis ? t.toMillis() : Date.now();
+  function online(){ const lim=Date.now()-70000; return pres.filter(p=>msT(p.t)>=lim).length }
+  function ouvirPres(){ const k=E.s+"_on"; if(presK===k) return; if(presDesliga) presDesliga(); pres=[]; presK=k; presDesliga=BE.ouvirRespostas(k,l=>{pres=l; atualizaOnline()}) }
+  function atualizaOnline(){ const n=online(), t=pres.length;
+    document.querySelectorAll("[data-online]").forEach(el=>el.textContent = el.dataset.online==="curto" ? `👥 ${n}` : `${n} conectado${n===1?"":"s"} agora${t>n?` · ${t} entraram`:""}`) }
+  setInterval(atualizaOnline, 10000);
   let sessAtual = LS.get("prof_sess","hoje"); if(!SESSOES.some(x=>x.id===sessAtual)) sessAtual="hoje";
   let minha = LS.get("prof_minha",[]).filter(i=>Q[i]);
   const S = () => SESSOES.find(x=>x.id===sessAtual);
@@ -655,7 +753,7 @@ function professor(){
     const c = contar();
     const hs = hist[E.s]||{};
     const fases = {espera:"Aguardando",aberta:"Votação aberta",fechada:"Votação encerrada",gabarito:"Gabarito liberado",fim:"Aulão finalizado"};
-    let h = `<div class="top"><img class="marca" src="marca.jpg" alt="Genoma Prevê"><b>Painel do professor</b><span class="sp"></span><span class="pill ${E.fase==="aberta"?"ok":"warn"}">${fases[E.fase]||E.fase}</span>${botaoTema()}</div><div class="wrap pwrap">`;
+    let h = `<div class="top"><img class="marca" src="marca.jpg" alt="Genoma Prevê"><b>Painel do professor</b><span class="sp"></span><span class="pill on" data-online="curto" title="Alunos com a página aberta agora">👥 ${online()}</span><span class="pill ${E.fase==="aberta"?"ok":"warn"}">${fases[E.fase]||E.fase}</span>${botaoTema()}</div><div class="wrap pwrap">`;
     // ---- AGORA ----
     if(q && E.fase!=="espera" && E.fase!=="fim"){
       const mostrar = E.fase==="aberta" ? verParcial : true;
@@ -663,7 +761,7 @@ function professor(){
       h += `<div class="panel agora" style="--hc:${q.cor}"><p class="big">Agora · ${esc(q.area)}</p>
         <div class="agora-g"><div><img class="slide" src="./${q.img[q.img.length-1]}" data-zoom="./${q.img[q.img.length-1]}" alt="Prévia da questão"><p class="zoomhint">Toque para ampliar</p></div>
         <div>${qtitulo(q)}
-          <div class="row" style="align-items:flex-end;margin:6px 0 4px"><div><div class="count">${E.fase==="aberta"?c.total:(E.total||0)}</div><div class="muted small">${E.fase==="aberta"?"responderam até agora":"respostas contadas"}</div></div>
+          <div class="row" style="align-items:flex-end;margin:6px 0 4px"><div><div class="count">${E.fase==="aberta"?c.total:(E.total||0)}</div><div class="muted small">${E.fase==="aberta"?"responderam até agora":"respostas contadas"} · <span data-online></span></div></div>
           <div style="text-align:right"><span class="pill gab">Gabarito ${q.gab}</span></div></div>`;
       if(E.fase==="aberta") h += `<button class="btn tang" data-a="encerrar">Encerrar votação</button>`;
       if(E.fase==="fechada") h += `<button class="btn solid" data-a="gab">Mostrar gabarito aos alunos</button>`;
@@ -674,7 +772,7 @@ function professor(){
       if(mostrar) h += barras(cc,q.gab,tt);
       h += `<button class="btn" data-a="telao">Abrir modo telão</button></div></div></div>`;
     } else if(E.fase==="espera"){
-      h += `<div class="panel hero"><h1>Pronto para começar</h1><p>Os alunos entram pelo QR code e ficam aguardando. Sessão escolhida: <b>${esc(S().nome)}</b>.</p>
+      h += `<div class="panel hero"><h1>Pronto para começar</h1><p>Os alunos entram pelo QR code e ficam aguardando. Sessão escolhida: <b>${esc(S().nome)}</b>.</p><p style="font-size:22px;font-weight:800;margin:10px 0 0" data-online></p>
         <div class="row" style="margin-top:12px">${ordem().length?`<button class="btn tang" data-a="lib" data-i="${ordem()[0]}">Liberar a primeira: ${esc(Q[ordem()[0]].area)} · Q${Q[ordem()[0]].num}</button>`:`<button class="btn" disabled style="color:#fff">Escolha questões em “Minha seleção”</button>`}<button class="btn" data-a="telao" style="background:rgba(255,255,255,.12);color:#fff;border-color:rgba(255,255,255,.35)">Modo telão (QR code)</button></div></div>`;
     } else if(E.fase==="fim"){
       h += `<div class="panel hero"><h1>Aulão finalizado</h1><p>Os alunos estão vendo o relatório final no celular.</p></div>`;
@@ -711,7 +809,7 @@ function professor(){
       <div class="row"><button class="btn" data-a="espera">Pôr todos em “aguarde”</button>${E.fase!=="fim"?`<button class="btn" data-a="fim">Finalizar aulão</button>`:""}</div>
       <button class="btn danger" data-a="zerar">Zerar tudo (nova sessão, para depois do teste)</button>
       <p class="small muted">Link dos alunos: <b>${esc(urlAluno)}</b></p></div><img class="logo-g" src="logo.jpg" alt="Genoma Sistema de Ensino"></div>`;
-    render(h);
+    render(h); atualizaOnline();
     if(telao) desenhaTelao();
   }
   function desenhaTelao(){
@@ -720,11 +818,12 @@ function professor(){
     const q = Q[E.q]; const c = contar();
     const qr = qrDataURL(urlAluno);
     let esq = "";
-    if(!q || E.fase==="espera"){ esq = `<h1>Aulão ENEM</h1><p style="font-size:3.5vh">Aponte a câmera para o QR code e deixe a página aberta.</p>` }
-    else if(E.fase==="aberta"){ esq = `<h1>${esc(q.area)} · Questão ${q.num}</h1><p style="font-size:3vh" class="muted">Votação aberta</p><div class="count">${c.total}</div><p style="font-size:3.5vh;margin:0">responderam</p>` }
+    if(!q || E.fase==="espera"){ esq = `<h1>Aulão ENEM</h1><p style="font-size:3.5vh">Aponte a câmera para o QR code e deixe a página aberta.</p><p style="font-size:5vh;font-weight:800;margin:2vh 0 0" data-online></p>` }
+    else if(E.fase==="aberta"){ esq = `<h1>${esc(q.area)} · Questão ${q.num}</h1><p style="font-size:3vh" class="muted">Votação aberta</p><div class="count">${c.total}</div><p style="font-size:3.5vh;margin:0">responderam · <span data-online></span></p>` }
     else if(E.fase==="fechada"){ esq = `<h1>${esc(q.area)} · Questão ${q.num}</h1><p style="font-size:3vh" class="muted">Votação encerrada · ${E.total} respostas</p>${barras(E.cont,null,E.total)}` }
     else if(E.fase==="gabarito"){ esq = `<h1>${esc(q.area)} · Questão ${q.num} · Gabarito ${q.gab}</h1><p style="font-size:3vh" class="muted">${E.total} respostas</p>${barras(E.cont,q.gab,E.total)}` }
     else { esq = `<h1>Fim do aulão</h1><p style="font-size:4vh">Confiram o relatório no celular. Boa prova!</p>` }
+    setTimeout(atualizaOnline,0);
     t.innerHTML = `<button class="btn close" data-t="sair">Sair do telão ✕</button><div class="tg"><div><img class="marca" src="marca.jpg" alt="Genoma Prevê">${esq}</div><div class="qr">${qr?`<img src="${qr}" alt="QR code">`:""}<div class="url">${esc(urlAluno.replace(/^https?:\/\//,""))}</div></div></div>`;
   }
   document.addEventListener("click",e=>{ if(e.target.closest('[data-t="sair"]')){ telao=false; $("#telao").classList.remove("on") } });
@@ -750,7 +849,7 @@ function professor(){
     $("#app").innerHTML = `<div class="wrap"><div class="panel"><p class="big">Conectando…</p></div></div>`;
     BE.onEstado(e=>{
       if(!e.s) e.s="inicial";
-      E = e;
+      E = e; ouvirPres();
       if(E.q>=0 && E.fase!=="espera" && E.fase!=="fim") ouvir(E.q);
       desenha();
     }, ()=>toast("Sem conexão com o servidor. Tentando de novo…"));
