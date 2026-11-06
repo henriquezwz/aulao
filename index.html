@@ -913,7 +913,7 @@ function aluno(){
       h += `</div>`; render(h); return;
     }
     const m = minhas[E.q];
-    h += qtitulo(q) + slides(q);
+    h += qtitulo(q) + (E.fase==='gabarito' ? '' : slides(q));
     if(E.fase==="aberta"){
       h += `<div class="panel" style="--hc:${q.cor}"><p class="big">Qual é a sua resposta?</p><div class="alts">`+LET.map(l=>`<button class="alt" data-l="${l}" aria-pressed="${m&&m.r===l}">${l}</button>`).join("")+`</div>
         <p class="status">${!m?"Toque em uma letra.":m.enviado?"✓ Resposta enviada. Pode trocar até o professor fechar.":"Guardada no celular · enviando…"}</p></div>`;
@@ -939,6 +939,7 @@ function aluno(){
         <p style="margin:0">Gabarito: <b>${q.gab}</b>${mm.r?` · você marcou <b>${mm.r}</b>`:""}</p>`;
       if(mm.r && !ok){ const a=q.arm[mm.r]; if(a) h += `<div class="trap"><b>Armadilha: ${esc(ARM[a[0]].nome)}</b><br>${esc(a[1])}<br><span class="small">Dica: ${esc(ARM[a[0]].dica)}</span></div>` }
       h += `</div><div class="panel" style="--hc:${q.cor}"><p class="big">Por que é ${q.gab}</p><p style="margin:0">${esc(q.exp)}</p><div class="fechar"><b>Para levar:</b> ${esc(q.fecha)}</div></div>`;
+      h += slides(q);
       const outras = LET.filter(l=>q.arm[l] && l!==mm.r);
       if(outras.length) h += `<div class="panel" style="--hc:var(--tang)"><p class="big">Por que as outras enganam</p><ul class="list">`+outras.map(l=>`<li><span class="dot">${l}</span><span><b>${esc(ARM[q.arm[l][0]].nome)}</b> · ${esc(q.arm[l][1])}</span></li>`).join("")+`</ul></div>`;
       if(tot) h += `<div class="panel" style="--hc:var(--violet)"><p class="big">Como a turma respondeu</p><p class="small muted" style="margin:0">${tot} respostas · ${pct}% acertaram</p>${barras(E.cont,q.gab,tot)}</div>`;
