@@ -155,6 +155,32 @@ input{font:inherit;width:100%;padding:12px;border-radius:10px;border:1px solid v
 #telao .poema{max-height:72vh;max-width:44vw;border-radius:16px;background:#fff}
 .fimtela{gap:12px;padding-top:16px}
 .cardfull{display:block;height:calc(100svh - 250px);min-height:360px;max-width:100%;aspect-ratio:9/16;object-fit:contain;border-radius:18px;box-shadow:0 14px 40px rgba(0,0,0,.4);background:#08321E;animation:surge 1s ease-out}
+.mono{display:inline-grid;place-items:center;width:1.9em;height:1.9em;border-radius:50%;color:#fff;font:800 .8em/1 var(--f-ui);letter-spacing:.02em;flex:none;box-shadow:0 0 0 2px rgba(255,255,255,.85)}
+.codinome .bx .mono,.deg .bx .mono{font-size:22px}
+#telao .tpod .deg .bx .mono{font-size:5vh}
+.rank .bx .mono{font-size:13px}
+.quase{display:flex;gap:10px;width:100%;max-width:460px;position:relative;z-index:2;animation:surge .8s 2.3s both}
+.quase>div{flex:1;min-width:0;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);border-radius:14px;padding:10px 8px;display:flex;align-items:center;gap:8px;text-align:left}
+.quase .ps{font:900 24px var(--f-num)}
+.quase .nm{font-weight:800;font-size:14px;line-height:1.15;overflow-wrap:anywhere}
+.quase .pt{font-size:12px;opacity:.8}
+.quase .eu-aqui{background:#fff;color:var(--g-dark)}
+.mencoes{width:100%;max-width:460px;position:relative;z-index:2;animation:surge .8s 2.8s both;text-align:left}
+.mencoes .lbl{font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;font-weight:800;opacity:.75;margin:4px 0 6px;text-align:center}
+.mencoes ul{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.mencoes li{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:12px;background:rgba(255,255,255,.08);font-size:14px}
+.mencoes li b{flex:1}
+.mencoes li.eu-aqui{background:#fff;color:var(--g-dark)}
+.mencao{background:radial-gradient(120% 80% at 50% 0%,#CFE6FF 0%,#5B9BDB 45%,#1F4E86 100%);color:#fff}
+.mencao .ttl{background:#fff;color:#1F4E86}
+.mencao .brinde{color:#1F4E86}
+#telao .tpod .quase{max-width:80vw;animation-delay:2.3s}#telao .tpod .quase .nm{font-size:3vh}#telao .tpod .quase .ps{font-size:4.5vh}#telao .tpod .quase .pt{font-size:2.2vh}
+#telao .tpod .mencoes{max-width:80vw}#telao .tpod .mencoes ul{grid-template-columns:repeat(3,1fr)}#telao .tpod .mencoes li{font-size:2.6vh}#telao .tpod .mencoes .lbl{font-size:2vh}
+.convite{position:fixed;inset:0;z-index:60;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:20px 16px;background:rgba(6,36,22,.92);backdrop-filter:blur(6px);color:#fff;text-align:center;animation:surge .5s ease-out}
+.convite h3{margin:0;font-size:24px;letter-spacing:-.01em}
+.convite p{margin:0;opacity:.85;max-width:380px}
+.convite img{height:min(56svh,520px);aspect-ratio:9/16;border-radius:16px;box-shadow:0 16px 40px rgba(0,0,0,.45);animation:sobe .7s .15s both}
+.convite .btn{max-width:380px}
 .eu{display:inline-flex;align-items:center;gap:6px;font-weight:800;font-size:14px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.28);padding:4px 10px;border-radius:99px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:46vw}
 .codinome{display:flex;align-items:center;gap:14px;padding:16px;border-radius:16px;background:linear-gradient(120deg,#FFF4E8,#FFE3C7);border:1px solid #F4C79A;color:#5A2E0C}
 .codinome .bx{font-size:46px;line-height:1}
@@ -197,11 +223,12 @@ input{font:inherit;width:100%;padding:12px;border-radius:10px;border:1px solid v
 .rank .bx{font-size:22px}
 .rank .ac{margin-left:auto;font:800 15px var(--f-num)}
 #telao .tpod{position:relative;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2vh;color:#fff;text-align:center;overflow:hidden}
-#telao .tpod h1{font-size:7vh;margin:0}
+#telao .tpod h1{font-size:5.4vh;margin:0}#telao .tpod{gap:1.4vh!important;justify-content:flex-start!important;padding-top:1vh}
 #telao .tpod .degraus{max-width:80vw;gap:2vw}
 #telao .tpod .deg .bx{font-size:11vh}#telao .tpod .deg .nm{font-size:4vh}#telao .tpod .deg .pt{font-size:2.6vh}
 #telao .tpod .deg .bloco{font-size:9vh}
-#telao .tpod .d1 .bloco{height:32vh}#telao .tpod .d2 .bloco{height:23vh}#telao .tpod .d3 .bloco{height:16vh}
+#telao .tpod .d1 .bloco{height:17vh}#telao .tpod .d2 .bloco{height:12vh}#telao .tpod .d3 .bloco{height:9.5vh}
+#telao .tpod .deg .bloco{font-size:7vh!important;padding-top:1vh}#telao .tpod .deg .nm{font-size:3.4vh!important}#telao .tpod .deg .pt{font-size:2.2vh!important}#telao .tpod .deg .bx .mono{font-size:4vh!important}
 .btn.mini{margin:10px 12px 12px;width:auto;min-height:40px;padding:8px 12px}
 /* telão */
 #telao{position:fixed;inset:0;background:radial-gradient(120% 140% at 85% 0%,#1C6B43 0%,var(--g-dark) 45%,var(--g-deep) 100%);color:#fff;z-index:40;display:none;padding:3vh 4vw;overflow:auto}
@@ -238,7 +265,7 @@ const FB_CFG = window.FB_CFG || {};
 const FB_V = "12.19.0";
 // Login do painel: só a senha é digitada; o e-mail fica fixo aqui.
 const PROF_EMAIL = "professor@aulao.app";
-const VERSAO = "06/11 · pódio";
+const VERSAO = "06/11 · top 5";
 
 /* ====================== QUESTÕES ====================== */
 // armadilhas: VNR = verdade que não responde · EXT = extrapola · INV = inverte · EXA = exagera · VIZ = conceito vizinho
@@ -473,22 +500,25 @@ const ARM = {
 };
 const LET = ["A","B","C","D","E"];
 /* ---------- codinome anônimo e frases ---------- */
-const BICHOS=[["🦫","Capivara"],["🦜","Arara"],["🐆","Onça"],["🐢","Jabuti"],["🐒","Mico"],["🐬","Boto"],["🦝","Quati"],["🐺","Lobo-guará"],["🐊","Jacaré"],["🦥","Preguiça"],["🦉","Coruja"],["🦦","Lontra"],["🐕","Caramelo"],["🦅","Gavião"],["🦋","Borboleta"],["🐝","Abelha"],["🐙","Polvo"],["🦊","Raposa"],["🐼","Panda"],["🐨","Coala"],["🦁","Leão"],["🐯","Tigre"],["🦓","Zebra"],["🦒","Girafa"],["🦩","Flamingo"],["🦚","Pavão"],["🦄","Unicórnio"],["🐧","Pinguim"],["🐞","Joaninha"],["🦔","Ouriço"],["🐳","Baleia"],["🦖","Dino"]];
+const NOMES=["Machado","Clarice","Drummond","Cecília","Guimarães","Graciliano","Bandeira","Pessoa","Saramago","Conceição","Carolina","Rachel","Amado","Vinicius","Hilda","Lygia","Ariano","Lima Barreto","Alencar","Cruz e Sousa","Pagu","Adélia","Sócrates","Platão","Aristóteles","Kant","Rousseau","Sartre","Beauvoir","Arendt","Weber","Durkheim","Bourdieu","Florestan","Lélia","Freire"];
+const CORES_M=["#E7632D","#2E6FB7","#1F8A5B","#7E5CBA","#C2410C","#0E7490"];
 function hashS(t){ let h=2166136261>>>0; for(const c of String(t)){ h^=c.charCodeAt(0); h=Math.imul(h,16777619)>>>0 } return h }
-function codinome(dev){ const h=hashS(dev), b=BICHOS[h%BICHOS.length]; return {bx:b[0], nome:b[1]+" "+(100+((h>>>8)%900)), d8:String(dev).slice(0,8)} }
+function codinome(dev){ const h=hashS(dev), n=NOMES[h%NOMES.length]; const ini=n.split(" ").map(w=>w[0]).join("").slice(0,2).toUpperCase();
+  const cor=CORES_M[(h>>>4)%CORES_M.length];
+  return {bx:`<span class="mono" style="background:${cor}">${ini}</span>`, nome:n+" "+(100+((h>>>8)%900)), d8:String(dev).slice(0,8)} }
 const sorteia = (lista,semente) => lista[hashS(semente)%lista.length];
 const FR = {
-  marca:["Cravou a {L}. Sem medo de ser feliz.","{L} marcada. Confiança é tudo.","Foi de {L}. O ENEM que lute.","{L}? Ousado. Gostei.","Resposta {L} enviada com sucesso (e coragem)."],
-  troca:["Mudou para a {L}. A segunda intuição às vezes é a boa.","Trocou de novo? Indecisão nível Capitu. 👀","{L} agora. Bentinho também nunca teve certeza.","Mudou de ideia? No ENEM dá para trocar até entregar a folha."],
-  muito:["Já é a {n}ª troca. Respira e confia no texto. 🧘","{n} trocas! A alternativa certa está ficando tonta."],
-  fechada:["Suspense… 🥁","Rufem os tambores…","O professor está segurando o gabarito de propósito. 😏","Calma, coração. O gabarito vem aí."],
-  acerto:["Acertou! 🎉","Na mosca! 🎯","Acertou! Machado aprovaria.","Acertou! Tá voando, hein? ✈️","Certinho! Leitura de quem sabe o que o ENEM quer."],
-  raro:["Acertou o que só {p}% acertaram. Lenda! 🧠","Só {p}% acertaram, e você está nessa. Respeita! 🔥"],
-  erro:["Não foi dessa vez.","Quase! Melhor errar aqui do que no ENEM.","Errou, mas agora conhece a armadilha.","Essa pegou, né? Bora entender o porquê."],
-  todos:["A turma toda caiu junto. Ninguém solta a mão de ninguém. 🤝","Errou junto com a maioria. Essa foi traiçoeira."],
-  nada:["Você não respondeu esta. Na próxima, chuta! No ENEM não tem ponto negativo.","Não respondeu… o sono bateu? 😴 Na próxima, marca!"],
-  seq3:["🔥 3 seguidas! Tá on fire."], seq5:["🔥🔥 {n} seguidas! Chama o INEP que tem gente gabaritando."],
-  espera:["Dica: leia o comando antes do texto. Ele diz o que procurar.","Respira. Hoje é treino; o ENEM é só a repetição.","Ache o verbo do comando: identificar, relacionar, inferir…","O pódio pode aparecer a qualquer momento. Fica esperto. 👀","Alternativa verdadeira não é o mesmo que alternativa certa.","Desconfie de “sempre”, “nunca” e “totalmente”."]
+  marca:["Foi de {L}. Decisão tomada.","{L} registrada. Agora é confiar na leitura.","Marcou {L}. Que o texto sustente.","{L} enviada. Boa escolha se a pista confirmar."],
+  troca:["Trocou para {L}. Revisar também é estratégia.","Mudou para {L}. Até Bentinho teve dúvidas.","{L} agora. Releia o comando e confie."],
+  muito:["{n}ª troca. Volte à pista do texto e decida.","{n} trocas. A resposta está no comando, não no palpite."],
+  fechada:["Gabarito em instantes.","Votação fechada. Agora é com o professor.","Respira: o gabarito já vem."],
+  acerto:["Acertou.","Certeira.","Acertou. Leitura precisa.","Acertou. É assim no ENEM."],
+  raro:["Acertou uma que só {p}% acertaram.","Só {p}% acertaram. Você está nesse grupo."],
+  erro:["Não foi dessa vez.","Errar aqui é economizar erro no ENEM.","Agora você conhece essa armadilha."],
+  todos:["A maioria caiu nessa. Vale entender o porquê.","Questão traiçoeira: quase todo mundo errou."],
+  nada:["Sem resposta nesta. No ENEM, nunca deixe em branco.","Ficou em branco. Na próxima, marque: não há ponto negativo."],
+  seq3:["3 seguidas. Ritmo de prova."], seq5:["{n} seguidas. Consistência é o que aprova."],
+  espera:["Leia o comando antes do texto: ele diz o que procurar.","Hoje é treino; o ENEM é só a repetição.","Ache o verbo do comando: identificar, relacionar, inferir.","O pódio pode ser revelado a qualquer momento.","Alternativa verdadeira não é o mesmo que alternativa certa.","Desconfie de “sempre”, “nunca” e “totalmente”."]
 };
 const fr = (k,sem,vars={}) => sorteia(FR[k],sem).replace(/\{(\w)\}/g,(_,v)=>vars[v]??"");
 
@@ -670,8 +700,10 @@ function aluno(){
     else { const hb={}; feitas.forEach(x=>{const k=x.q.h.split(" · ")[0];const a=hb[k]||(hb[k]={t:0,a:0});a.t++;if(x.m.r===x.q.gab)a.a++});
       const e=Object.entries(hb).filter(([,v])=>v.t>1).sort((a,b)=>(b[1].a/b[1].t)-(a[1].a/a[1].t))[0]; if(e&&e[1].a) destaque=`Destaque: ${ks[0]||""} ${e[0]} · ${e[1].a}/${e[1].t}` }
     const eu=E&&E.rk?E.rk[EU.d8]:null;
-    if(eu && eu[0]<=3) destaque = ["🥇","🥈","🥉"][eu[0]-1]+` ${eu[0]}º lugar no pódio do aulão`;
-    else if(eu && eu[1] && eu[0]<=10) destaque = `Top 10 do aulão · ${eu[0]}º de ${E.np}`;
+    const noPod = eu && (E.pod||[]).some(p=>p.d===EU.d8);
+    if(noPod && eu[0]<=5) destaque = ["🥇","🥈","🥉","🏅","🏅"][eu[0]-1]+` ${eu[0]}º lugar · Top 5 do aulão`;
+    else if(noPod) destaque = `🎖️ Menção honrosa · ${eu[0]}º de ${E.np}`;
+    else if(eu && eu[1] && eu[0]<=12) destaque = `${eu[0]}º de ${E.np} no aulão`;
     const lista = FRASES.find(([m])=>pct>=m)[1];
     let hsh=0; for(const ch of dev+sessao) hsh=(hsh*31+ch.charCodeAt(0))>>>0;
     return {tot,ac,pct,destaque,frase:lista[hsh%lista.length]};
@@ -730,6 +762,30 @@ function aluno(){
     const a=document.createElement("a"); a.href=cartaoURL; a.download="meu-aulao-genoma.png"; document.body.appendChild(a); a.click(); a.remove();
     toast("Imagem salva. Poste nos stories e marque o Genoma!");
   }
+  // convite automático para compartilhar (aparece sozinho no fim e para quem sobe ao pódio)
+  let convT=null;
+  function convidar(tipo){
+    const k="aulao_conv_"+sessao+"_"+tipo+(MDEV?"_"+MDEV:"");
+    if(LS.get(k,false) || $(".convite")) return;
+    clearTimeout(convT);
+    convT=setTimeout(async ()=>{
+      if(!E || (tipo==="fim"&&E.fase!=="fim") || (tipo==="podio"&&E.fase!=="podio")) return;
+      await geraCartao(); const D=dadosCartao(); if(!D.tot) return;
+      LS.set(k,true);
+      const eu=E.rk?E.rk[EU.d8]:null;
+      const naLista=(E.pod||[]).some(p=>p.d===EU.d8);
+      const [tit,txt] = naLista&&eu[0]<=5 ? ["Top 5 do aulão. Mostra pra geral.","Seu cartão já traz a medalha. Poste nos stories e marque o Genoma."]
+        : naLista ? ["Menção honrosa. Isso merece story.","Você ficou entre os 8 melhores. Poste e marque o Genoma."]
+        : D.pct>=70 ? ["Resultado de quem está pronto.","Poste nos stories e marque o Genoma: quem se prepara, mostra."]
+        : D.pct>=40 ? ["Seu resultado está pronto.","Poste nos stories e marque o Genoma. Cada aulão é um passo a mais rumo ao ENEM."]
+        : ["Todo começo merece registro.","Poste nos stories e marque o Genoma. Daqui até o ENEM, é só subir."];
+      const d=document.createElement("div"); d.className="convite"; d.setAttribute("role","dialog"); d.setAttribute("aria-label","Compartilhar resultado");
+      d.innerHTML=`<img src="${cartaoURL}" alt="Seu cartão de resultado"><h3>${esc(tit)}</h3><p>${esc(txt)}</p>
+        <button class="btn tang" data-c="sim">Postar nos stories</button><button class="btn" data-c="nao" style="background:transparent;color:#fff;border-color:rgba(255,255,255,.4)">Agora não</button>`;
+      d.addEventListener("click",ev=>{ const b=ev.target.closest("[data-c]"); if(!b) return; if(b.dataset.c==="sim") compartilhar(); d.remove() });
+      document.body.appendChild(d);
+    }, tipo==="podio"?4200:1600);
+  }
   function cartaoHTML(){
     const D=dadosCartao(); if(!D.tot) return "";
     return `<div class="panel" style="text-align:center"><p class="big">Seu cartão para compartilhar</p>
@@ -744,22 +800,35 @@ function aluno(){
     return `<div class="top"><img class="marca" src="marca.jpg" alt="Genoma Prevê"><span class="eu" title="Seu codinome secreto">${EU.bx} ${esc(EU.nome)}</span><span class="sp"></span>${c}${botaoTema()}</div>`;
   }
   function confete(n=46){ const cs=["#FFD866","#E7632D","#ffffff","#7FD1A8","#F2A33A","#9CC9FF"]; let h=`<div class="confete" aria-hidden="true">`; for(let k=0;k<n;k++){ const r=hashS(k+"c"); h+=`<i style="left:${r%100}%;background:${cs[r%cs.length]};animation-duration:${3+(r%40)/10}s;animation-delay:${-(r%50)/10}s;transform:rotate(${r%180}deg)"></i>` } return h+`</div>` }
+  function podioBlocos(P,euD,nq){
+    const deg = P.slice(0,3).map((p,k)=>`<div class="deg d${k+1} ${p.d===euD?"eu-aqui":""}"><div class="bx">${p.bx}</div><div class="nm">${esc(p.nome)}</div><div class="pt">${p.ac} de ${nq} acertos</div><div class="bloco">${k+1}º</div></div>`).join("");
+    const q45 = P.slice(3,5).map((p,k)=>`<div class="${p.d===euD?"eu-aqui":""}"><span class="ps">${k+4}º</span><span>${p.bx}</span><span><span class="nm">${esc(p.nome)}</span><br><span class="pt">${p.ac} ${p.ac===1?"acerto":"acertos"}</span></span></div>`).join("");
+    const men = P.slice(5,8).map(p=>`<li class="${p.d===euD?"eu-aqui":""}">${p.bx}<b>${esc(p.nome)}</b><span>${p.ac} ${p.ac===1?"acerto":"acertos"}</span></li>`).join("");
+    return `<div class="degraus">${deg}</div>${q45?`<div class="quase">${q45}</div>`:""}${men?`<div class="mencoes"><p class="lbl">Menções honrosas</p><ul>${men}</ul></div>`:""}`;
+  }
   function podioHTML(){
-    const P=E.pod||[], eu=(E.rk||{})[EU.d8], medal=["🥇","🥈","🥉"];
-    if(eu && eu[0]<=P.length && eu[0]<=3){
+    const P=E.pod||[], eu=(E.rk||{})[EU.d8], medal=["🥇","🥈","🥉","🏅","🏅"];
+    const noPod = eu && P.some(p=>p.d===EU.d8);
+    const cod = `<p class="cod">CONFERÊNCIA · ${String(hashS(EU.d8+E.pv)%9000+1000)}</p>`;
+    if(noPod && eu[0]<=5){
       const pos=eu[0];
-      return `<div class="podio campeao">${confete(60)}<span class="ttl">Pódio do aulão</span><div class="medalha">${medal[pos-1]}</div>
-        <h2>Você ficou em ${pos}º lugar!</h2><p class="sub" style="opacity:1;font-weight:700">${EU.bx} ${esc(EU.nome)} · ${eu[1]} de ${E.nq} acertos</p>
-        <div class="brinde"><b>Tem brinde para você 🎁</b>Mostre esta tela ao professor. Seu codinome era segredo até agora.</div>
-        <p class="cod">CONFERÊNCIA · ${String(hashS(EU.d8+E.pv)%9000+1000)}</p>
+      return `<div class="podio campeao">${confete(60)}<span class="ttl">Top 5 do aulão</span><div class="medalha">${medal[pos-1]}</div>
+        <h2>Você ficou em ${pos}º lugar</h2><p class="sub" style="opacity:1;font-weight:700">${EU.bx} ${esc(EU.nome)} · ${eu[1]} de ${E.nq} acertos</p>
+        <div class="brinde"><b>Tem brinde para você 🎁</b>Mostre esta tela ao professor. Seu codinome era segredo até agora.</div>${cod}
         <button class="btn" data-a="share" style="max-width:420px;position:relative;z-index:2;background:#3A2200;color:#FFE48A;border-color:#3A2200">Compartilhar minha medalha</button></div>`;
     }
-    const deg = P.slice(0,3).map((p,k)=>`<div class="deg d${k+1} ${eu&&p.d===EU.d8?"eu-aqui":""}"><div class="bx">${p.bx}</div><div class="nm">${esc(p.nome)}</div><div class="pt">${p.ac} acertos</div><div class="bloco">${k+1}º</div></div>`).join("");
+    if(noPod){
+      return `<div class="podio mencao">${confete(30)}<span class="ttl">Menção honrosa</span><div class="medalha" style="font-size:90px;position:relative;z-index:2">🎖️</div>
+        <h2>${eu[0]}º lugar no aulão</h2><p class="sub" style="opacity:1;font-weight:700">${EU.bx} ${esc(EU.nome)} · ${eu[1]} de ${E.nq} acertos</p>
+        <div class="brinde" style="position:relative;z-index:2;background:#fff;border-radius:18px;padding:16px 18px;max-width:420px"><b style="display:block;font-size:20px">Menção honrosa do professor</b>Você ficou entre os 8 melhores. Mostre esta tela ao professor.</div>${cod}
+        <button class="btn" data-a="share" style="max-width:420px;position:relative;z-index:2;background:#fff;color:#1F4E86;border-color:#fff">Compartilhar meu resultado</button></div>`;
+    }
     return `<div class="podio">${confete()}<span class="ttl">Pódio do aulão</span><h2>Quem brilhou hoje</h2><p class="sub">${E.nq} questões · ${E.np} participantes</p>
-      <div class="degraus">${deg}</div>
-      ${eu?`<div class="minha-pos"><div class="n">${eu[0]}º</div><div><b>${EU.bx} ${esc(EU.nome)}</b><br><span class="small" style="opacity:.85">${eu[1]} de ${E.nq} acertos. ${!eu[1]?"Hoje foi treino. No ENEM, é pra valer. 💪":eu[0]<=10?"Top 10! Quase no pódio. 👏":"Cada questão de hoje é ponto no ENEM."}</span></div></div>`:`<p class="sub">Você não respondeu as questões deste pódio.</p>`}
+      ${podioBlocos(P,EU.d8,E.nq)}
+      ${eu?`<div class="minha-pos"><div class="n">${eu[0]}º</div><div><b>${EU.bx} ${esc(EU.nome)}</b><br><span class="small" style="opacity:.85">${eu[1]} de ${E.nq} acertos. ${!eu[1]?"Hoje foi treino; no ENEM, é para valer.":eu[0]<=12?"Faltou pouco para o pódio.":"Cada questão de hoje é ponto no ENEM."}</span></div></div>`:`<p class="sub">Você não respondeu as questões deste pódio.</p>`}
       <button class="btn tang" data-a="share" style="max-width:460px;position:relative;z-index:2">Compartilhar meu resultado</button></div>`;
   }
+
   function desenha(){
     if(!E){ return }
     let h = topo()+`<div class="wrap">`;
@@ -767,7 +836,7 @@ function aluno(){
       render(topo()+`<div class="surpresa"><span class="ttl">Para vocês, turma</span><img class="poema" src="poema-memoria.jpg" alt="Poema “Memória”, de Carlos Drummond de Andrade"><p class="ass">Com amor,<b>Paulo</b></p></div>`);
       window.scrollTo(0,0); return;
     }
-    if(E.fase==="podio"){ render(topo()+podioHTML()); window.scrollTo(0,0); geraCartao(); return }
+    if(E.fase==="podio"){ render(topo()+podioHTML()); window.scrollTo(0,0); geraCartao(); if((E.pod||[]).some(p=>p.d===EU.d8)) convidar("podio"); return }
     if(E.fase==="fim"){
       const D=dadosCartao();
       if(!D.tot){ render(topo()+`<div class="surpresa"><span class="ttl">Fim do aulão</span><p style="font-size:30px;font-weight:800;margin:0">Boa prova! 💪</p><p class="ass">Genoma:<b>feito para liderar.</b></p></div>`); return }
@@ -775,12 +844,12 @@ function aluno(){
         <img id="cartao" class="cardfull" alt="Cartão: ${D.pct}% de acertos, ${D.ac} de ${D.tot} questões. ${esc(D.frase)}" ${cartaoURL?`src="${cartaoURL}"`:""}>
         <button class="btn tang" data-a="share" style="max-width:440px">Compartilhar nos stories</button>
         <button class="btn" data-a="resumo" style="max-width:440px;background:rgba(255,255,255,.12);color:#fff;border-color:rgba(255,255,255,.35)">Ver meu desempenho completo</button></div>`);
-      geraCartao(); window.scrollTo(0,0); return;
+      geraCartao(); window.scrollTo(0,0); convidar("fim"); return;
     }
     const q = Q[E.q];
     if(E.fase==="espera" || !q){
       h += `<div class="panel hero"><h1>Você está dentro! ✅</h1><p>Deixe esta página aberta. Quando o professor liberar uma questão, ela aparece aqui sozinha.</p></div>
-        <div class="codinome"><span class="bx">${EU.bx}</span><span><span class="small">Seu codinome secreto</span><b>${esc(EU.nome)}</b><span class="small">Ninguém sabe que é você. Se ele subir ao pódio, tem brinde. 🎁</span></span></div>
+        <div class="codinome"><span class="bx">${EU.bx}</span><span><span class="small">Seu codinome secreto</span><b>${esc(EU.nome)}</b><span class="small">Só você sabe que é você. Se ele subir ao pódio, tem brinde.</span></span></div>
         <p class="dica-rot" id="dicarot">${esc(fr("espera",dev+Math.floor(Date.now()/9000)))}</p>
         <div class="panel"><p class="big">Como funciona</p><ol class="small" style="margin:0;padding-left:20px">
         <li>O professor lê a questão e trabalha com vocês.</li><li>Quando ele liberar, marque sua alternativa. Dá para trocar até fechar a votação.</li>
@@ -846,7 +915,7 @@ function aluno(){
     if(sessao!==e.s){ sessao=e.s; minhas = LS.get(chave(sessao),{}); setTimeout(batida,300) }
     const mudouQ = !E || E.q!==e.q || E.fase!==e.fase;
     E = e;
-    if(mudouQ){ verResumo=false; fecharFolha() }
+    if(mudouQ){ verResumo=false; fecharFolha(); if(E.fase!=="fim"&&E.fase!=="podio"){ clearTimeout(convT); const c=$(".convite"); if(c) c.remove() } }
     desenha();
     if(mudouQ && E.fase==="aberta") window.scrollTo(0,0);
     enviarPendentes();
@@ -932,7 +1001,7 @@ function professor(){
   function podioState(){
     const {L,nq}=ranking(); const pv=Date.now();
     const rk={}; L.forEach(p=>rk[p.d8]=[p.pos,p.ac]);
-    return {pod:L.filter(p=>p.ac>0).slice(0,3).map(p=>({bx:p.bx,nome:p.nome,ac:p.ac,d:p.d8})), rk, nq, np:L.length, pv};
+    return {pod:L.filter(p=>p.ac>0).slice(0,8).map(p=>({bx:p.bx,nome:p.nome,ac:p.ac,d:p.d8})), rk, nq, np:L.length, pv};
   }
   let podioTelao=false;
 
@@ -976,7 +1045,7 @@ function professor(){
       h += `<div class="panel hero"><h1>Pronto para começar</h1><p>Os alunos entram pelo QR code e ficam aguardando. Sessão escolhida: <b>${esc(S().nome)}</b>.</p><p style="font-size:22px;font-weight:800;margin:10px 0 0" data-online></p>${Object.keys(hs).length?`<p class="small" style="margin:10px 0 0;background:rgba(255,255,255,.12);padding:10px 12px;border-radius:10px">⚠️ Ainda há ${Object.keys(hs).length} questões de um aulão anterior guardadas. Para o pódio e o desempenho dos alunos começarem do zero, toque em <b>Começar aulão novo</b>.</p><button class="btn" data-a="zerar" style="margin-top:8px;background:#fff;color:var(--g-dark)">Começar aulão novo (zera respostas e pódio)</button>`:""}
         <div class="row" style="margin-top:12px">${ordem().length?`<button class="btn tang" data-a="lib" data-i="${ordem()[0]}">Liberar a primeira: ${esc(Q[ordem()[0]].area)} · Q${Q[ordem()[0]].num}</button>`:`<button class="btn" disabled style="color:#fff">Escolha questões em “Minha seleção”</button>`}<button class="btn" data-a="telao" style="background:rgba(255,255,255,.12);color:#fff;border-color:rgba(255,255,255,.35)">Modo telão (QR code)</button></div></div>`;
     } else if(E.fase==="podio"){
-      h += `<div class="panel hero"><h1>O pódio está nos celulares 🏆</h1><p>Os 3 primeiros veem a tela dourada com o código de conferência. Confira o código no quadro do pódio antes de entregar o brinde.</p>
+      h += `<div class="panel hero"><h1>O pódio está nos celulares 🏆</h1><p>O top 5 vê a tela dourada de brinde; do 6º ao 8º, a tela de menção honrosa. Cada um tem um código de conferência: confira no quadro do pódio antes de entregar.</p>
         <button class="btn tang" data-a="sempod">Tirar o pódio e voltar ${E.prev&&E.prev.fase!=="espera"&&Q[E.prev.q]?`para a Q${Q[E.prev.q].num}`:"para o aguarde"}</button><button class="btn" data-a="fim" style="background:rgba(255,255,255,.12);color:#fff;border-color:rgba(255,255,255,.35)">Finalizar aulão (relatório e cartão)</button></div>`;
     } else if(E.fase==="mensagem"){
       h += `<div class="panel hero"><h1>O poema está nos celulares 💚</h1><p>Sem alternativas para marcar. Quando quiser, volte para onde estava.</p>
@@ -988,8 +1057,8 @@ function professor(){
       h += `<div class="panel" style="--hc:#E9A11A"><p class="big">🏆 Pódio · ranking anônimo</p>`;
       if(!nq) h += `<p class="small muted" style="margin:0">O ranking começa quando você encerrar a primeira votação. Conta só as questões trabalhadas, então dá para mostrar o pódio a qualquer momento.</p>`;
       else {
-        h += `<p class="small muted" style="margin:0 0 6px">${nq} ${nq===1?"questão encerrada":"questões encerradas"} · ${L.length} participantes · empate decidido pelo tempo de resposta</p><ul class="rank">`+
-          L.slice(0,8).map(p=>`<li><span class="ps">${p.pos<=3?MED[p.pos-1]:p.pos+"º"}</span><span class="bx">${p.bx}</span><b>${esc(p.nome)}</b>${E.fase==="podio"&&p.pos<=3?`<span class="small muted">· conf. ${hashS(p.d8+E.pv)%9000+1000}</span>`:""}<span class="ac">${p.ac}/${nq}</span></li>`).join("")+`</ul>
+        h += `<p class="small muted" style="margin:0 0 6px">${nq} ${nq===1?"questão encerrada":"questões encerradas"} · ${L.length} participantes · top 5 + 3 menções honrosas · empate pelo tempo de resposta</p><ul class="rank">`+
+          L.slice(0,10).map(p=>`<li style="${p.pos===6?"border-top:2px dashed var(--line)":""}"><span class="ps">${p.pos<=3?MED[p.pos-1]:p.pos+"º"}</span><span class="bx">${p.bx}</span><b>${esc(p.nome)}</b>${p.pos>5&&p.pos<=8?`<span class="small muted">· menção</span>`:""}${E.fase==="podio"&&p.pos<=8&&p.ac>0?`<span class="small muted">· conf. ${hashS(p.d8+E.pv)%9000+1000}</span>`:""}<span class="ac">${p.ac}/${nq}</span></li>`).join("")+`</ul>
           <div class="row" style="margin-top:10px"><button class="btn" data-a="podtelao">Mostrar pódio só no telão</button><button class="btn tang" data-a="podcel">${E.fase==="podio"?"Atualizar pódio nos celulares":"Mostrar pódio nos celulares"}</button></div>`;
         if(E.fase==="podio") h += `<button class="btn solid" data-a="sempod">Tirar o pódio dos celulares e voltar</button>`;
       }
@@ -1040,9 +1109,14 @@ function professor(){
     let esq = "";
     if(podioTelao || E.fase==="podio"){
       const {L,nq}=ranking();
-      const deg=L.slice(0,3).map((p,k)=>`<div class="deg d${k+1}"><div class="bx">${p.bx}</div><div class="nm">${esc(p.nome)}</div><div class="pt">${p.ac} de ${nq} acertos</div><div class="bloco">${k+1}º</div></div>`).join("");
+      const deg=(function(P){
+        const d3=P.slice(0,3).map((p,k)=>`<div class="deg d${k+1}"><div class="bx">${p.bx}</div><div class="nm">${esc(p.nome)}</div><div class="pt">${p.ac} de ${nq} acertos</div><div class="bloco">${k+1}º</div></div>`).join("");
+        const q45=P.slice(3,5).map((p,k)=>`<div><span class="ps">${k+4}º</span><span>${p.bx}</span><span><span class="nm">${esc(p.nome)}</span><br><span class="pt">${p.ac} ${p.ac===1?"acerto":"acertos"}</span></span></div>`).join("");
+        const men=P.slice(5,8).map(p=>`<li>${p.bx}<b>${esc(p.nome)}</b><span>${p.ac} ${p.ac===1?"acerto":"acertos"}</span></li>`).join("");
+        return d3+`</div>`+(q45?`<div class="quase">${q45}</div>`:"")+(men?`<div class="mencoes"><p class="lbl">Menções honrosas</p><ul>${men}</ul></div>`:"")+`<div>`;
+      })(L.filter(p=>p.ac>0));
       const cs=["#FFD866","#E7632D","#ffffff","#7FD1A8","#F2A33A"]; let cf=`<div class="confete">`; for(let k=0;k<70;k++){const r=hashS(k+"t"); cf+=`<i style="left:${r%100}%;background:${cs[r%cs.length]};width:1.2vh;height:1.8vh;animation-duration:${3+(r%40)/10}s;animation-delay:${-(r%50)/10}s"></i>`} cf+=`</div>`;
-      const hp=`<button class="btn close" data-t="sair" style="z-index:10">Sair do telão ✕</button><div class="tpod">${cf}<img class="marca" src="marca.jpg" alt="Genoma Prevê" style="position:relative;z-index:2;height:7vh"><h1 style="position:relative;z-index:2">🏆 Pódio do aulão</h1><p style="font-size:3vh;margin:0;opacity:.8;position:relative;z-index:2">${nq} questões · ${L.length} participantes · os codinomes são secretos: confira no seu celular!</p><div class="degraus">${deg}</div></div>`;
+      const hp=`<button class="btn close" data-t="sair" style="z-index:10">Sair do telão ✕</button><div class="tpod">${cf}<img class="marca" src="marca.jpg" alt="Genoma Prevê" style="position:relative;z-index:2;height:5vh;margin-top:1vh"><h1 style="position:relative;z-index:2">🏆 Pódio do aulão</h1><p style="font-size:3vh;margin:0;opacity:.8;position:relative;z-index:2">${nq} questões · ${L.length} participantes · confira seu codinome no celular</p><div class="degraus">${deg}</div></div>`;
       if(t._hp!==hp){ t._hp=hp; t.innerHTML=hp }
       return;
     }

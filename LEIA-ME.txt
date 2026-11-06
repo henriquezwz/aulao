@@ -30,10 +30,11 @@ Para criar outra sessão, edite a lista SESSOES no index.html.
 AULÃO 06/11, PÓDIO E CODINOMES (novo)
 - Sessão "Aulão 06/11": 28 questões (Filosofia, Literatura, Sociologia).
   Libere só as que for trabalhar.
-- Cada celular ganha um codinome secreto (ex.: "Capivara 427").
+- Cada celular ganha um codinome secreto (ex.: "Clarice 427").
 - Quadro "Pódio" no painel: ranking ao vivo das questões já encerradas.
   "Mostrar pódio só no telão" ou "Mostrar pódio nos celulares".
-  Os 3 primeiros veem uma tela dourada com código de conferência;
+  Top 5 veem a tela dourada de brinde; 6º a 8º, menção honrosa;
+  todos com código de conferência;
   confira o código no painel antes de entregar o brinde.
 - Antes de começar um aulão novo, toque em "Começar aulão novo".
 - Ensaio com vários alunos no mesmo PC: ?mock=1&dev=aluno1, aluno2...
