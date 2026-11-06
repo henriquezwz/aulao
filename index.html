@@ -502,7 +502,7 @@ const ARM = {
 };
 const LET = ["A","B","C","D","E"];
 /* ---------- codinome anônimo e frases ---------- */
-const NOMES=["Machado","Clarice","Drummond","Cecília","Guimarães","Graciliano","Bandeira","Pessoa","Saramago","Conceição","Carolina","Rachel","Amado","Vinicius","Hilda","Lygia","Ariano","Lima Barreto","Alencar","Cruz e Sousa","Pagu","Adélia","Sócrates","Platão","Aristóteles","Kant","Rousseau","Sartre","Beauvoir","Arendt","Weber","Durkheim","Bourdieu","Florestan","Lélia","Freire"];
+const NOMES=["Machado","Clarice","Drummond","Cecília","Guimarães","Graciliano","Bandeira","Pessoa","Saramago","Conceição","Carolina","Rachel","Amado","Vinicius","Hilda","Lygia","Lima Barreto","Alencar","Cruz e Sousa","Pagu","Adélia","Sócrates","Platão","Aristóteles","Kant","Rousseau","Sartre","Beauvoir","Arendt","Weber","Durkheim","Bourdieu","Florestan","Lélia","Freire"];
 const CORES_M=["#E7632D","#2E6FB7","#1F8A5B","#7E5CBA","#C2410C","#0E7490"];
 function hashS(t){ let h=2166136261>>>0; for(const c of String(t)){ h^=c.charCodeAt(0); h=Math.imul(h,16777619)>>>0 } return h }
 function codinome(dev){ const h=hashS(dev), n=NOMES[h%NOMES.length]; const ini=n.split(" ").map(w=>w[0]).join("").slice(0,2).toUpperCase();
