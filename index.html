@@ -265,7 +265,7 @@ const FB_CFG = window.FB_CFG || {};
 const FB_V = "12.19.0";
 // Login do painel: só a senha é digitada; o e-mail fica fixo aqui.
 const PROF_EMAIL = "professor@aulao.app";
-const VERSAO = "06/11 · top 5";
+const VERSAO = "06/11 · 15h";
 
 /* ====================== QUESTÕES ====================== */
 // armadilhas: VNR = verdade que não responde · EXT = extrapola · INV = inverte · EXA = exagera · VIZ = conceito vizinho
@@ -593,7 +593,7 @@ const BE = MOCK ? (()=>{
       const appM = await import(base+"firebase-app.js");
       fs = await import(base+"firebase-firestore.js");
       const app = appM.initializeApp(FB_CFG, "aulao");
-      db = fs.initializeFirestore(app, {});
+      db = fs.initializeFirestore(app, {experimentalForceLongPolling:true});   // mais estável em redes de escola com proxy
       if(precisaAuth){
         A = await import(base+"firebase-auth.js");
         auth = A.initializeAuth(app,{persistence:A.browserLocalPersistence});
@@ -601,7 +601,9 @@ const BE = MOCK ? (()=>{
     },
     async buscar(){ const d=await fs.getDocFromServer(fs.doc(db,"aulao","estado")); return d.exists()?d.data():null },
     onEstado(cb, erro){
-      return fs.onSnapshot(fs.doc(db,"aulao","estado"), s=>cb(s.exists()?s.data():{q:-1,fase:"espera",s:"inicial"}), e=>erro&&erro(e));
+      // se a escuta cair, reabre sozinha
+      let des=null; const abre=()=>{ des=fs.onSnapshot(fs.doc(db,"aulao","estado"), s=>cb(s.exists()?s.data():{q:-1,fase:"espera",s:"inicial"}), e=>{ erro&&erro(e); setTimeout(abre,3000) }) };
+      abre(); return ()=>des&&des();
     },
     enviar(id,dados){ return fs.setDoc(fs.doc(db,"respostas",id), {...dados, t:fs.serverTimestamp()}); },
     async login(email,senha){ const c=await A.signInWithEmailAndPassword(auth,email,senha); return c.user },
@@ -636,7 +638,7 @@ function aluno(){
     if(!sessao || document.hidden) return;
     try{ await comPrazo(BE.enviar(sessao+"_on_"+dev,{d:dev,k:sessao+"_on",r:"A"}),10000) }catch(e){}
   }
-  setInterval(batida, 25000);
+  setInterval(batida, 40000);
   setInterval(()=>{ const el=$("#dicarot"); if(!el) return; el.style.opacity=0; setTimeout(()=>{ el.textContent=fr("espera",dev+Math.floor(Date.now()/9000)); el.style.opacity=1 },400) }, 9000);
   document.addEventListener("visibilitychange",()=>{ if(!document.hidden) batida() });
   addEventListener("online", enviarPendentes);
@@ -933,6 +935,8 @@ function aluno(){
   let buscando=false;
   async function acordar(){ if(buscando||document.hidden) return; buscando=true; try{ const e=await comPrazo(BE.buscar(),8000); if(e) recebe(e) }catch(x){} buscando=false }
   document.addEventListener("visibilitychange",acordar); addEventListener("focus",acordar); addEventListener("pageshow",acordar); addEventListener("online",acordar);
+  // rede de segurança: confere o estado a cada 20 s com a tela ligada (caso a escuta ao vivo trave na rede da escola)
+  setInterval(()=>{ if(!document.hidden && !MOCK) acordar() }, 20000);
   BE.iniciar(false).then(()=>BE.onEstado(recebe,()=>{conexao="off";desenha()})).catch(()=>{
     clearTimeout(prazo);
     $("#app").innerHTML=`<div class="wrap"><div class="panel"><p class="big">Não consegui conectar</p><p class="muted">Confira a internet e tente de novo.</p><button class="btn solid" onclick="location.reload()">Tentar de novo</button></div></div>`;
