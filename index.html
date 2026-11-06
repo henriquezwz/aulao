@@ -108,7 +108,7 @@ button{font:inherit;color:inherit}
 #viewer .vscroll{flex:1;overflow:auto;-webkit-overflow-scrolling:touch}
 #viewer img{display:block;max-width:none;background:#fff}
 input{font:inherit;width:100%;padding:12px;border-radius:10px;border:1px solid var(--line);margin:6px 0;background:var(--surface);color:var(--ink)}
-.toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 16px;border-radius:12px;font-size:14px;z-index:60;max-width:90vw;display:none}
+.toast{position:fixed;left:50%;top:64px;bottom:auto;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 16px;border-radius:12px;font-size:14px;z-index:60;max-width:90vw;display:none}
 /* professor */
 .qgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(84px,1fr));gap:6px}
 .qbtn{padding:8px 4px;border-radius:10px;border:1px solid var(--line);background:var(--surface);font-size:12.5px;font-weight:700;cursor:pointer;line-height:1.2}
@@ -221,7 +221,7 @@ input{font:inherit;width:100%;padding:12px;border-radius:10px;border:1px solid v
 .rank li:last-child{border:0}
 .rank .ps{font:800 15px var(--f-num);min-width:34px;font-size:20px}
 .rank .bx{font-size:22px}
-.rank .ac{margin-left:auto;font:800 15px var(--f-num)}
+.rank .ac{margin-left:10px;font:800 15px var(--f-num)}
 #telao .tpod{position:relative;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2vh;color:#fff;text-align:center;overflow:hidden}
 #telao .tpod h1{font-size:5.4vh;margin:0}#telao .tpod{gap:1.4vh!important;justify-content:flex-start!important;padding-top:1vh}
 #telao .tpod .degraus{max-width:80vw;gap:2vw}
@@ -249,6 +249,56 @@ input{font:inherit;width:100%;padding:12px;border-radius:10px;border:1px solid v
 #telao .close{background:rgba(255,255,255,.12);color:#fff;border-color:rgba(255,255,255,.35)}
 #telao .url{color:var(--g-dark);font-size:2.6vh;font-weight:700;word-break:break-all;margin-top:1vh}
 #telao .close{position:fixed;top:12px;right:12px;width:auto;margin:0}
+
+/* ===== camada de cor (06/11) ===== */
+:root{--cA:#E7632D;--cB:#2E6FB7;--cC:#1F9D63;--cD:#7E5CBA;--cE:#D9467A;--sh:0 6px 20px rgba(15,81,50,.08)}
+body{background:
+  radial-gradient(60vw 40vh at 0% 0%,rgba(231,99,45,.10),transparent 70%),
+  radial-gradient(60vw 45vh at 100% 10%,rgba(46,111,183,.10),transparent 70%),
+  radial-gradient(70vw 50vh at 50% 100%,rgba(126,92,186,.08),transparent 70%),
+  var(--bg);background-attachment:fixed}
+.panel{border-color:transparent;box-shadow:var(--sh)}
+.panel>.big:first-child::before{width:10px;height:10px;border-radius:50%}
+.hero{background:linear-gradient(135deg,#0F5132 0%,#14704A 45%,#1C7C8C 100%);position:relative;overflow:hidden;box-shadow:0 10px 30px rgba(15,81,50,.25)}
+.hero::after{content:"";position:absolute;right:-60px;top:-60px;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(242,163,58,.45),transparent 65%);pointer-events:none}
+.hero>*{position:relative;z-index:1}
+.area{box-shadow:0 3px 10px rgba(0,0,0,.12)}
+.alts .alt{border-width:2px;transition:transform .12s,box-shadow .12s,background .12s}
+.alts .alt:nth-child(1){--c:var(--cA)}.alts .alt:nth-child(2){--c:var(--cB)}.alts .alt:nth-child(3){--c:var(--cC)}.alts .alt:nth-child(4){--c:var(--cD)}.alts .alt:nth-child(5){--c:var(--cE)}
+.alts .alt{color:var(--c);border-color:color-mix(in srgb,var(--c) 45%,transparent);background:color-mix(in srgb,var(--c) 9%,var(--surface))}
+.alts .alt:not(:disabled):active{transform:scale(.94)}
+.alts .alt[aria-pressed="true"]{background:var(--c);border-color:var(--c);color:#fff;box-shadow:0 8px 18px color-mix(in srgb,var(--c) 40%,transparent);transform:translateY(-2px)}
+.bars .bar:nth-child(1){--c:var(--cA)}.bars .bar:nth-child(2){--c:var(--cB)}.bars .bar:nth-child(3){--c:var(--cC)}.bars .bar:nth-child(4){--c:var(--cD)}.bars .bar:nth-child(5){--c:var(--cE)}
+.bars .bar>span:first-child{color:var(--c)}
+.bars .bar .f{background:color-mix(in srgb,var(--c) 55%,transparent)}
+.bars .bar.g .f{background:linear-gradient(90deg,#1F9D63,#4CC27F)}
+.bars .bar.g>span:first-child::after{content:" ✓";color:#1F9D63}
+.res.ok{background:linear-gradient(135deg,#E3F7EA,#C9EFD8);border:0;box-shadow:0 8px 22px rgba(31,157,99,.18)}
+.res.no{background:linear-gradient(135deg,#FDE8E4,#FBD3CB);border:0;box-shadow:0 8px 22px rgba(210,55,60,.14)}
+.res.ok .big{color:#13643E}.res.no .big{color:#A3262B}
+.trap{background:linear-gradient(135deg,#FFF3E0,#FDE3C2);border:0}
+.fechar{background:linear-gradient(135deg,#EFE9FA,#E2F0FB)}
+.btn{box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.btn.solid{background:linear-gradient(135deg,#0F5132,#1C7C5A);border:0}
+.btn.tang{background:linear-gradient(135deg,#E7632D,#F2A33A);border:0;box-shadow:0 8px 18px rgba(231,99,45,.28)}
+.codinome{background:linear-gradient(120deg,#FFE9D6,#FFD9E4 55%,#E3E6FF);border:0;color:#4A2210;box-shadow:var(--sh)}
+.status{font-weight:600}
+.stat div:nth-child(1){background:rgba(76,194,127,.28)}.stat div:nth-child(2){background:rgba(255,106,110,.25)}.stat div:nth-child(3){background:rgba(255,255,255,.16)}
+.list .dot.ok{background:#DDF3E6;border-radius:8px;padding:0 4px}.list .dot.no{background:#FBE3E3;border-radius:8px;padding:0 4px}
+.tab{box-shadow:var(--sh);border-color:transparent}
+.tab[aria-pressed="true"]{background:linear-gradient(135deg,#0F5132,#1C7C8C)}
+.qcard{box-shadow:var(--sh);border-color:transparent;transition:transform .15s,box-shadow .15s}
+.qcard:hover{transform:translateY(-2px);box-shadow:0 10px 26px rgba(15,81,50,.14)}
+.bloco{border-left:0;border-top:5px solid var(--hc)}
+.fab{position:fixed;right:18px;bottom:18px;z-index:20;border:0;border-radius:99px;padding:14px 20px;font-weight:800;font-size:16px;color:#3A2200;background:linear-gradient(135deg,#FFD866,#F2A33A);box-shadow:0 10px 26px rgba(201,102,28,.4);cursor:pointer}
+.fab:active{transform:scale(.96)}
+#telao .tpod-b{position:fixed;left:50%;transform:translateX(-50%);bottom:2vh;width:auto;z-index:10;padding:12px 22px}
+#telao .tpod-vazio{position:fixed;left:50%;top:40%;transform:translateX(-50%);font-size:4vh;z-index:10;text-align:center}
+:root[data-tema="escuro"] body{background:var(--bg)}
+:root[data-tema="escuro"] .res.ok{background:linear-gradient(135deg,#0F3A24,#13502F)}:root[data-tema="escuro"] .res.ok .big{color:#7FE0A8}
+:root[data-tema="escuro"] .res.no{background:linear-gradient(135deg,#3D1A1D,#52222A)}:root[data-tema="escuro"] .res.no .big{color:#FF9A9D}
+:root[data-tema="escuro"] .trap{background:#3A2914}:root[data-tema="escuro"] .fechar{background:#2A2240}
+:root[data-tema="escuro"] .codinome{background:linear-gradient(120deg,#3A2416,#3A1E2A 55%,#1E2440);color:#FFE3CF}
 </style>
 </head>
 <body>
@@ -265,7 +315,7 @@ const FB_CFG = window.FB_CFG || {};
 const FB_V = "12.19.0";
 // Login do painel: só a senha é digitada; o e-mail fica fixo aqui.
 const PROF_EMAIL = "professor@aulao.app";
-const VERSAO = "06/11 · 15h";
+const VERSAO = "06/11 · cores";
 
 /* ====================== QUESTÕES ====================== */
 // armadilhas: VNR = verdade que não responde · EXT = extrapola · INV = inverte · EXA = exagera · VIZ = conceito vizinho
@@ -997,10 +1047,15 @@ function professor(){
   // ranking: acertos nas questões já encerradas; desempate pelo tempo médio de resposta nos acertos
   function ranking(){
     const hs=hist[E.s]||{}, P={}; let nq=0;
+    const peso={"Difícil":3,"Média":2,"Fácil":1};
     Object.entries(hs).forEach(([i,v])=>{ const q=Q[i]; if(!q||!v.r) return; nq++;
-      Object.entries(v.r).forEach(([d,[l,ms]])=>{ const p=P[d]||(P[d]={d,ac:0,t:0,n:0}); p.n++; if(l===q.gab){ p.ac++; p.t+=ms } }) });
-    const L=Object.values(P).sort((a,b)=>b.ac-a.ac || (a.t/(a.ac||1))-(b.t/(b.ac||1)));
-    L.forEach((p,k)=>{ Object.assign(p,codinome(p.d)); p.pos=k+1 });
+      Object.entries(v.r).forEach(([d,[l,ms]])=>{ const p=P[d]||(P[d]={d,ac:0,pd:0,t:0,n:0,tr:0}); p.n++; p.tr+=ms;
+        if(l===q.gab){ p.ac++; p.pd+=peso[q.dif]||2; p.t+=ms } }) });
+    // critérios, nesta ordem: 1) acertos  2) peso das acertadas (difícil 3, média 2, fácil 1)
+    // 3) menor tempo somado nas acertadas  4) mais questões respondidas  5) menor tempo somado em todas  6) codinome (ordem alfabética)
+    const L=Object.values(P).map(p=>Object.assign(p,codinome(p.d))).sort((a,b)=>
+      b.ac-a.ac || b.pd-a.pd || a.t-b.t || b.n-a.n || a.tr-b.tr || a.nome.localeCompare(b.nome));
+    L.forEach((p,k)=>{ p.pos=k+1 });
     return {L,nq};
   }
   const MED=["🥇","🥈","🥉"];
@@ -1010,6 +1065,9 @@ function professor(){
     return {pod:L.filter(p=>p.ac>0).slice(0,8).map(p=>({bx:p.bx,nome:p.nome,ac:p.ac,d:p.d8})), rk, nq, np:L.length, pv};
   }
   let podioTelao=false;
+  function verPodio(){ podioTelao=true; telao=true; desenhaTelao() }
+  async function podCel(){ if(E.fase==="podio" || confirm("Mostrar o pódio agora no celular de todos?")){ const ps=podioState(); await muda(E.fase==="podio"?ps:{...ps,fase:"podio",prev:{q:E.q,fase:E.fase}}); podioTelao=true; if(telao) desenhaTelao() } }
+  async function semPod(){ const p=E.prev||{q:-1,fase:"espera"}; podioTelao=false; await muda({q:p.q,fase:p.fase,prev:null}); if(telao) desenhaTelao() }
 
   function qrDataURL(txt){
     try{ const qr=qrcode(0,"M"); qr.addData(txt); qr.make(); return qr.createDataURL(10,2) }catch(e){ return "" }
@@ -1063,8 +1121,8 @@ function professor(){
       h += `<div class="panel" style="--hc:#E9A11A"><p class="big">🏆 Pódio · ranking anônimo</p>`;
       if(!nq) h += `<p class="small muted" style="margin:0">O ranking começa quando você encerrar a primeira votação. Conta só as questões trabalhadas, então dá para mostrar o pódio a qualquer momento.</p>`;
       else {
-        h += `<p class="small muted" style="margin:0 0 6px">${nq} ${nq===1?"questão encerrada":"questões encerradas"} · ${L.length} participantes · top 5 + 3 menções honrosas · empate pelo tempo de resposta</p><ul class="rank">`+
-          L.slice(0,10).map(p=>`<li style="${p.pos===6?"border-top:2px dashed var(--line)":""}"><span class="ps">${p.pos<=3?MED[p.pos-1]:p.pos+"º"}</span><span class="bx">${p.bx}</span><b>${esc(p.nome)}</b>${p.pos>5&&p.pos<=8?`<span class="small muted">· menção</span>`:""}${E.fase==="podio"&&p.pos<=8&&p.ac>0?`<span class="small muted">· conf. ${hashS(p.d8+E.pv)%9000+1000}</span>`:""}<span class="ac">${p.ac}/${nq}</span></li>`).join("")+`</ul>
+        h += `<p class="small muted" style="margin:0 0 6px">${nq} ${nq===1?"questão encerrada":"questões encerradas"} · ${L.length} participantes · top 5 + 3 menções honrosas</p><p class="small muted" style="margin:0 0 8px"><b>Desempate, nesta ordem:</b> 1) mais acertos · 2) mais acertos em questões difíceis (difícil vale 3, média 2, fácil 1) · 3) menor tempo somado para responder as que acertou · 4) mais questões respondidas · 5) menor tempo total · 6) ordem alfabética do codinome.</p><ul class="rank">`+
+          L.slice(0,10).map(p=>`<li style="${p.pos===6?"border-top:2px dashed var(--line)":""}"><span class="ps">${p.pos<=3?MED[p.pos-1]:p.pos+"º"}</span><span class="bx">${p.bx}</span><b>${esc(p.nome)}</b>${p.pos>5&&p.pos<=8?`<span class="small muted">· menção</span>`:""}${E.fase==="podio"&&p.pos<=8&&p.ac>0?`<span class="small muted">· conf. ${hashS(p.d8+E.pv)%9000+1000}</span>`:""}<span class="small muted" style="margin-left:auto;white-space:nowrap" title="peso das acertadas · tempo somado nas acertadas">peso ${p.pd} · ${(p.t/1000).toFixed(1)} s</span><span class="ac">${p.ac}/${nq}</span></li>`).join("")+`</ul>
           <div class="row" style="margin-top:10px"><button class="btn" data-a="podtelao">Mostrar pódio só no telão</button><button class="btn tang" data-a="podcel">${E.fase==="podio"?"Atualizar pódio nos celulares":"Mostrar pódio nos celulares"}</button></div>`;
         if(E.fase==="podio") h += `<button class="btn solid" data-a="sempod">Tirar o pódio dos celulares e voltar</button>`;
       }
@@ -1103,6 +1161,7 @@ function professor(){
       <button class="btn" data-a="atualiza">Atualizar o app nos celulares (não perde respostas)</button>
       <button class="btn danger" data-a="zerar">Zerar tudo (nova sessão, para depois do teste)</button>
       <p class="small muted">Link dos alunos: <b>${esc(urlAluno)}</b></p></div><img class="logo-g" src="logo.jpg" alt="Genoma Sistema de Ensino"></div>`;
+    h += `<button class="fab" data-a="podtelao" aria-label="Ver o pódio agora">🏆 Pódio</button>`;
     render(h); atualizaOnline();
     if(telao) desenhaTelao();
   }
@@ -1122,7 +1181,8 @@ function professor(){
         return d3+`</div>`+(q45?`<div class="quase">${q45}</div>`:"")+(men?`<div class="mencoes"><p class="lbl">Menções honrosas</p><ul>${men}</ul></div>`:"")+`<div>`;
       })(L.filter(p=>p.ac>0));
       const cs=["#FFD866","#E7632D","#ffffff","#7FD1A8","#F2A33A"]; let cf=`<div class="confete">`; for(let k=0;k<70;k++){const r=hashS(k+"t"); cf+=`<i style="left:${r%100}%;background:${cs[r%cs.length]};width:1.2vh;height:1.8vh;animation-duration:${3+(r%40)/10}s;animation-delay:${-(r%50)/10}s"></i>`} cf+=`</div>`;
-      const hp=`<button class="btn close" data-t="sair" style="z-index:10">Sair do telão ✕</button><div class="tpod">${cf}<img class="marca" src="marca.jpg" alt="Genoma Prevê" style="position:relative;z-index:2;height:5vh;margin-top:1vh"><h1 style="position:relative;z-index:2">🏆 Pódio do aulão</h1><p style="font-size:3vh;margin:0;opacity:.8;position:relative;z-index:2">${nq} questões · ${L.length} participantes · confira seu codinome no celular</p><div class="degraus">${deg}</div></div>`;
+      const ctl = nq ? (E.fase==="podio" ? `<button class="btn tpod-b" data-t="sempod">Tirar dos celulares</button>` : `<button class="btn tang tpod-b" data-t="podcel">📱 Mostrar também nos celulares</button>`) : "";
+      const hp=`<button class="btn close" data-t="sair" style="z-index:10">Sair do telão ✕</button>${ctl}${nq?"":`<div class="tpod-vazio">O pódio aparece depois que você encerrar a primeira votação.</div>`}<div class="tpod">${cf}<img class="marca" src="marca.jpg" alt="Genoma Prevê" style="position:relative;z-index:2;height:5vh;margin-top:1vh"><h1 style="position:relative;z-index:2">🏆 Pódio do aulão</h1><p style="font-size:3vh;margin:0;opacity:.8;position:relative;z-index:2">${nq} questões · ${L.length} participantes · confira seu codinome no celular</p><div class="degraus">${deg}</div></div>`;
       if(t._hp!==hp){ t._hp=hp; t.innerHTML=hp }
       return;
     }
@@ -1135,7 +1195,7 @@ function professor(){
     setTimeout(atualizaOnline,0);
     t.innerHTML = `<button class="btn close" data-t="sair">Sair do telão ✕</button><div class="tg"><div><img class="marca" src="marca.jpg" alt="Genoma Prevê">${esq}</div><div class="qr">${qr?`<img src="${qr}" alt="QR code">`:""}<div class="url">${esc(urlAluno.replace(/^https?:\/\//,""))}</div></div></div>`;
   }
-  document.addEventListener("click",e=>{ if(e.target.closest('[data-t="sair"]')){ telao=false; podioTelao=false; $("#telao").classList.remove("on") } });
+  document.addEventListener("click",e=>{ if(e.target.closest('[data-t="podcel"]')){ podCel(); return } if(e.target.closest('[data-t="sempod"]')){ semPod(); return } if(e.target.closest('[data-t="sair"]')){ telao=false; podioTelao=false; $("#telao").classList.remove("on") } });
 
   $("#app").addEventListener("click", async e=>{
     const b = e.target.closest("[data-a]"); if(!b) return;
@@ -1150,9 +1210,9 @@ function professor(){
     if(a==="fim"){ if(confirm("Finalizar o aulão? Os alunos verão o relatório final.")) await muda({fase:"fim"}) }
     if(a==="espera") await muda({fase:"espera"});
     if(a==="msg"){ if(confirm("Mostrar o poema agora no celular de todos?")) await muda({fase:"mensagem",q:-1,prev:E.fase==="podio"?E.prev:{q:E.q,fase:E.fase}}) }
-    if(a==="podtelao"){ podioTelao=true; telao=true; desenhaTelao(); return }
-    if(a==="podcel"){ if(E.fase==="podio" || confirm("Mostrar o pódio agora no celular de todos?")){ const ps=podioState(); await muda(E.fase==="podio"?ps:{...ps,fase:"podio",prev:{q:E.q,fase:E.fase}}); podioTelao=true; if(telao) desenhaTelao() } return }
-    if(a==="sempod"){ const p=E.prev||{q:-1,fase:"espera"}; podioTelao=false; await muda({q:p.q,fase:p.fase,prev:null}); return }
+    if(a==="podtelao"){ verPodio(); return }
+    if(a==="podcel"){ await podCel(); return }
+    if(a==="sempod"){ await semPod(); return }
     if(a==="semmsg"){ const p=E.prev||{q:-1,fase:"espera"}; await muda({q:p.q,fase:p.fase,prev:null}) }
     if(a==="atualiza"){ if(confirm("Recarregar a página nos celulares? Cada aluno volta para onde está agora, com as respostas e o desempenho guardados.")){ await muda({rl:Date.now()}); toast("Pedido enviado. Os celulares recarregam nos próximos segundos.") } }
     if(a==="parcial"){ verParcial=!verParcial; desenha() }
