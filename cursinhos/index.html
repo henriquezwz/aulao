@@ -126,7 +126,7 @@ if(t.dataset.s){const k=t.dataset.k;rasc[k]={...(rasc[k]||{txt:document.querySel
 if(t.dataset.v){const k=t.dataset.v,txt=document.querySelector(`[data-x="${k}"]`).value.trim();const nota=(rasc[k]||{}).nota||((todas[meuId]?.r||{})[k]||{}).nota;
 if(!nota){alertMsg("Escolha uma nota de 1 a 5.");return}const anon=$("anon").checked;const nome=(anon?"":$("nome").value.trim())||"Anônimo";
 const atual=todas[meuId]||{r:{}};const r={...(atual.r||{}),[k]:{nota,txt}};t.textContent="Salvando…";
-try{await set(ref(db,"cursinhos/"+meuId),{nome,r});delete rasc[k];}catch(err){alertMsg("Não deu para salvar. Tente de novo.")}}});
+try{await set(ref(db,"cursinhos/"+meuId),{nome,r});delete rasc[k];abertos.delete(k);render();}catch(err){alertMsg("Não deu para salvar. Tente de novo.")}}});
 function alertMsg(m){$("status").textContent=m;$("status").style.display="block";setTimeout(()=>{$("status").style.display="none"},3000)}
 document.addEventListener("input",e=>{const k=e.target.dataset.x;if(k){rasc[k]={...(rasc[k]||{nota:((todas[meuId]?.r||{})[k]||{}).nota||0}),txt:e.target.value}}});
 $("nav").innerHTML=Object.keys(CAT).map((c,i)=>`<a href="#" data-c="${i}">${c}</a>`).join("");
