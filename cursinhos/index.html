@@ -53,6 +53,14 @@ textarea{width:100%;min-height:70px;border:1px solid var(--borda);border-radius:
 .card{transition:box-shadow .15s}.card.aberto{box-shadow:0 6px 18px rgba(11,92,59,.10)}
 .topo b{font-weight:600}
 .sobre{background:#f3efe2;border-radius:10px;padding:9px 11px;font-size:.86rem;color:#4b5550;line-height:1.4;margin-bottom:10px}.sobre b{color:var(--verde)}
+.resumo{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:14px}
+.resumo div{background:#fff;border:1px solid var(--borda);border-radius:14px;padding:10px 6px;text-align:center}
+.resumo b{display:block;font-family:"JetBrains Mono",monospace;font-size:1.25rem;color:var(--verde)}
+.resumo span{font-size:.72rem;color:var(--sub)}
+.camp{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;scrollbar-width:none}
+.cp{flex:none;min-width:140px;background:#fff;border:1px solid var(--borda);border-top:3px solid var(--ouro);border-radius:12px;padding:9px 11px}
+.cp small{display:block;color:var(--sub);font-size:.72rem}.cp b{display:block;font-size:.92rem;margin:2px 0}
+.cp .n{font-family:"JetBrains Mono",monospace;color:var(--ouro);font-size:.85rem;font-weight:600}
 </style>
 </head>
 <body>
@@ -64,7 +72,9 @@ textarea{width:100%;min-height:70px;border:1px solid var(--borda);border-radius:
 <select id="ordem"><option value="lista">Ordem da lista</option><option value="nota">Melhor nota</option><option value="qtd">Mais avaliados</option></select>
 </div>
 <div id="status" class="aviso">Carregando opiniões…</div>
+<div id="resumo" class="resumo"></div>
 <h2>Mais recomendados</h2><div id="rank" class="rank"><div class="aviso">Ainda sem avaliações. Seja o primeiro!</div></div>
+<h2>Campeões por área</h2><div id="camp" class="camp"><div class="aviso">Aparecem assim que chegarem as avaliações.</div></div>
 <h2 style="margin-top:26px">Por área</h2><nav id="nav" class="nav"></nav>
 <div id="lista"></div>
 <footer style="text-align:center;color:var(--sub);font-size:.8rem;padding:28px 0 20px">Plataforma criada pelo <a href="https://nogabarito.com.br" target="_blank" rel="noopener" style="color:var(--sub)">No Gabarito</a></footer>
@@ -103,7 +113,11 @@ $("busca").oninput=render;$("ordem").onchange=render;
 
 function stats(k){const ops=[];for(const uid in todas){const r=(todas[uid].r||{})[k];if(r&&r.nota)ops.push({...r,uid,nome:todas[uid].nome||"Anônimo"})}
 const m=ops.length?ops.reduce((a,o)=>a+o.nota,0)/ops.length:0;return{ops,m}}
-function renderRank(){const vis=new Set(),arr=[];for(const c in CAT)for(const n of CAT[c]){const st=stats(key(c,n));if(!st.ops.length)continue;const id=n.toLowerCase();if(vis.has(id+c))continue;vis.add(id+c);arr.push({n,c,...st})}
+function renderResumo(){let op=0,cur=new Set(),pes=0,soma=0;for(const u in todas){const r=todas[u].r||{};let t=0;for(const k in r)if(r[k]&&r[k].nota){op++;t++;cur.add(k);soma+=r[k].nota}if(t)pes++}
+$("resumo").innerHTML=[[op,op===1?"opinião":"opiniões"],[pes,pes===1?"estudante":"estudantes"],[cur.size,"cursos avaliados"],[op?(soma/op).toFixed(1)+"★":"–","média geral"]].map(([n,l])=>`<div><b>${n}</b><span>${l}</span></div>`).join("");
+const cs=[];for(const c in CAT){let best=null;for(const n of CAT[c]){const st=stats(key(c,n));if(!st.ops.length)continue;const sc=(st.m*st.ops.length+3*3)/(st.ops.length+3);if(!best||sc>best.sc)best={n,sc,...st}}if(best)cs.push(`<div class="cp"><small>${c}</small><b>${esc(best.n)}</b><span class="n">${best.m.toFixed(1)}★</span></div>`)}
+if(cs.length)$("camp").innerHTML=cs.join("")}
+function renderRank(){renderResumo();const vis=new Set(),arr=[];for(const c in CAT)for(const n of CAT[c]){const st=stats(key(c,n));if(!st.ops.length)continue;const id=n.toLowerCase();if(vis.has(id+c))continue;vis.add(id+c);arr.push({n,c,...st})}
 const tot=arr.reduce((a,x)=>a+x.ops.length,0),g=tot?arr.reduce((a,x)=>a+x.m*x.ops.length,0)/tot:0;
 arr.forEach(x=>x.sc=(x.m*x.ops.length+g*3)/(x.ops.length+3));arr.sort((a,b)=>b.sc-a.sc||b.ops.length-a.ops.length);
 if(!arr.length)return;$("rank").innerHTML=arr.slice(0,10).map((x,i)=>`<div class="rk"><span class="pos">${i+1}º</span><span class="nm">${esc(x.n)}<small>${x.c}</small></span><span class="media"><span class="n">${x.m.toFixed(1)}</span> ★ · ${x.ops.length}</span></div>`).join("")}
