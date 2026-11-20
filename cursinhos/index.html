@@ -52,6 +52,7 @@ textarea{width:100%;min-height:70px;border:1px solid var(--borda);border-radius:
 .nav a{flex:none;text-decoration:none;color:var(--verde);background:#fff;border:1px solid var(--borda);border-radius:20px;padding:6px 12px;font-size:.85rem;font-weight:600}
 .card{transition:box-shadow .15s}.card.aberto{box-shadow:0 6px 18px rgba(11,92,59,.10)}
 .topo b{font-weight:600}
+.sobre{background:#f3efe2;border-radius:10px;padding:9px 11px;font-size:.86rem;color:#4b5550;line-height:1.4;margin-bottom:10px}.sobre b{color:var(--verde)}
 </style>
 </head>
 <body>
@@ -116,7 +117,7 @@ const ks=itens.filter(x=>x.ops.length);const best=ks.length?ks.reduce((a,b)=>b.m
 h+=`<section class="sec"><h2>${c}<span>${CAT[c].length}</span></h2>`;
 for(const x of itens){const meu=(todas[meuId]?.r||{})[x.k]||{};const d=rasc[x.k]||{nota:meu.nota||0,txt:meu.txt||""};
 h+=`<div class="card ${abertos.has(x.k)?"aberto":""}" data-k="${x.k}"><div class="topo" data-t="${x.k}"><b>${esc(x.n)}${x.top?'<span class="selo">Mais bem avaliado</span>':""}</b><span class="media">${x.ops.length?`<span class="n">${x.m.toFixed(1)}</span> ★ · ${x.ops.length} opini${x.ops.length>1?"ões":"ão"}`:"sem opiniões"}</span></div>
-<div class="corpo">${x.n==="nogabarito.com.br"?'<a class="site" href="https://nogabarito.com.br" target="_blank" rel="noopener">Visitar nogabarito.com.br ↗</a>':""}${db?`<div class="estrelas">${[1,2,3,4,5].map(s=>`<button data-s="${s}" data-k="${x.k}" class="${s<=d.nota?"on":""}" aria-label="${s} estrelas">★</button>`).join("")}</div>
+<div class="corpo">${x.n==="nogabarito.com.br"?'<div class="sobre"><b>Do criador</b> · Em lançamento. 3.582 questões oficiais do ENEM (2009 a 2025), com resolução comentada e comparação com outros alunos. Grátis para alunos.</div><a class="site" href="https://nogabarito.com.br" target="_blank" rel="noopener">Visitar nogabarito.com.br ↗</a>':""}${db?`<div class="estrelas">${[1,2,3,4,5].map(s=>`<button data-s="${s}" data-k="${x.k}" class="${s<=d.nota?"on":""}" aria-label="${s} estrelas">★</button>`).join("")}</div>
 <textarea data-x="${x.k}" placeholder="O que achou? Preço, didática, material…">${esc(d.txt)}</textarea><button class="salvar" data-v="${x.k}">Salvar opinião</button>`:""}
 ${x.ops.map(o=>`<div class="op"><b>${esc(o.nome)}</b> <span class="q">${"★".repeat(o.nota)}</span><br>${esc(o.txt||"")}</div>`).join("")}</div></div>`}h+=`</section>`}
 renderRank();$("lista").innerHTML=h||`<div class="aviso">Nada encontrado.</div>`}
