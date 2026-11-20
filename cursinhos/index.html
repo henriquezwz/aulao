@@ -57,7 +57,7 @@ textarea{width:100%;min-height:70px;border:1px solid var(--borda);border-radius:
 <body>
 <header><div class="in"><h1>Cursinhos: o que os estudantes acham</h1><p>Veja os mais recomendados, leia experiências reais e deixe a sua antes de aproveitar a Black Friday.</p></div></header>
 <main>
-<div class="nome"><span>Seu nome:</span><input id="nome" placeholder="Como quer aparecer"><label style="white-space:nowrap;font-size:.9rem"><input type="checkbox" id="anon"> Anônimo</label></div>
+<div class="nome"><span>Seu nome:</span><input id="nome" placeholder="Opcional (em branco = anônimo)"><label style="white-space:nowrap;font-size:.9rem"><input type="checkbox" id="anon"> Anônimo</label></div>
 <div class="barra">
 <input id="busca" placeholder="Buscar curso">
 <select id="ordem"><option value="lista">Ordem da lista</option><option value="nota">Melhor nota</option><option value="qtd">Mais avaliados</option></select>
@@ -124,7 +124,7 @@ if(t.dataset.t){abertos.has(t.dataset.t)?abertos.delete(t.dataset.t):abertos.add
 const tp=t.closest&&t.closest(".topo");if(tp){const k=tp.dataset.t;abertos.has(k)?abertos.delete(k):abertos.add(k);render();return}
 if(t.dataset.s){const k=t.dataset.k;rasc[k]={...(rasc[k]||{txt:document.querySelector(`[data-x="${k}"]`).value}),nota:+t.dataset.s};render();return}
 if(t.dataset.v){const k=t.dataset.v,txt=document.querySelector(`[data-x="${k}"]`).value.trim();const nota=(rasc[k]||{}).nota||((todas[meuId]?.r||{})[k]||{}).nota;
-if(!nota){alertMsg("Escolha uma nota de 1 a 5.");return}const anon=$("anon").checked;const nome=anon?"Anônimo":$("nome").value.trim();if(!nome){alertMsg("Coloque seu nome no topo.");$("nome").focus();return}
+if(!nota){alertMsg("Escolha uma nota de 1 a 5.");return}const anon=$("anon").checked;const nome=(anon?"":$("nome").value.trim())||"Anônimo";
 const atual=todas[meuId]||{r:{}};const r={...(atual.r||{}),[k]:{nota,txt}};t.textContent="Salvando…";
 try{await set(ref(db,"cursinhos/"+meuId),{nome,r});delete rasc[k];}catch(err){alertMsg("Não deu para salvar. Tente de novo.")}}});
 function alertMsg(m){$("status").textContent=m;$("status").style.display="block";setTimeout(()=>{$("status").style.display="none"},3000)}
