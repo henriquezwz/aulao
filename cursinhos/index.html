@@ -100,7 +100,7 @@ if(ord==="nota")itens.sort((a,b)=>b.m-a.m||b.ops.length-a.ops.length);
 if(ord==="qtd")itens.sort((a,b)=>b.ops.length-a.ops.length);
 h+=`<h2>${c}</h2>`;
 for(const x of itens){const meu=(todas[meuId]?.r||{})[x.k]||{};const d=rasc[x.k]||{nota:meu.nota||0,txt:meu.txt||""};
-h+=`<div class="card ${abertos.has(x.k)?"aberto":""}" data-k="${x.k}"><div class="topo" data-t="${x.k}"><b>${esc(x.n)}</b><span class="media">${x.ops.length?`<span class="n">${x.m.toFixed(1)}</span> ★ · ${x.ops.length} opini${x.ops.length>1?"ões":"ão"}`:"sem opiniões"}</span></div>
+h+=`<div class="card ${abertos.has(x.k)?"aberto":""}" data-k="${x.k}"><div class="topo" data-t="${x.k}"><b>${x.n==="nogabarito.com.br"?`<a href="https://nogabarito.com.br" target="_blank" rel="noopener" style="color:var(--verde)" onclick="event.stopPropagation()">nogabarito.com.br</a>`:esc(x.n)}</b><span class="media">${x.ops.length?`<span class="n">${x.m.toFixed(1)}</span> ★ · ${x.ops.length} opini${x.ops.length>1?"ões":"ão"}`:"sem opiniões"}</span></div>
 <div class="corpo">${db?`<div class="estrelas">${[1,2,3,4,5].map(s=>`<button data-s="${s}" data-k="${x.k}" class="${s<=d.nota?"on":""}" aria-label="${s} estrelas">★</button>`).join("")}</div>
 <textarea data-x="${x.k}" placeholder="O que achou? Preço, didática, material…">${esc(d.txt)}</textarea><button class="salvar" data-v="${x.k}">Salvar opinião</button>`:""}
 ${x.ops.map(o=>`<div class="op"><b>${esc(o.nome)}</b> <span class="q">${"★".repeat(o.nota)}</span><br>${esc(o.txt||"")}</div>`).join("")}</div></div>`}}
