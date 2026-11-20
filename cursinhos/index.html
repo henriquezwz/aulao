@@ -40,6 +40,18 @@ textarea{width:100%;min-height:70px;border:1px solid var(--borda);border-radius:
 .op{font-size:.92rem;padding:9px 0;border-top:1px dashed var(--borda);line-height:1.4}
 .op .q{color:var(--ouro)}
 .aviso{color:var(--sub);font-size:.86rem;text-align:center;padding:10px}
+.sec{margin:10px 0 4px}
+.sec h2{display:flex;align-items:center;gap:8px}
+.sec h2 span{font-family:"JetBrains Mono",monospace;font-size:.75rem;color:var(--sub);background:#ebe7da;border-radius:20px;padding:2px 8px}
+.sec.dest{background:linear-gradient(160deg,#0B5C3B,#13774d);border-radius:20px;padding:6px 12px 10px;margin:22px 0}
+.sec.dest h2{color:#fff}.sec.dest h2 span{background:rgba(255,255,255,.18);color:#fff}
+.sec.dest .card{border-color:transparent}
+.selo{display:inline-block;margin-left:8px;font-size:.7rem;font-weight:600;color:#fff;background:var(--ouro);border-radius:20px;padding:2px 8px;vertical-align:middle}
+.site{display:inline-block;margin-bottom:10px;color:var(--verde);font-weight:600;text-decoration:none;border:1.5px solid var(--verde);border-radius:10px;padding:7px 12px}
+.nav{display:flex;gap:6px;overflow-x:auto;padding:2px 2px 6px;scrollbar-width:none}
+.nav a{flex:none;text-decoration:none;color:var(--verde);background:#fff;border:1px solid var(--borda);border-radius:20px;padding:6px 12px;font-size:.85rem;font-weight:600}
+.card{transition:box-shadow .15s}.card.aberto{box-shadow:0 6px 18px rgba(11,92,59,.10)}
+.topo b{font-weight:600}
 </style>
 </head>
 <body>
@@ -52,6 +64,7 @@ textarea{width:100%;min-height:70px;border:1px solid var(--borda);border-radius:
 </div>
 <div id="status" class="aviso">Carregando opiniões…</div>
 <h2>Mais recomendados</h2><div id="rank" class="rank"><div class="aviso">Ainda sem avaliações. Seja o primeiro!</div></div>
+<h2 style="margin-top:26px">Por área</h2><nav id="nav" class="nav"></nav>
 <div id="lista"></div>
 </main>
 <script type="module">
@@ -98,12 +111,13 @@ for(const c in CAT){let itens=CAT[c].map((n,i)=>({n,i,k:key(c,n),...stats(key(c,
 if(!itens.length)continue;
 if(ord==="nota")itens.sort((a,b)=>b.m-a.m||b.ops.length-a.ops.length);
 if(ord==="qtd")itens.sort((a,b)=>b.ops.length-a.ops.length);
-h+=`<h2>${c}</h2>`;
+const ks=itens.filter(x=>x.ops.length);const best=ks.length?ks.reduce((a,b)=>b.m*b.ops.length/(b.ops.length+1)>a.m*a.ops.length/(a.ops.length+1)?b:a):null;itens.forEach(x=>x.top=x===best);
+h+=`<section class="sec${c==="Plataformas de questões"?" dest":""}"><h2>${c}<span>${CAT[c].length}</span></h2>`;
 for(const x of itens){const meu=(todas[meuId]?.r||{})[x.k]||{};const d=rasc[x.k]||{nota:meu.nota||0,txt:meu.txt||""};
-h+=`<div class="card ${abertos.has(x.k)?"aberto":""}" data-k="${x.k}"><div class="topo" data-t="${x.k}"><b>${x.n==="nogabarito.com.br"?`<a href="https://nogabarito.com.br" target="_blank" rel="noopener" style="color:var(--verde)" onclick="event.stopPropagation()">nogabarito.com.br</a>`:esc(x.n)}</b><span class="media">${x.ops.length?`<span class="n">${x.m.toFixed(1)}</span> ★ · ${x.ops.length} opini${x.ops.length>1?"ões":"ão"}`:"sem opiniões"}</span></div>
-<div class="corpo">${db?`<div class="estrelas">${[1,2,3,4,5].map(s=>`<button data-s="${s}" data-k="${x.k}" class="${s<=d.nota?"on":""}" aria-label="${s} estrelas">★</button>`).join("")}</div>
+h+=`<div class="card ${abertos.has(x.k)?"aberto":""}" data-k="${x.k}"><div class="topo" data-t="${x.k}"><b>${esc(x.n)}${x.top?'<span class="selo">Mais bem avaliado</span>':""}</b><span class="media">${x.ops.length?`<span class="n">${x.m.toFixed(1)}</span> ★ · ${x.ops.length} opini${x.ops.length>1?"ões":"ão"}`:"sem opiniões"}</span></div>
+<div class="corpo">${x.n==="nogabarito.com.br"?'<a class="site" href="https://nogabarito.com.br" target="_blank" rel="noopener">Visitar nogabarito.com.br ↗</a>':""}${db?`<div class="estrelas">${[1,2,3,4,5].map(s=>`<button data-s="${s}" data-k="${x.k}" class="${s<=d.nota?"on":""}" aria-label="${s} estrelas">★</button>`).join("")}</div>
 <textarea data-x="${x.k}" placeholder="O que achou? Preço, didática, material…">${esc(d.txt)}</textarea><button class="salvar" data-v="${x.k}">Salvar opinião</button>`:""}
-${x.ops.map(o=>`<div class="op"><b>${esc(o.nome)}</b> <span class="q">${"★".repeat(o.nota)}</span><br>${esc(o.txt||"")}</div>`).join("")}</div></div>`}}
+${x.ops.map(o=>`<div class="op"><b>${esc(o.nome)}</b> <span class="q">${"★".repeat(o.nota)}</span><br>${esc(o.txt||"")}</div>`).join("")}</div></div>`}h+=`</section>`}
 renderRank();$("lista").innerHTML=h||`<div class="aviso">Nada encontrado.</div>`}
 document.addEventListener("click",async e=>{const t=e.target;
 if(t.dataset.t){abertos.has(t.dataset.t)?abertos.delete(t.dataset.t):abertos.add(t.dataset.t);render();return}
@@ -115,6 +129,8 @@ const atual=todas[meuId]||{r:{}};const r={...(atual.r||{}),[k]:{nota,txt}};t.tex
 try{await set(ref(db,"cursinhos/"+meuId),{nome,r});delete rasc[k];}catch(err){alertMsg("Não deu para salvar. Tente de novo.")}}});
 function alertMsg(m){$("status").textContent=m;$("status").style.display="block";setTimeout(()=>{$("status").style.display="none"},3000)}
 document.addEventListener("input",e=>{const k=e.target.dataset.x;if(k){rasc[k]={...(rasc[k]||{nota:((todas[meuId]?.r||{})[k]||{}).nota||0}),txt:e.target.value}}});
+$("nav").innerHTML=Object.keys(CAT).map((c,i)=>`<a href="#" data-c="${i}">${c}</a>`).join("");
+$("nav").onclick=e=>{const i=e.target.dataset.c;if(i==null)return;e.preventDefault();document.querySelectorAll(".sec")[i]?.scrollIntoView({behavior:"smooth"})};
 render();
 const timer=setTimeout(()=>{$("status").textContent="Não foi possível carregar as opiniões agora."},10000);
 try{meuId=localStorage.getItem("uid")}catch(e){}
