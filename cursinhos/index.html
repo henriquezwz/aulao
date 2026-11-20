@@ -81,6 +81,7 @@ const firebaseConfig = {
   measurementId: "G-J75C0C6ND9"
 };
 const CAT={
+"Plataformas de questões":["Hospital Questiona","AIO","Estuda.com","nogabarito.com.br"],
 "Química":["Iquimica","Discursivas de química","Babi Correa","Tathi na química","Moisés Medeiros"],
 "Biologia":["Bioatp","Discursivas de bio","Neuralia","Ferretto (Landim)","Gui Goulart","Emmanoel (Gordinho das Aprovações, do Medway)"],
 "Física":["Universo narrado – lições de física","Ricci","Rafael Medeiros"],
@@ -88,8 +89,7 @@ const CAT={
 "Matemática":["Matemagicando","Universo narrado","Mente matemática do professor Fredão","Plataforma discursiva de matemática","Ronaebson","Mateco","Matemática MC","Matemática Online","Vital Matemática"],
 "Redação":["Fernanda Pessoa","Autoria","Corrija-me","Aníbal de Redação","Jana Rabelo","Bella Nazar","Luma e ponto","Aula da Marcella"],
 "Plataformas de correção":["Fernanda Pessoa","Corrija-me","Tanay"],
-"Humanas":["Thais Formagio","PRD","Filonared","Humanizarte","História Online","Terra Negra","Humanizando","Edu Morais"],
-"Plataformas de questões":["Hospital Questiona","AIO","Estuda.com","nogabarito.com.br"]};
+"Humanas":["Thais Formagio","PRD","Filonared","Humanizarte","História Online","Terra Negra","Humanizando","Edu Morais"]};
 const key=(c,n)=>(c+"__"+n).normalize("NFD").replace(/[^\w]+/g,"_").toLowerCase();
 let todas={}, meuId=null, db=null, abertos=new Set(), rasc={};
 const $=id=>document.getElementById(id);
@@ -112,7 +112,7 @@ if(!itens.length)continue;
 if(ord==="nota")itens.sort((a,b)=>b.m-a.m||b.ops.length-a.ops.length);
 if(ord==="qtd")itens.sort((a,b)=>b.ops.length-a.ops.length);
 const ks=itens.filter(x=>x.ops.length);const best=ks.length?ks.reduce((a,b)=>b.m*b.ops.length/(b.ops.length+1)>a.m*a.ops.length/(a.ops.length+1)?b:a):null;itens.forEach(x=>x.top=x===best);
-h+=`<section class="sec${c==="Plataformas de questões"?" dest":""}"><h2>${c}<span>${CAT[c].length}</span></h2>`;
+h+=`<section class="sec"><h2>${c}<span>${CAT[c].length}</span></h2>`;
 for(const x of itens){const meu=(todas[meuId]?.r||{})[x.k]||{};const d=rasc[x.k]||{nota:meu.nota||0,txt:meu.txt||""};
 h+=`<div class="card ${abertos.has(x.k)?"aberto":""}" data-k="${x.k}"><div class="topo" data-t="${x.k}"><b>${esc(x.n)}${x.top?'<span class="selo">Mais bem avaliado</span>':""}</b><span class="media">${x.ops.length?`<span class="n">${x.m.toFixed(1)}</span> ★ · ${x.ops.length} opini${x.ops.length>1?"ões":"ão"}`:"sem opiniões"}</span></div>
 <div class="corpo">${x.n==="nogabarito.com.br"?'<a class="site" href="https://nogabarito.com.br" target="_blank" rel="noopener">Visitar nogabarito.com.br ↗</a>':""}${db?`<div class="estrelas">${[1,2,3,4,5].map(s=>`<button data-s="${s}" data-k="${x.k}" class="${s<=d.nota?"on":""}" aria-label="${s} estrelas">★</button>`).join("")}</div>
