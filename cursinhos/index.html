@@ -113,21 +113,23 @@ $("busca").oninput=render;$("ordem").onchange=render;
 
 function stats(k){const ops=[];for(const uid in todas){const r=(todas[uid].r||{})[k];if(r&&r.nota)ops.push({...r,uid,nome:todas[uid].nome||"Anônimo"})}
 const m=ops.length?ops.reduce((a,o)=>a+o.nota,0)/ops.length:0;return{ops,m}}
+function media(){let t=0,n=0;for(const u in todas){const r=todas[u].r||{};for(const k in r)if(r[k]&&r[k].nota){t+=r[k].nota;n++}}return n?t/n:0}
+function score(st,g){return (st.m*st.ops.length+g*3)/(st.ops.length+3)}
 function renderResumo(){let op=0,cur=new Set(),pes=0,soma=0;for(const u in todas){const r=todas[u].r||{};let t=0;for(const k in r)if(r[k]&&r[k].nota){op++;t++;cur.add(k);soma+=r[k].nota}if(t)pes++}
 $("resumo").innerHTML=[[op,op===1?"opinião":"opiniões"],[pes,pes===1?"estudante":"estudantes"],[cur.size,"cursos avaliados"],[op?(soma/op).toFixed(1)+"★":"–","média geral"]].map(([n,l])=>`<div><b>${n}</b><span>${l}</span></div>`).join("");
-const cs=[];for(const c in CAT){let best=null;for(const n of CAT[c]){const st=stats(key(c,n));if(!st.ops.length)continue;const sc=(st.m*st.ops.length+3*3)/(st.ops.length+3);if(!best||sc>best.sc)best={n,sc,...st}}if(best)cs.push(`<div class="cp"><small>${c}</small><b>${esc(best.n)}</b><span class="n">${best.m.toFixed(1)}★</span></div>`)}
+const cs=[],G=media();for(const c in CAT){let best=null;for(const n of CAT[c]){const st=stats(key(c,n));if(!st.ops.length)continue;const sc=score(st,G);if(!best||sc>best.sc)best={n,sc,...st}}if(best)cs.push(`<div class="cp"><small>${c}</small><b>${esc(best.n)}</b><span class="n">${best.m.toFixed(1)}★</span></div>`)}
 if(cs.length)$("camp").innerHTML=cs.join("")}
 function renderRank(){renderResumo();const vis=new Set(),arr=[];for(const c in CAT)for(const n of CAT[c]){const st=stats(key(c,n));if(!st.ops.length)continue;const id=n.toLowerCase();if(vis.has(id+c))continue;vis.add(id+c);arr.push({n,c,...st})}
 const tot=arr.reduce((a,x)=>a+x.ops.length,0),g=tot?arr.reduce((a,x)=>a+x.m*x.ops.length,0)/tot:0;
-arr.forEach(x=>x.sc=(x.m*x.ops.length+g*3)/(x.ops.length+3));arr.sort((a,b)=>b.sc-a.sc||b.ops.length-a.ops.length);
+arr.forEach(x=>x.sc=score(x,g));arr.sort((a,b)=>b.sc-a.sc||b.ops.length-a.ops.length);
 if(!arr.length)return;$("rank").innerHTML=arr.slice(0,10).map((x,i)=>`<div class="rk"><span class="pos">${i+1}º</span><span class="nm">${esc(x.n)}<small>${x.c}</small></span><span class="media"><span class="n">${x.m.toFixed(1)}</span> ★ · ${x.ops.length}</span></div>`).join("")}
 function render(){
 const q=$("busca").value.trim().toLowerCase(),ord=$("ordem").value;let h="";
 for(const c in CAT){let itens=CAT[c].map((n,i)=>({n,i,k:key(c,n),...stats(key(c,n))})).filter(x=>x.n.toLowerCase().includes(q));
 if(!itens.length)continue;
-if(ord==="nota")itens.sort((a,b)=>b.m-a.m||b.ops.length-a.ops.length);
+if(ord==="nota"){const G=media();itens.sort((a,b)=>(b.ops.length?score(b,G):-1)-(a.ops.length?score(a,G):-1))}
 if(ord==="qtd")itens.sort((a,b)=>b.ops.length-a.ops.length);
-const ks=itens.filter(x=>x.ops.length);const best=ks.length?ks.reduce((a,b)=>b.m*b.ops.length/(b.ops.length+1)>a.m*a.ops.length/(a.ops.length+1)?b:a):null;itens.forEach(x=>x.top=x===best);
+const ks=itens.filter(x=>x.ops.length);const G=media();const best=ks.length?ks.reduce((a,b)=>score(b,G)>score(a,G)?b:a):null;itens.forEach(x=>x.top=x===best);
 h+=`<section class="sec"><h2>${c}<span>${CAT[c].length}</span></h2>`;
 for(const x of itens){const meu=(todas[meuId]?.r||{})[x.k]||{};const d=rasc[x.k]||{nota:meu.nota||0,txt:meu.txt||""};
 h+=`<div class="card ${abertos.has(x.k)?"aberto":""}" data-k="${x.k}"><div class="topo" data-t="${x.k}"><b>${esc(x.n)}${x.top?'<span class="selo">Mais bem avaliado</span>':""}</b><span class="media">${x.ops.length?`<span class="n">${x.m.toFixed(1)}</span> ★ · ${x.ops.length} opini${x.ops.length>1?"ões":"ão"}`:"sem opiniões"}</span></div>
