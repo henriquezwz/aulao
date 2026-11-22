@@ -61,6 +61,8 @@ textarea{width:100%;min-height:70px;border:1px solid var(--borda);border-radius:
 .cp{flex:none;min-width:140px;background:#fff;border:1px solid var(--borda);border-top:3px solid var(--ouro);border-radius:12px;padding:9px 11px}
 .cp small{display:block;color:var(--sub);font-size:.72rem}.cp b{display:block;font-size:.92rem;margin:2px 0}
 .cp .n{font-family:"JetBrains Mono",monospace;color:var(--ouro);font-size:.85rem;font-weight:600}
+.card.ng{border:2px solid var(--verde);background:#f4faf6}
+.selo.cri{background:var(--verde)}
 </style>
 </head>
 <body>
@@ -132,7 +134,7 @@ if(ord==="qtd")itens.sort((a,b)=>b.ops.length-a.ops.length);
 const ks=itens.filter(x=>x.ops.length);const G=media();const best=ks.length?ks.reduce((a,b)=>score(b,G)>score(a,G)?b:a):null;itens.forEach(x=>x.top=x===best);
 h+=`<section class="sec"><h2>${c}<span>${CAT[c].length}</span></h2>`;
 for(const x of itens){const meu=(todas[meuId]?.r||{})[x.k]||{};const d=rasc[x.k]||{nota:meu.nota||0,txt:meu.txt||""};
-h+=`<div class="card ${abertos.has(x.k)?"aberto":""}" data-k="${x.k}"><div class="topo" data-t="${x.k}"><b>${esc(x.n)}${x.top?'<span class="selo">Mais bem avaliado</span>':""}</b><span class="media">${x.ops.length?`<span class="n">${x.m.toFixed(1)}</span> ★ · ${x.ops.length} opini${x.ops.length>1?"ões":"ão"}`:"sem opiniões"}</span></div>
+h+=`<div class="card ${abertos.has(x.k)?"aberto":""}${x.n==="nogabarito.com.br"?" ng":""}" data-k="${x.k}"><div class="topo" data-t="${x.k}"><b>${esc(x.n)}${x.n==="nogabarito.com.br"?'<span class="selo cri">Do criador da plataforma</span>':""}${x.top?'<span class="selo">Mais bem avaliado</span>':""}</b><span class="media">${x.ops.length?`<span class="n">${x.m.toFixed(1)}</span> ★ · ${x.ops.length} opini${x.ops.length>1?"ões":"ão"}`:"sem opiniões"}</span></div>
 <div class="corpo">${x.n==="nogabarito.com.br"?'<div class="sobre"><b>Do criador</b> · Em lançamento. Todas as questões do ENEM (2009 a 2026) e discursivas da Fuvest, Unicamp, Unesp e PISM, com resolução comentada, coach com IA e correção de discursivas pelos critérios da banca. Tem versão grátis e assinatura a R$ 19,90 na Black Friday.</div><a class="site" href="https://nogabarito.com.br" target="_blank" rel="noopener">Visitar nogabarito.com.br ↗</a>':""}${db?`<div class="estrelas">${[1,2,3,4,5].map(s=>`<button data-s="${s}" data-k="${x.k}" class="${s<=d.nota?"on":""}" aria-label="${s} estrelas">★</button>`).join("")}</div>
 <textarea data-x="${x.k}" placeholder="O que achou? Preço, didática, material…">${esc(d.txt)}</textarea><button class="salvar" data-v="${x.k}">Salvar opinião</button>`:""}
 ${x.ops.map(o=>`<div class="op"><b>${esc(o.nome)}</b> <span class="q">${"★".repeat(o.nota)}</span><br>${esc(o.txt||"")}</div>`).join("")}</div></div>`}h+=`</section>`}
